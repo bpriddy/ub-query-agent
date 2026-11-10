@@ -34,6 +34,10 @@ logger = logging.getLogger(__name__)
 # stays in the logger.error line next to each use and never reaches the model.
 _UNREACHABLE_MESSAGE = "Could not reach company records right now."
 
+#: The caller's GUB JWT for one turn. ADK applies `temp:` keys for the turn and
+#: strips them before the session is saved (gcp-universal-backend#162).
+TURN_JWT_STATE_KEY = "temp:gub_jwt"
+
 # ── Shared client ─────────────────────────────────────────────────────────────
 
 TIMEOUT = httpx.Timeout(connect=5.0, read=15.0, write=5.0, pool=5.0)
@@ -76,6 +80,8 @@ async def _resolve_gub_jwt(tool_context: Any | None) -> str:
     Resolve a valid GUB JWT for this request.
 
     Priority:
+      0. The caller's GUB JWT for this turn only (`temp:gub_jwt`, set by the
+         query agent service, #92): never saved, never cached
       1. Cached GUB JWT in ToolContext session state (avoids re-exchange per call)
       2. Google OAuth access token injected by Gemini Enterprise → exchange for GUB JWT
       3. GUB_SERVICE_JWT env var (local dev / CI fallback)
@@ -85,6 +91,11 @@ async def _resolve_gub_jwt(tool_context: Any | None) -> str:
     """
     if tool_context is not None:
         require_app_scope(_state_of_tool_context(tool_context))
+        # 0. Passed for this turn. Returned as is: writing it to `gub_jwt`
+        #    would save it with the session.
+        turn_jwt = tool_context.state.get(TURN_JWT_STATE_KEY)
+        if turn_jwt and isinstance(turn_jwt, str):
+            return turn_jwt
         # 1. Cached from a previous tool call in this session
         cached = tool_context.state.get("gub_jwt")
         if cached:
