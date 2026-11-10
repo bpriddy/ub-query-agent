@@ -492,6 +492,27 @@ EVIDENCE_ROWS_EVENT: bool = os.environ.get("EVIDENCE_ROWS_EVENT", "0").lower() i
 # import.
 ASK_CONTRACT: bool = os.environ.get("ASK_CONTRACT", "0").lower() in ("1", "true", "yes")
 
+# Workspace as a /ask source (gub-agent#90, agents/workspace.py): Gemini
+# Enterprise's streamAssist, called as the person with the token the query
+# agent service puts in `temp:workspace_token`. WORKSPACE_ENGINE is the Gemini
+# Enterprise engine's resource name
+# (projects/…/locations/global/collections/default_collection/engines/…); dev
+# uses its own Gemini Enterprise app, never prod's. Empty, the default,
+# Workspace is not a source on this engine and reports `skipped`.
+# WORKSPACE_DATA_STORE_IDS names the engine's connected stores (comma
+# separated). WORKSPACE_CONNECT_URL is the connect page (#93), sent with
+# WORKSPACE_NOT_CONNECTED; WORKSPACE_APP_URL is the Gemini Enterprise web app,
+# sent with WORKSPACE_SETUP_REQUIRED. The call runs beside the UB lookup and is
+# reported `timeout` if it has not answered WORKSPACE_SOFT_DEADLINE_S after
+# the turn began and the rest of the turn is done. Read at import.
+WORKSPACE_ENGINE: str = os.environ.get("WORKSPACE_ENGINE", "").strip()
+WORKSPACE_DATA_STORE_IDS: list[str] = [
+    ds.strip() for ds in os.environ.get("WORKSPACE_DATA_STORE_IDS", "").split(",") if ds.strip()
+]
+WORKSPACE_CONNECT_URL: str = os.environ.get("WORKSPACE_CONNECT_URL", "").strip()
+WORKSPACE_APP_URL: str = os.environ.get("WORKSPACE_APP_URL", "").strip()
+WORKSPACE_SOFT_DEADLINE_S: float = float(os.environ.get("WORKSPACE_SOFT_DEADLINE_S", "30"))
+
 # Reader text carries no record ids and no raw ISO timestamps (latency-05 W1-5).
 # An account overview came back as "The account (id: <uuid>) was created on
 # 2026-06-04T18:33:52.846Z ..." because the fast path's draft copies every
