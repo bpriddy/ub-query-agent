@@ -20,8 +20,12 @@ format gate's payload, as today, so a follow-up turn reads what it always read.
 
 **What is assembled here, in code.** A fact's source comes from the tool that
 produced its evidence row (the evidence id's prefix), and a record's type from
-the same tool. Runn and Workspace tools join `TOOL_SOURCE` when they exist
-(gub-agent#89, #90); until then every source but UB is reported `skipped`.
+the same tool. Runn's tool is in `TOOL_SOURCE`
+(gub-agent#89); Workspace joins it with #90, and until then it is `skipped`.
+
+**A source's status** comes from its tools' responses: `ok` when any call
+succeeded, `error` when every call failed, with the code UB gave (a Runn
+`RUNN_NO_GRANT` is a failed source, not a failed turn).
 """
 
 from __future__ import annotations
@@ -44,6 +48,7 @@ from ..schemas.ask import (
     ProgressStep,
     RecordRef,
     Source,
+    SourceError,
     SourceReport,
     SourceStatus,
 )
@@ -57,7 +62,7 @@ PROGRESS_KEY = "progress"
 ASK_ANSWER_KEY = "ask_answer"
 
 #: The source behind each tool that does not read UB. Every other tool reads UB.
-TOOL_SOURCE: dict[str, Source] = {}
+TOOL_SOURCE: dict[str, Source] = {"runn_allocations": "runn"}
 
 #: The UB record type each tool's rows are. `find` and `org_query` span types,
 #: so their rows carry none.
@@ -88,6 +93,7 @@ TOOL_PHRASES: dict[str, str] = {
     "list_ideas": "Listing ideas",
     "get_idea": "Reading an idea",
     "find_files": "Searching file names",
+    "runn_allocations": "Checking staffing in Runn",
 }
 
 SOURCE_NAMES: dict[Source, str] = {"ub": "UB", "runn": "Runn", "workspace": "Workspace"}
@@ -154,15 +160,64 @@ def _records(facts: list[AskFact], index: dict[str, dict[str, Any]]) -> list[Rec
     return records
 
 
-def _sources(tools: list[str]) -> dict[Source, SourceReport]:
-    used = {source_of(tool) for tool in tools}
-    return {s: SourceReport(status="ok" if s in used else "skipped") for s in SOURCES}
+def _counts_as_failure(source: Source, response: dict[str, Any]) -> bool:
+    """A tool's error dict that means its source failed. For UB, a 403 or 404
+    is an answer about a record (the answer says so), not UB being down; for
+    any other source, every error means the source could not be read."""
+    if response.get("error") is not True:
+        return False
+    if source != "ub":
+        return True
+    status = response.get("status")
+    return not isinstance(status, int) or status == 0 or status >= 500
+
+
+class SourceLog:
+    """What each source did this turn: the tools called, in order, and how
+    their calls ended. A source is `ok` when any call succeeded, `error` when
+    every call failed (with the last failure's code), `skipped` when nothing
+    called it."""
+
+    def __init__(self) -> None:
+        self.tools: list[str] = []
+        self._ok: set[Source] = set()
+        self._errors: dict[Source, SourceError] = {}
+
+    def called(self, tool: str) -> bool:
+        """Note a call; True the first time this tool is seen."""
+        if tool in self.tools:
+            return False
+        self.tools.append(tool)
+        return True
+
+    def answered(self, tool: str, response: Any) -> None:
+        source = source_of(tool)
+        if isinstance(response, dict) and _counts_as_failure(source, response):
+            status = response.get("status")
+            self._errors[source] = SourceError(
+                code=str(response.get("code") or f"HTTP_{status}"),
+                message=str(response.get("message") or "The source could not be read."),
+            )
+        else:
+            self._ok.add(source)
+
+    def reports(self) -> dict[Source, SourceReport]:
+        used = {source_of(tool) for tool in self.tools}
+        out: dict[Source, SourceReport] = {}
+        for s in SOURCES:
+            if s in self._ok:
+                out[s] = SourceReport(status="ok")
+            elif s in self._errors:
+                out[s] = SourceReport(status="error", error=self._errors[s])
+            else:
+                out[s] = SourceReport(status="ok" if s in used else "skipped")
+        return out
 
 
 def build_response(
     payload: AnswerPayload,
     index: dict[str, dict[str, Any]],
-    tools: list[str],
+    log: SourceLog,
     conversation_id: str | None,
 ) -> AskResponse:
     """The `/ask` answer from the formatter's payload and the turn's evidence."""
@@ -180,19 +235,19 @@ def build_response(
         **payload.model_dump(exclude={"facts"}),
         facts=facts,
         records=_records(facts, index),
-        sources=_sources(tools),
+        sources=log.reports(),
         conversation_id=conversation_id,
     )
 
 
 def error_response(
-    code: str, message: str, tools: list[str], conversation_id: str | None
+    code: str, message: str, log: SourceLog, conversation_id: str | None
 ) -> AskResponse:
     return AskResponse(
         kind="error",
         headline="The question could not be answered",
         error=AskError(code=code, message=message),
-        sources=_sources(tools),
+        sources=log.reports(),
         conversation_id=conversation_id,
     )
 
@@ -207,22 +262,33 @@ def _function_calls(event: Event) -> list[str]:
     ]
 
 
+def _function_responses(event: Event) -> list[tuple[str, Any]]:
+    if not event.content or not event.content.parts:
+        return []
+    return [
+        (p.function_response.name, p.function_response.response)
+        for p in event.content.parts
+        if p.function_response and p.function_response.name
+    ]
+
+
 class AskTurn(BaseAgent):
     """The interpreter's root, run as one `/ask` turn (see module docstring)."""
 
     async def _run_async_impl(self, ctx: InvocationContext) -> AsyncGenerator[Event, None]:
         [root] = self.sub_agents
         conversation_id = ctx.session.id
-        tools: list[str] = []
+        log = SourceLog()
         payload: dict[str, Any] | None = None
 
         yield progress_event(ctx, "understand", "Reading the question")
         try:
             async for event in root.run_async(ctx):
                 yield event
+                for tool, response in _function_responses(event):
+                    log.answered(tool, response)
                 for tool in _function_calls(event):
-                    if tool not in tools:
-                        tools.append(tool)
+                    if log.called(tool):
                         yield progress_event(
                             ctx, "lookup", TOOL_PHRASES.get(tool, "Looking something up")
                         )
@@ -233,9 +299,7 @@ class AskTurn(BaseAgent):
             logger.exception("ask turn failed")
             yield answer_event(
                 ctx,
-                error_response(
-                    "INTERNAL", f"The interpreter failed: {err}", tools, conversation_id
-                ),
+                error_response("INTERNAL", f"The interpreter failed: {err}", log, conversation_id),
             )
             return
 
@@ -245,7 +309,7 @@ class AskTurn(BaseAgent):
                 error_response(
                     "NO_ANSWER",
                     "The interpreter finished without an answer.",
-                    tools,
+                    log,
                     conversation_id,
                 ),
             )
@@ -254,17 +318,19 @@ class AskTurn(BaseAgent):
         response = build_response(
             AnswerPayload.model_validate(payload),
             evidence_index(ctx.invocation_id),
-            tools,
+            log,
             conversation_id,
         )
         for source, report in response.sources.items():
             if report.status == "skipped":
                 continue
-            found = len(response.records) if source == "ub" else None
-            text = (
-                f"Found {found} record{'s' if found != 1 else ''} in UB"
-                if found
-                else f"Checked {SOURCE_NAMES[source]}"
-            )
+            name = SOURCE_NAMES[source]
+            found = len(response.records) if source == "ub" else 0
+            if report.error is not None:
+                text = f"Couldn't read {name} ({report.error.code})"
+            elif found:
+                text = f"Found {found} record{'s' if found != 1 else ''} in {name}"
+            else:
+                text = f"Checked {name}"
             yield progress_event(ctx, "source", text, source=source, status=report.status)
         yield answer_event(ctx, response)

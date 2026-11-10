@@ -28,7 +28,7 @@ that wins is promoted into this file by hand, in an ordinary pull request.
 """
 
 from .critic import CRITIC_INSTRUCTION
-from .executor import EXECUTOR_INSTRUCTION, TENANT_EXECUTOR_INSTRUCTION
+from .executor import EXECUTOR_INSTRUCTION, RUNN_GUIDANCE, TENANT_EXECUTOR_INSTRUCTION
 from .formatter import FORMATTER_INSTRUCTION
 from .router import ROUTER_INSTRUCTION
 
@@ -37,5 +37,6 @@ __all__ = [
     "EXECUTOR_INSTRUCTION",
     "FORMATTER_INSTRUCTION",
     "ROUTER_INSTRUCTION",
+    "RUNN_GUIDANCE",
     "TENANT_EXECUTOR_INSTRUCTION",
 ]

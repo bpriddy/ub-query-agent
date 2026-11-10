@@ -95,7 +95,7 @@ from .config import (
 )
 from .instruction_utils import with_current_date
 from .models import bind_model_call
-from .prompts import EXECUTOR_INSTRUCTION, TENANT_EXECUTOR_INSTRUCTION
+from .prompts import EXECUTOR_INSTRUCTION, RUNN_GUIDANCE, TENANT_EXECUTOR_INSTRUCTION
 from .sandbox import (
     EXECUTOR_THINKING_LEVEL,
     sandbox_before_model,
@@ -104,6 +104,7 @@ from .sandbox import (
 )
 from .tenant import tenant_instruction
 from .tools import ALL_TOOLS
+from .tools.runn import RUNN_TOOLS
 
 
 def _before_agent(callback_context):
@@ -194,7 +195,10 @@ executor_agent = Agent(
     # true of a sandbox run too. A turn with no state["tenant"] gets the inner
     # text unchanged (gub_agent/tenant.py).
     instruction=tenant_instruction(
-        sandbox_instruction(with_current_date(EXECUTOR_INSTRUCTION), role="executor"),
+        sandbox_instruction(
+            with_current_date(EXECUTOR_INSTRUCTION + (RUNN_GUIDANCE if ASK_CONTRACT else "")),
+            role="executor",
+        ),
         # A tenant turn swaps the agency-wide persona and capability text for
         # the tenant persona (prompts/executor.py); a sandbox override wins.
         tenant_base=sandbox_instruction(
@@ -208,7 +212,9 @@ executor_agent = Agent(
     # (EXECUTOR_THINKING_LEVEL, so the sandbox provenance can't drift from what
     # actually runs; a sandbox run overrides it per call in _before_model.)
     planner=build_thinking_planner(EXECUTOR_THINKING_LEVEL),
-    tools=ALL_TOOLS,
+    # Runn is a source only on the /ask engine (config.ASK_CONTRACT); every
+    # other engine is offered exactly today's tools.
+    tools=ALL_TOOLS + (RUNN_TOOLS if ASK_CONTRACT else []),
     # Reset the per-pass round + tool budgets at the start of each executor pass
     # (so critic-requested retries aren't born over budget). See _before_agent.
     before_agent_callback=_before_agent,
