@@ -484,6 +484,14 @@ EVIDENCE_ROWS_EVENT: bool = os.environ.get("EVIDENCE_ROWS_EVENT", "0").lower() i
     "yes",
 )
 
+# The `/ask` contract (gub-agent#88, UB docs/ASK.md). On, the engine's root is
+# `AskTurn` around the usual root: it streams progress lines and ends each turn
+# with one AskResponse, both as partial events authored `ask` (agents/ask.py).
+# Meant for the engine UB's /ask calls. Off, the default, the root is today's,
+# event for event, so an engine serving the chat bot is unchanged. Read at
+# import.
+ASK_CONTRACT: bool = os.environ.get("ASK_CONTRACT", "0").lower() in ("1", "true", "yes")
+
 # Reader text carries no record ids and no raw ISO timestamps (latency-05 W1-5).
 # An account overview came back as "The account (id: <uuid>) was created on
 # 2026-06-04T18:33:52.846Z ..." because the fast path's draft copies every
