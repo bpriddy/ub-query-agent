@@ -1,5 +1,5 @@
 """
-app.py — the HTTP surface: `POST /ask` and `GET /healthz`.
+app.py — the HTTP surface: `POST /ask` and `GET /health`.
 
 `POST /ask` answers with a Server-Sent Events stream, in this order:
 
@@ -129,8 +129,9 @@ def create_app(
     async def _service_error(_request: Request, err: ServiceError) -> JSONResponse:
         return JSONResponse(err.body(), status_code=err.status)
 
-    @app.get("/healthz")
-    async def healthz() -> dict[str, str]:
+    # Not /healthz: Cloud Run reserves paths ending in "z" on run.app URLs.
+    @app.get("/health")
+    async def health() -> dict[str, str]:
         return {"status": "ok"}
 
     @app.post("/ask")
