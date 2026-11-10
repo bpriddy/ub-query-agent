@@ -20,8 +20,15 @@ format gate's payload, as today, so a follow-up turn reads what it always read.
 
 **What is assembled here, in code.** A fact's source comes from the tool that
 produced its evidence row (the evidence id's prefix), and a record's type from
-the same tool. Runn's tool is in `TOOL_SOURCE`
-(gub-agent#89); Workspace joins it with #90, and until then it is `skipped`.
+the same tool. Runn's tool is in `TOOL_SOURCE` (gub-agent#89).
+
+**Workspace** (gub-agent#90) is not a tool: one Gemini Enterprise call runs
+beside the root from the start of the turn (`agents/workspace.py`), as the
+person, and its grounded passages join the answer as `workspace` facts with a
+`ref` each. The prose stays the root's until the blend (#91). Not configured
+on this engine: `skipped`. No token from the service: `error`,
+WORKSPACE_NOT_CONNECTED, with the connect page's link. Not answered by the
+soft deadline: `timeout`, and the call is cancelled.
 
 **A source's status** comes from its tools' responses: `ok` when any call
 succeeded, `error` when every call failed, with the code UB gave (a Runn
@@ -30,14 +37,17 @@ succeeded, `error` when every call failed, with the code UB gave (a Runn
 
 from __future__ import annotations
 
+import asyncio
 import logging
+import time
 from collections.abc import AsyncGenerator
 from typing import Any
 
 from google.adk.agents import BaseAgent
 from google.adk.agents.invocation_context import InvocationContext
-from google.adk.events import Event
+from google.adk.events import Event, EventActions
 
+from .. import config
 from ..schemas.answer import AnswerPayload
 from ..schemas.ask import (
     SOURCES,
@@ -52,6 +62,7 @@ from ..schemas.ask import (
     SourceReport,
     SourceStatus,
 )
+from . import workspace
 from .evidence_index import evidence_index
 from .formatter import ANSWER_STATE_KEY
 
@@ -182,6 +193,7 @@ class SourceLog:
         self.tools: list[str] = []
         self._ok: set[Source] = set()
         self._errors: dict[Source, SourceError] = {}
+        self._reported: dict[Source, SourceReport] = {}
 
     def called(self, tool: str) -> bool:
         """Note a call; True the first time this tool is seen."""
@@ -201,11 +213,17 @@ class SourceLog:
         else:
             self._ok.add(source)
 
+    def report(self, source: Source, report: SourceReport) -> None:
+        """A source's outcome decided outside its tools (Workspace's call)."""
+        self._reported[source] = report
+
     def reports(self) -> dict[Source, SourceReport]:
         used = {source_of(tool) for tool in self.tools}
         out: dict[Source, SourceReport] = {}
         for s in SOURCES:
-            if s in self._ok:
+            if s in self._reported:
+                out[s] = self._reported[s]
+            elif s in self._ok:
                 out[s] = SourceReport(status="ok")
             elif s in self._errors:
                 out[s] = SourceReport(status="error", error=self._errors[s])
@@ -219,8 +237,11 @@ def build_response(
     index: dict[str, dict[str, Any]],
     log: SourceLog,
     conversation_id: str | None,
+    workspace_facts: list[AskFact] | None = None,
 ) -> AskResponse:
-    """The `/ask` answer from the formatter's payload and the turn's evidence."""
+    """The `/ask` answer from the formatter's payload, the turn's evidence and
+    Workspace's passages. A clarifying question carries no Workspace facts:
+    it is asked before anything is answered."""
     facts = []
     for fact in payload.facts:
         tool = _tool_of(fact.evidence_id, index)
@@ -231,9 +252,11 @@ def build_response(
                 entity_type=TOOL_ENTITY.get(tool) if fact.entity_id else None,
             )
         )
+    extra = list(workspace_facts or []) if payload.kind != "clarify" else []
     return AskResponse(
-        **payload.model_dump(exclude={"facts"}),
-        facts=facts,
+        **payload.model_dump(exclude={"facts", "citations"}),
+        citations=payload.citations + [f.evidence_id for f in extra],
+        facts=facts + extra,
         records=_records(facts, index),
         sources=log.reports(),
         conversation_id=conversation_id,
@@ -272,6 +295,98 @@ def _function_responses(event: Event) -> list[tuple[str, Any]]:
     ]
 
 
+def _question(ctx: InvocationContext) -> str:
+    content = ctx.user_content
+    if not content or not content.parts:
+        return ""
+    return " ".join(p.text for p in content.parts if p.text).strip()
+
+
+class _WorkspaceCall:
+    """The turn's one Gemini Enterprise call, started beside the root."""
+
+    def __init__(self, ctx: InvocationContext, log: SourceLog) -> None:
+        self.log = log
+        self.started = time.monotonic()
+        self.task: asyncio.Task | None = None
+        self.facts: list[AskFact] = []
+        self.items = 0
+        self.session_delta: dict[str, Any] = {}
+        if not config.WORKSPACE_ENGINE:
+            return  # not a source on this engine: skipped
+        token = ctx.session.state.get(workspace.TOKEN_STATE_KEY)
+        if not isinstance(token, str) or not token:
+            log.report(
+                "workspace",
+                SourceReport(
+                    status="error", error=workspace.not_connected(config.WORKSPACE_CONNECT_URL)
+                ),
+            )
+            return
+        self.session = ctx.session.state.get(workspace.SESSION_STATE_KEY)
+        self.task = asyncio.create_task(
+            workspace.stream_assist(
+                engine=config.WORKSPACE_ENGINE,
+                data_store_ids=config.WORKSPACE_DATA_STORE_IDS,
+                token=token,
+                query=_question(ctx),
+                session=self.session if isinstance(self.session, str) else None,
+            )
+        )
+
+    def cancel(self) -> None:
+        if self.task is not None and not self.task.done():
+            self.task.cancel()
+
+    async def settle(self) -> None:
+        """Wait out what is left of the soft deadline, then report."""
+        if self.task is None:
+            return
+        remaining = config.WORKSPACE_SOFT_DEADLINE_S - (time.monotonic() - self.started)
+        done, _ = await asyncio.wait({self.task}, timeout=max(0.0, remaining))
+        if not done:
+            self.cancel()
+            self.log.report("workspace", SourceReport(status="timeout"))
+            return
+        try:
+            result, rejected = self.task.result()
+        except workspace.StreamAssistError as err:
+            logger.warning("ask workspace: status=%s reason=%s", err.status, err.reason)
+            if err.reason == "TIMEOUT":
+                self.log.report("workspace", SourceReport(status="timeout"))
+            else:
+                self.log.report(
+                    "workspace",
+                    SourceReport(
+                        status="error", error=workspace.source_error(err, config.WORKSPACE_APP_URL)
+                    ),
+                )
+            return
+        except Exception:  # noqa: BLE001 — a Workspace failure never fails the answer
+            logger.exception("ask workspace failed")
+            self.log.report(
+                "workspace",
+                SourceReport(
+                    status="error",
+                    error=SourceError(
+                        code="WORKSPACE_UNAVAILABLE", message="Gemini Enterprise could not be read."
+                    ),
+                ),
+            )
+            return
+        if result.unauthorized_connectors:
+            logger.info(
+                "ask workspace: connectors not authorised: %d", len(result.unauthorized_connectors)
+            )
+        self.facts = workspace.facts_of(result)
+        self.items = len({f.ref.id for f in self.facts if f.ref})
+        self.log.report("workspace", SourceReport(status="ok"))
+        if result.session and result.session != self.session:
+            self.session_delta = {workspace.SESSION_STATE_KEY: result.session}
+        elif rejected:
+            self.session_delta = {workspace.SESSION_STATE_KEY: None}
+
+
 class AskTurn(BaseAgent):
     """The interpreter's root, run as one `/ask` turn (see module docstring)."""
 
@@ -282,6 +397,9 @@ class AskTurn(BaseAgent):
         payload: dict[str, Any] | None = None
 
         yield progress_event(ctx, "understand", "Reading the question")
+        ws = _WorkspaceCall(ctx, log)
+        if ws.task is not None:
+            yield progress_event(ctx, "lookup", "Searching your Workspace")
         try:
             async for event in root.run_async(ctx):
                 yield event
@@ -296,6 +414,7 @@ class AskTurn(BaseAgent):
                 if delta and ANSWER_STATE_KEY in delta:
                     payload = delta[ANSWER_STATE_KEY]
         except Exception as err:  # noqa: BLE001 — the caller always gets an answer event
+            ws.cancel()
             logger.exception("ask turn failed")
             yield answer_event(
                 ctx,
@@ -304,6 +423,7 @@ class AskTurn(BaseAgent):
             return
 
         if payload is None:
+            ws.cancel()
             yield answer_event(
                 ctx,
                 error_response(
@@ -315,21 +435,36 @@ class AskTurn(BaseAgent):
             )
             return
 
+        await ws.settle()
+        if ws.session_delta:
+            # Not partial, so the runner saves it: the next turn of this
+            # conversation continues the same Gemini Enterprise session. No
+            # content, so it is no part of the conversation's history.
+            yield Event(
+                invocation_id=ctx.invocation_id,
+                author=ASK_AUTHOR,
+                actions=EventActions(state_delta=ws.session_delta),
+            )
+
         response = build_response(
             AnswerPayload.model_validate(payload),
             evidence_index(ctx.invocation_id),
             log,
             conversation_id,
+            workspace_facts=ws.facts,
         )
         for source, report in response.sources.items():
             if report.status == "skipped":
                 continue
             name = SOURCE_NAMES[source]
-            found = len(response.records) if source == "ub" else 0
+            found = {"ub": len(response.records), "workspace": ws.items}.get(source, 0)
+            noun = "item" if source == "workspace" else "record"
             if report.error is not None:
                 text = f"Couldn't read {name} ({report.error.code})"
+            elif report.status == "timeout":
+                text = f"{name} didn't answer in time"
             elif found:
-                text = f"Found {found} record{'s' if found != 1 else ''} in {name}"
+                text = f"Found {found} {noun}{'s' if found != 1 else ''} in {name}"
             else:
                 text = f"Checked {name}"
             yield progress_event(ctx, "source", text, source=source, status=report.status)

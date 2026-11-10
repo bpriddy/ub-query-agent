@@ -44,11 +44,13 @@ PROGRESS_MAX_CHARS = 160
 
 class Ref(BaseModel):
     """A Workspace item a fact was read from: a document, a mail or Chat
-    thread, an event. `id` is Google's; the title is for display."""
+    thread, an event. `id` is Google's; the title is for display, and `uri`
+    opens the item for someone who can see it."""
 
     type: str
     id: str
     title: str | None = None
+    uri: str | None = None
 
 
 class AskFact(Fact):
@@ -76,8 +78,12 @@ class RecordRef(BaseModel):
 
 
 class SourceError(BaseModel):
+    """`link` is where the person can fix it, when they can (the Gemini
+    Enterprise connect page for WORKSPACE_NOT_CONNECTED)."""
+
     code: str
     message: str
+    link: str | None = None
 
 
 class ConflictsWith(BaseModel):
