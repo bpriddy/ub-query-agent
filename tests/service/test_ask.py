@@ -195,3 +195,7 @@ async def test_no_token_appears_in_any_stored_row(service):
     assert "conversations" in tables and "workspace_grants" in tables
     for secret in [token, token.split(".")[2], "ya29.minted-google-token", "1//refresh-token"]:
         assert secret not in dump
+
+
+async def test_health(service):
+    assert (await service.client.get("/health")).json() == {"status": "ok"}
