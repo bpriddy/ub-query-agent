@@ -62,6 +62,7 @@ With no such key every override point is a no-op.
 
 from google.adk.agents import Agent, BaseAgent, LoopAgent, ParallelAgent, SequentialAgent
 
+from .agents.ask import AskTurn
 from .agents.circuit_breaker import circuit_breaker, reset_tool_budget
 from .agents.context_pruning import (
     strip_prior_turn_tool_parts,
@@ -86,6 +87,7 @@ from .agents.speculation import SPECULATIVE_DEEP, SpeculativeDispatch
 from .agents.tool_gate import tool_gate
 from .config import (
     AGENT_NAME,
+    ASK_CONTRACT,
     CRITIC_PARALLEL,
     EAGER_ADK_IMPORTS,
     build_model,
@@ -364,7 +366,13 @@ def build_root(
     return SequentialAgent(name="gub_root", sub_agents=[echo, *middle])
 
 
-root_agent = build_root(sandbox_echo, router_agent, dispatcher, speculative=SPECULATIVE_DEEP)
+root_agent: BaseAgent = build_root(
+    sandbox_echo, router_agent, dispatcher, speculative=SPECULATIVE_DEEP
+)
+# The engine UB's /ask calls wraps the same tree in the /ask turn
+# (config.ASK_CONTRACT, agents/ask.py); every other engine serves it as is.
+if ASK_CONTRACT:
+    root_agent = AskTurn(name="ask", sub_agents=[root_agent])
 
 # Last, once the tree exists: the modules ADK would import on the first model
 # request, imported now (config.EAGER_ADK_IMPORTS, gub_agent/eager_imports.py).
