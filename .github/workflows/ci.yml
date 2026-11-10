@@ -2,7 +2,8 @@
 #
 # The whole suite (unit + integration) is hermetic: integration tests run
 # against a localhost MockGub server (tests/integration/conftest.py), so no
-# credentials, GCP access, or live GUB backend is needed.
+# credentials, GCP access, or live GUB backend is needed. The query agent
+# service's tests use the Postgres service container below.
 
 name: CI
 
@@ -22,6 +23,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # The query agent service's tests (tests/service) need a real Postgres;
+    # they skip without TEST_DATABASE_URL.
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: qa_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://postgres:test@localhost:5432/qa_test
     steps:
       - uses: actions/checkout@v4
 
@@ -35,13 +49,13 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install package + dev dependencies
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev,service]"
 
       - name: Lint (ruff)
-        run: ruff check gub_agent tests services.py
+        run: ruff check gub_agent query_service tests services.py
 
       - name: Format check (ruff format)
-        run: ruff format --check gub_agent tests services.py
+        run: ruff format --check gub_agent query_service tests services.py
 
       - name: Tests (pytest)
         run: pytest

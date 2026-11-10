@@ -1,0 +1,8 @@
+# The query agent service's image (Dockerfile). No ADK: it never imports gub_agent.
+fastapi==0.141.1
+uvicorn[standard]==0.54.0
+httpx==0.28.1
+asyncpg==0.32.0
+cloud-sql-python-connector[asyncpg]==1.23.0
+google-auth==2.62.0
+pyjwt[crypto]==2.15.1
