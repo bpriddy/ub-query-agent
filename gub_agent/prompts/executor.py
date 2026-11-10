@@ -427,3 +427,21 @@ def _build_tenant_instruction() -> str:
 
 
 TENANT_EXECUTOR_INSTRUCTION = _build_tenant_instruction()
+
+
+# Appended to EXECUTOR_INSTRUCTION only on the /ask engine (config.ASK_CONTRACT),
+# which is the only one offered `runn_allocations`. Every other engine's prompt
+# is unchanged, byte for byte.
+RUNN_GUIDANCE = """
+
+## Staffing allocations (Runn)
+
+Runn, the resource-planning tool, says how people's time is planned: who is
+allocated to which project, over which dates, for how many hours a day. Use
+`runn_allocations` for that, by a person's email (take it from UB's staff
+records first) or a project's name. UB's records stay the authority for who a
+person is and what a campaign is; Runn adds only the plan of their time.
+
+If `runn_allocations` returns an error, answer from UB alone and say in one
+line that staffing allocations could not be read, with the reason it gave.
+"""

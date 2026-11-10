@@ -324,11 +324,7 @@ async def gub_get(
         return _with_scope_notice(resp.json(), resp, path)
     except httpx.HTTPStatusError as exc:
         logger.warning("GUB GET %s returned %s", path, exc.response.status_code)
-        return {
-            "error": True,
-            "status": exc.response.status_code,
-            "message": _friendly_error(exc.response.status_code, path),
-        }
+        return _error_dict(exc.response, path)
     except httpx.RequestError as exc:
         logger.error("GUB GET %s request error: %s", path, exc)
         return {"error": True, "status": 0, "message": _UNREACHABLE_MESSAGE}
@@ -359,14 +355,28 @@ async def gub_post(
         return _with_scope_notice(resp.json(), resp, path)
     except httpx.HTTPStatusError as exc:
         logger.warning("GUB POST %s returned %s", path, exc.response.status_code)
-        return {
-            "error": True,
-            "status": exc.response.status_code,
-            "message": _friendly_error(exc.response.status_code, path),
-        }
+        return _error_dict(exc.response, path)
     except httpx.RequestError as exc:
         logger.error("GUB POST %s request error: %s", path, exc)
         return {"error": True, "status": 0, "message": _UNREACHABLE_MESSAGE}
+
+
+def _error_dict(resp: httpx.Response, path: str) -> dict:
+    """A failed call as the tools return it. UB's own error `code` is carried
+    when its body has one (e.g. `RUNN_NO_GRANT`), so a caller can tell a
+    missing grant from a missing record; the message stays the friendly one."""
+    out: dict[str, Any] = {
+        "error": True,
+        "status": resp.status_code,
+        "message": _friendly_error(resp.status_code, path),
+    }
+    try:
+        body = resp.json()
+    except ValueError:
+        return out
+    if isinstance(body, dict) and isinstance(body.get("code"), str):
+        out["code"] = body["code"]
+    return out
 
 
 def _friendly_error(status: int, path: str) -> str:

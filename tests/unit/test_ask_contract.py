@@ -34,6 +34,7 @@ from gub_agent.agents.ask import (
     ASK_AUTHOR,
     PROGRESS_KEY,
     AskTurn,
+    SourceLog,
     build_response,
 )
 from gub_agent.agents.evidence_index import evidence_index, record_evidence, reset_evidence_index
@@ -154,7 +155,10 @@ def _index(invocation_id: str) -> dict:
 
 def test_facts_and_records_come_from_the_tools_behind_the_evidence():
     payload = AnswerPayload.model_validate(_valid_dict())  # cites get_campaign:c1:status
-    response = build_response(payload, _index("inv-build"), ["get_campaign"], "conv-1")
+    log = SourceLog()
+    log.called("get_campaign")
+    log.answered("get_campaign", {"id": "c1"})
+    response = build_response(payload, _index("inv-build"), log, "conv-1")
 
     [fact] = response.facts
     assert (fact.source, fact.entity_type, fact.entity_id, fact.value) == (
