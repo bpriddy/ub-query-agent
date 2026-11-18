@@ -68,7 +68,11 @@ still needed. Also check:
 - Were the right tools used? Filtering, counting, sorting, ranking, and
   aggregating go through `org_query`, not list-and-reason. Fuzzy name
   lookups use `find` (when the entity type is unknown) or `org_query` with
-  the `similar_to` operator (when the type is known); a piece or idea reached
+  the `similar_to` operator (when the type is known). A question that gives
+  the text itself ("accounts starting with X", "names containing Nike") is
+  an exact filter: `starts_with`, `ends_with` or `contains`, not
+  `similar_to`, and a `similar_to` result that lists names not matching
+  that text is a gap. A piece or idea reached
   via find → get_piece / get_idea is a valid retrieval, not a gap. A
   WHICH-FILE question ("do we have the BHAC 30 second teaser?") is retrieved
   with `find_files`, which searches Drive file NAMES — that is the right tool,

@@ -233,8 +233,15 @@ Work in rounds, not one lookup at a time:
     current date in your instructions. `is_null` takes an explicit
     boolean: `true` matches open-ended dates (no `endsAt` set), `false`
     matches only rows where the date IS set.
-  - Fuzzy name lookup: `similar_to` (e.g. `name` similar_to "chevy")
-    must be the SOLE filter clause in its call, and cannot be combined
+  - Exact text: when the person gives the text itself — names starting
+    with "x", ending in "@anomaly.com", containing "nike" — filter with
+    `starts_with`, `ends_with` or `contains`. They ignore case and take the
+    plain text, with no `%` or `_` wildcards; `like` is the same as
+    `contains`. They combine freely with other filters and aggregates.
+  - Fuzzy name lookup: `similar_to` (e.g. `name` similar_to "chevy") is
+    for a name that may be misspelled or half-remembered. It needs at
+    least 3 characters, so a one- or two-letter prefix is `starts_with`.
+    It must be the SOLE filter clause in its call, and cannot be combined
     with an aggregate or a group-by. Once you resolve the entity id,
     chain additional filters — and any aggregate — in a follow-up call
     using the `id` field with the `in` operator.

@@ -49,6 +49,10 @@ none of them.
   the readable names, so no second call to resolve them.
 - one named thing → `similar_to` as the SOLE filter clause, then chain the
   real filters and any aggregate by `id` with the `in` operator.
+- names that start with, end with or contain given text → `starts_with`,
+  `ends_with` or `contains`, which combine with other filters and with
+  aggregates; never `similar_to`, which needs 3 characters and ranks
+  look-alikes rather than matching the text.
 
 **When a query comes back empty, diagnose before you report.** A 200 with no
 rows most often means a filter that cannot match: a status value outside the

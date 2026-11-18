@@ -206,10 +206,11 @@ from gub_agent.prompts import (  # noqa: E402
 # The executor pin is the base after the format-rule fix that landed on the same
 # branch; the tenant persona itself does not change the no-tenant text.
 # Re-pinned 2026-10-29: campaign status list gained in_progress and paused.
+# Re-pinned 2026-11-18: text operators starts_with / ends_with / contains (#100).
 _BASE_SHA = {
-    "executor": "127b2cf62c5dc716a9a240c18de9ea7be61a4060e0149c4254abcd6600daa32e",
+    "executor": "06fed3ee3a314251d77c869b1afcc954c3382e3e8b95691038ee6b2c2b9f546f",
     "router": "4f1cd2536b86bcd705e72173479e5c855fe9a5f060be5cf660f3de8095a0b33e",
-    "critic": "be0f0e11fb1f524d917c1112e588381f5a28ba1aa439afafe10ed714fd4080db",
+    "critic": "83b3ff0bc22ced495e76c7376e5833bf961e500a78a90359c98376e7f993e0f4",
 }
 _SCOPE = "## Scope — decide first"
 
