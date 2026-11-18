@@ -15,6 +15,16 @@ remaining exposures) lives in internal notes instead of this public log.
 
 ## [Unreleased]
 
+### Changed (2026-11-18)
+
+- **Abstention is confirmed before it stands** (#102). A pass that searched
+  and abstains is sent back once, in code, to confirm "none" by a different
+  route (`CriticGate._abstain_verdict`, `CONFIRM_ABSTENTION`, default on, 0 is
+  the rollback). A turn whose only searches were `find_files` keeps today's
+  pass (Drive file names are all that is indexed), as does the loop's last
+  pass. The critic prompt holds a "not found" answer to the same rule. Critic
+  pin in `test_tenant.py` re-pinned.
+
 ### Added (2026-09-04)
 
 - **Per-call overrides — prompt, model, thinking level, temperature**

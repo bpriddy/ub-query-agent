@@ -697,7 +697,8 @@ async def test_no_executor_text_means_no_events_and_no_formatter_run():
 async def test_critic_gate_recognises_the_abstain_payload():
     """The pipeline invariant: NO_COMPANY_RECORDS keeps skipping the critic
     LLM whether it arrives as the bare marker or as the typed abstain payload
-    the format gate emitted this pass."""
+    the format gate emitted this pass. After a search, the verdict written in
+    code sends it back once to be confirmed by a second route (#102)."""
     from gub_agent.agents.critic import CriticGate
 
     class _RecordingCritic(BaseAgent):
@@ -762,8 +763,8 @@ async def test_critic_gate_recognises_the_abstain_payload():
 
     assert critic.ran == []
     verdict = events[0].actions.state_delta["critic_verdict"]
-    assert verdict["sufficient"] is True
-    assert "abstain" in verdict["reason"]
+    assert verdict["sufficient"] is False
+    assert "abstention after a search" in verdict["reason"]
 
 
 # ── early abort (FORMAT_GATE_EARLY_ABORT=contract) ───────────────────────────

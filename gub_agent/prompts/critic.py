@@ -78,6 +78,11 @@ still needed. Also check:
   the turn ends in an ABSTENTION too — a search that found nothing leaves
   nothing to cite, and abstaining is the correct ending for it, not a sign the
   executor stopped short.
+- An answer that rests on finding nothing ("not found", "none match", "not a
+  client") is insufficient until a second, different search agreed with the
+  first. If only one search was made, `feedback` names a different route:
+  another operator or tool, a looser or differently spelled name, or the
+  related entity. An empty `find_files` result is the exception, as above.
 - For multi-part or multi-entity questions, was each part queried (chained
   `org_query` calls using the `in` operator as the join)?
 - If the executor made NO tool calls but the question needs data, the
