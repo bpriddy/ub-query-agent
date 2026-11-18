@@ -206,8 +206,9 @@ from gub_agent.prompts import (  # noqa: E402
 # The executor pin is the base after the format-rule fix that landed on the same
 # branch; the tenant persona itself does not change the no-tenant text.
 # Re-pinned 2026-10-29: campaign status list gained in_progress and paused.
+# Re-pinned 2026-11-18 (executor only): like is a plain substring; similar_to needs 3 characters (#100).
 _BASE_SHA = {
-    "executor": "127b2cf62c5dc716a9a240c18de9ea7be61a4060e0149c4254abcd6600daa32e",
+    "executor": "63e3b14d801966e6fd6f886733eb71e6d4b0cff276dfc1f84c57e64cd96de467",
     "router": "4f1cd2536b86bcd705e72173479e5c855fe9a5f060be5cf660f3de8095a0b33e",
     "critic": "be0f0e11fb1f524d917c1112e588381f5a28ba1aa439afafe10ed714fd4080db",
 }

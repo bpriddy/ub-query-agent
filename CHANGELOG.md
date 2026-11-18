@@ -15,6 +15,14 @@ remaining exposures) lives in internal notes instead of this public log.
 
 ## [Unreleased]
 
+### Changed (2026-11-18)
+
+- **`like` is a plain substring, not a `%` pattern** (#100, after UB #206).
+  The `org_query` tool doc taught `{name: {like: "%nike%"}}` as SQL ILIKE;
+  UB's `like` has always been a case-insensitive contains. The doc and the
+  executor's fuzzy-lookup line now say so, and that `similar_to` needs at
+  least 3 characters. Executor pin in `test_tenant.py` re-pinned.
+
 ### Added (2026-09-04)
 
 - **Per-call overrides — prompt, model, thinking level, temperature**

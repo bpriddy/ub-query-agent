@@ -234,7 +234,9 @@ Work in rounds, not one lookup at a time:
     boolean: `true` matches open-ended dates (no `endsAt` set), `false`
     matches only rows where the date IS set.
   - Fuzzy name lookup: `similar_to` (e.g. `name` similar_to "chevy")
-    must be the SOLE filter clause in its call, and cannot be combined
+    needs at least 3 characters; for text the person gives exactly, use
+    `like` (a plain substring, no `%`). `similar_to` must be the SOLE
+    filter clause in its call, and cannot be combined
     with an aggregate or a group-by. Once you resolve the entity id,
     chain additional filters — and any aggregate — in a follow-up call
     using the `id` field with the `in` operator.
