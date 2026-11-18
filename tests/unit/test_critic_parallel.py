@@ -119,7 +119,8 @@ def _text_event(ctx, author: str, text: str, *, partial: bool = False) -> Event:
 
 
 class _Executor(BaseAgent):
-    """Per pass: an optional tool call + its result, then a text answer."""
+    """Per pass: an optional tool call + its result, then a text answer. The
+    tool call is `org_query` for True, or the tool named by a string."""
 
     passes: list = []  # [(made_tool_call, text)], one per pass
     runs: int = 0
@@ -131,6 +132,7 @@ class _Executor(BaseAgent):
             self.pass_started[self.runs].set()
         self.runs += 1
         if tool_call:
+            tool = tool_call if isinstance(tool_call, str) else "org_query"
             yield Event(
                 invocation_id=ctx.invocation_id,
                 author=self.name,
@@ -138,9 +140,7 @@ class _Executor(BaseAgent):
                     role="model",
                     parts=[
                         genai_types.Part(
-                            function_call=genai_types.FunctionCall(
-                                id="call-1", name="org_query", args={}
-                            )
+                            function_call=genai_types.FunctionCall(id="call-1", name=tool, args={})
                         )
                     ],
                 ),
@@ -153,7 +153,7 @@ class _Executor(BaseAgent):
                     parts=[
                         genai_types.Part(
                             function_response=genai_types.FunctionResponse(
-                                id="call-1", name="org_query", response={"total": 12}
+                                id="call-1", name=tool, response={"total": 12}
                             )
                         )
                     ],
@@ -519,11 +519,15 @@ async def test_an_insufficient_verdict_buys_a_second_pass_that_reads_the_feedbac
 # ── the decisions after the join ─────────────────────────────────────────────
 
 
-async def test_an_abstain_after_a_tool_call_passes_and_the_held_verdict_is_dropped(caplog):
-    """The speculative critic said "insufficient"; CriticGate's rule for an
-    abstain payload after a tool call is a pass without the LLM. The dropped
-    verdict must reach neither the stream (the bot would count it and arm a
-    pass restart) nor the state (the escalator would read it as a retry)."""
+async def test_an_abstain_after_a_tool_call_passes_and_the_held_verdict_is_dropped(
+    caplog, monkeypatch
+):
+    """With CONFIRM_ABSTENTION off (its rollback): the speculative critic said
+    "insufficient"; CriticGate's rule for an abstain payload after a tool call
+    is a pass without the LLM. The dropped verdict must reach neither the
+    stream (the bot would count it and arm a pass restart) nor the state (the
+    escalator would read it as a retry)."""
+    monkeypatch.setattr(config, "CONFIRM_ABSTENTION", False)
     loop, executor, _, critic = _pipeline(
         parallel=True,
         executor_passes=[(True, "GUB has no account by that name.")],
@@ -543,6 +547,91 @@ async def test_an_abstain_after_a_tool_call_passes_and_the_held_verdict_is_dropp
     assert executor.runs == 1
     assert "critic_speculation: verdict discarded" in caplog.text
     assert "tenant=anomaly" in caplog.text
+
+
+CONFIRM_PREFIX = "Deterministic: an abstention after a search is confirmed by a second route"
+
+
+def _verdicts_by_critic(events: list[Event]) -> list[dict]:
+    return [
+        json.loads(e.content.parts[0].text)
+        for e in _complete(events)
+        if e.author == "critic" and e.content and e.content.parts
+    ]
+
+
+@pytest.mark.parametrize("parallel", [False, True], ids=["serial", "parallel"])
+async def test_a_searched_abstain_is_sent_back_once_to_confirm(parallel):
+    """#102: after a search, "none" stands only when a second route agrees.
+    Pass 1 abstains and is sent back in code, authored as the critic; pass 2
+    abstains again, and that confirmed abstention passes."""
+    loop, executor, _, critic = _pipeline(
+        parallel=parallel,
+        executor_passes=[(True, "GUB has no account by that name."), (True, "Still none.")],
+        payloads=[ABSTAIN, ABSTAIN],
+        verdicts=[SUFFICIENT],
+    )
+
+    streamed, state, _ = await _run(loop, question="is ford a client?")
+
+    assert executor.runs == 2
+    sent_back = _verdicts_by_critic(streamed)[0]
+    assert sent_back["sufficient"] is False
+    assert sent_back["reason"].startswith(CONFIRM_PREFIX)
+    assert "different route" in sent_back["feedback"]
+    assert state["critic_verdict"]["sufficient"] is True
+    assert streamed[-1].author == "loop_escalator"
+
+
+async def test_a_confirming_pass_that_finds_something_answers():
+    """The second route found the record: pass 2 answers, settled as the
+    loop's last pass."""
+    loop, executor, _, _ = _pipeline(
+        parallel=True,
+        executor_passes=[(True, "No account starts with x."), (True, "Xiaomi.")],
+        payloads=[ABSTAIN, ANSWER],
+        verdicts=[SUFFICIENT],
+    )
+
+    _, state, _ = await _run(loop, question="which accounts start with x?")
+
+    assert executor.runs == 2
+    assert state["answer_payload"] == ANSWER
+    assert state["critic_verdict"]["reason"] == FINAL_PASS_REASON
+
+
+@pytest.mark.parametrize("parallel", [False, True], ids=["serial", "parallel"])
+async def test_a_find_files_abstain_stands_at_once(parallel):
+    """Only Drive file names are indexed, so an empty find_files has no second
+    route: its abstention passes on the first pass, as before."""
+    loop, executor, _, _ = _pipeline(
+        parallel=parallel,
+        executor_passes=[("find_files", "No file by that name.")],
+        payloads=[ABSTAIN],
+    )
+
+    _, state, _ = await _run(loop, question="do we have the BHAC teaser?")
+
+    assert executor.runs == 1
+    assert state["critic_verdict"]["reason"] == (
+        "Deterministic pass: abstain AnswerPayload (no critic LLM run)."
+    )
+
+
+async def test_the_marker_after_a_search_is_confirmed_too():
+    """The bare NO_COMPANY_RECORDS marker after a tool call is a "none found",
+    not the executor's "nothing to look up": it is confirmed like a payload."""
+    loop, executor, _, _ = _pipeline(
+        parallel=True,
+        executor_passes=[(True, "NO_COMPANY_RECORDS"), (True, "NO_COMPANY_RECORDS")],
+        payloads=[ABSTAIN, ABSTAIN],
+    )
+
+    streamed, state, _ = await _run(loop, question="is ford a client?")
+
+    assert executor.runs == 2
+    assert _verdicts_by_critic(streamed)[0]["reason"].startswith(CONFIRM_PREFIX)
+    assert state["critic_verdict"]["sufficient"] is True
 
 
 async def test_a_from_memory_abstain_is_sent_back_after_the_join():
@@ -1109,10 +1198,12 @@ async def test_a_stalled_critic_does_not_delay_the_pass_it_was_dropped_from(capl
     _nothing_left_running()
 
 
-async def test_a_stalled_critic_does_not_delay_an_abstain_after_a_tool_call():
+async def test_a_stalled_critic_does_not_delay_an_abstain_after_a_tool_call(monkeypatch):
     """The deterministic pass: the executor looked, the gate abstained, the
     resolver passes in code. The critic would never have been read; the turn
     ends without waiting for it (nobody ever releases it here)."""
+    # One pass, as before #102: the searched abstain is not sent back to confirm.
+    monkeypatch.setattr(config, "CONFIRM_ABSTENTION", False)
     loop, executor, _, critic = _stalled_pipeline(
         executor_passes=[(True, "No account by that name.")], payloads=[ABSTAIN]
     )
@@ -1209,12 +1300,14 @@ async def test_the_stalled_critic_changes_neither_the_events_nor_the_state(
     _nothing_left_running()
 
 
-async def test_an_abandoned_call_logs_one_line_and_the_discard_line_still_logs(caplog):
+async def test_an_abandoned_call_logs_one_line_and_the_discard_line_still_logs(caplog, monkeypatch):
     """Telemetry: ONE new info line, keys in the engine's order with tenant last,
     and the existing `verdict discarded` line exactly where it was. A second
     settle (a callback chained AFTER ours calls it again) finds the run already
     abandoned: no second line, no second cancel — and proves the gate's own
     callback is chained, not replaced."""
+    # One pass, as before #102: the searched abstain is not sent back to confirm.
+    monkeypatch.setattr(config, "CONFIRM_ABSTENTION", False)
     chained: list[str] = []
 
     def later(callback_context):
@@ -1823,6 +1916,8 @@ async def test_with_the_flag_at_0_the_formatter_and_the_critic_start_as_before(
 async def test_a_pass_with_a_tool_call_still_runs_the_formatter_and_the_critic(monkeypatch):
     """Eligibility is the tool call, not the evidence index: this pass indexed
     nothing, and is still formatted and judged."""
+    # One pass, as before #102: the searched abstain is not sent back to confirm.
+    monkeypatch.setattr(config, "CONFIRM_ABSTENTION", False)
     monkeypatch.setattr(config, "REQUERY_SKIPS_FORMATTER", True)
     monkeypatch.setattr(config, "EVIDENCE_ROWS_EVENT", False)
     loop, executor, formatter, critic = _real_gate_pipeline(

@@ -430,6 +430,21 @@ REQUERY_SKIPS_FORMATTER: bool = os.environ.get("REQUERY_SKIPS_FORMATTER", "0").l
     "yes",
 )
 
+# Abstention is a good ending, but a confirmed one (#102). A pass that searched
+# and abstains is sent back once, in code, to confirm "none" by a different
+# route before it stands (agents/critic.py:CriticGate._abstain_verdict). The
+# exceptions keep today's pass: a turn whose only searches were `find_files`
+# (Drive file NAMES are all that is indexed, so there is no second route), an
+# abstention already sent back once this turn, and the loop's last pass.
+#
+# 0 is the ROLLBACK: a searched abstention passes at once, as before. Read as a
+# module attribute at call time. Stated in both deploy env files.
+CONFIRM_ABSTENTION: bool = os.environ.get("CONFIRM_ABSTENTION", "1").lower() in (
+    "1",
+    "true",
+    "yes",
+)
+
 # Stop a formatter attempt the answer contract has already rejected
 # (agents/format_gate.py, "Early abort"). The contract's field checks — filler,
 # word budgets, block shape — on the headline and the blocks are decidable the

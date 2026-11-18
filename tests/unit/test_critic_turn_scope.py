@@ -26,6 +26,7 @@ from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.events import Event, EventActions
 from google.genai import types as genai_types
 
+from gub_agent import config
 from gub_agent.agents.critic import (
     CriticGate,
     _critic_instruction,
@@ -240,7 +241,9 @@ async def test_an_earlier_turns_send_back_does_not_count():
     assert events[0].actions.state_delta["critic_verdict"]["sufficient"] is False
 
 
-async def test_an_abstain_payload_after_a_tool_call_still_skips_the_critic():
+async def test_an_abstain_payload_after_a_tool_call_still_skips_the_critic(monkeypatch):
+    # One pass, as before #102: the searched abstain is not sent back to confirm.
+    monkeypatch.setattr(config, "CONFIRM_ABSTENTION", False)
     critic, events = await _gate_on_abstain_payload(
         [
             _text("user", "how is the acme account?", NOW),

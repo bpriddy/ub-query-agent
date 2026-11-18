@@ -148,6 +148,43 @@ def _executor_made_tool_call(ctx: ReadonlyContext) -> bool:
     return False
 
 
+def _tools_called_this_turn(ctx: ReadonlyContext) -> set[str]:
+    """The names of the tools the executor called this run (this invocation),
+    by the same filter as `_executor_made_tool_call`."""
+    names: set[str] = set()
+    for event in ctx.session.events:
+        if event.invocation_id != ctx.invocation_id or event.author != AGENT_NAME:
+            continue
+        parts = event.content.parts if event.content and event.content.parts else []
+        for part in parts:
+            call = getattr(part, "function_call", None)
+            if call is not None and call.name:
+                names.add(call.name)
+    return names
+
+
+#: The tools whose empty result has no independent second route: Drive file
+#: NAMES are all that is indexed, so a different query cannot find the file
+#: (prompts/critic.py, the which-file line).
+_NO_SECOND_ROUTE = frozenset({"find_files"})
+
+#: Marks the verdict that sends an abstention back to be confirmed, so a
+#: later pass of the same turn can tell it was already sent back once.
+_CONFIRM_REASON = "Deterministic: an abstention after a search is confirmed by a second route"
+
+
+def _confirmation_sent(ctx: InvocationContext, critic_name: str = CRITIC_AGENT_NAME) -> bool:
+    """This turn already sent an abstention back to be confirmed."""
+    for event in ctx.session.events:
+        if event.invocation_id != ctx.invocation_id or event.author != critic_name:
+            continue
+        delta = event.actions.state_delta if event.actions else None
+        verdict = (delta or {}).get("critic_verdict")
+        if isinstance(verdict, dict) and str(verdict.get("reason", "")).startswith(_CONFIRM_REASON):
+            return True
+    return False
+
+
 def _critic_instruction(ctx: ReadonlyContext) -> str:
     """InstructionProvider — base critic prompt + current date + the
     deterministically-computed 'was a tool called this turn' fact."""
@@ -275,7 +312,13 @@ def _pass_reason_before_format(ctx: InvocationContext) -> str | None:
         return "sandbox: critic disabled"
 
     text = _last_executor_text(ctx)
-    if text.strip().upper().startswith("NO_COMPANY_RECORDS"):
+    # The bare marker with no tool call is the executor's own "nothing to look
+    # up". After a search it is a "none found", which may need confirming
+    # (#102): the format gate turns the marker into an abstain payload, and
+    # `CriticGate._abstain_verdict` decides it there.
+    if text.strip().upper().startswith("NO_COMPANY_RECORDS") and (
+        not config.CONFIRM_ABSTENTION or not _executor_made_tool_call(ctx)
+    ):
         return "Deterministic pass: exact NO_COMPANY_RECORDS abstention (no critic LLM run)."
     return None
 
@@ -495,6 +538,46 @@ class CriticGate(BaseAgent):
         }
         return self._critic_event(ctx, verdict)
 
+    def _confirm_event(self, ctx: InvocationContext) -> Event:
+        """The insufficient verdict that sends a searched abstention back to be
+        confirmed by a different route, WITHOUT running the critic LLM (#102).
+
+        Authored as the critic, like `_requery_event`, so the executor's retry
+        reads the feedback and the bot restarts its streamed pass.
+        """
+        logger.info(
+            "critic_gate: abstention sent back to confirm (inv=%s) tenant=%s",
+            ctx.invocation_id,
+            label_of(ctx),
+        )
+        verdict = {
+            "info_sufficient": False,
+            "answer_satisfies": False,
+            "sufficient": False,
+            "reason": f"{_CONFIRM_REASON} (no critic LLM run).",
+            "feedback": (
+                "You searched and found nothing. Before 'none' stands, confirm it "
+                "by a different route than the one you used: another operator or "
+                "tool, a looser or differently spelled name, or the related "
+                "entity. If that also finds nothing, abstain again."
+            ),
+        }
+        return self._critic_event(ctx, verdict)
+
+    def _needs_confirmation(self, ctx: InvocationContext) -> bool:
+        """A searched abstention that has not yet been confirmed (#102): the
+        executor called a tool with a second route, nothing has been sent back
+        to confirm this turn, and the loop has a pass left to confirm in."""
+        if not config.CONFIRM_ABSTENTION:
+            return False
+        tools = _tools_called_this_turn(ctx)
+        return bool(
+            tools
+            and not tools <= _NO_SECOND_ROUTE
+            and not _confirmation_sent(ctx, self._critic_name())
+            and not _is_final_pass(self, ctx)
+        )
+
     def _final_pass_event(self, ctx: InvocationContext) -> Event:
         """The sufficient verdict for the loop's last pass, WITHOUT running the
         critic LLM (`_is_final_pass`).
@@ -573,6 +656,10 @@ class CriticGate(BaseAgent):
         if _settles_in_code(payload):
             if not _executor_made_tool_call(ctx) and not self._already_sent_back(ctx):
                 return self._requery_event(ctx)
+            # Abstention is a good ending once confirmed (#102): after a search,
+            # "none" stands only when a second, different route agrees.
+            if self._needs_confirmation(ctx):
+                return self._confirm_event(ctx)
             return self._pass_event(
                 ctx,
                 "Deterministic pass: abstain AnswerPayload (no critic LLM run).",
