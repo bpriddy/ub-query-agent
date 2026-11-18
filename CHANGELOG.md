@@ -17,14 +17,11 @@ remaining exposures) lives in internal notes instead of this public log.
 
 ### Changed (2026-11-18)
 
-- **Query operators match UB's meanings** (#100, after UB #206). The
-  `org_query` tool doc no longer teaches `like` as an SQL `%` pattern: UB's
-  `like` has always been a case-insensitive contains. It adds `starts_with`,
-  `ends_with` and `contains`, and notes that `similar_to` needs at least 3
-  characters. The executor prompt (and `v5_query_discipline`) send "starts
-  with / contains" questions to the exact operators and keep `similar_to` for
-  misspelled names; the critic treats a `similar_to` answer to such a question
-  as a gap. Base prompt pins in `test_tenant.py` re-pinned.
+- **`like` is a plain substring, not a `%` pattern** (#100, after UB #206).
+  The `org_query` tool doc taught `{name: {like: "%nike%"}}` as SQL ILIKE;
+  UB's `like` has always been a case-insensitive contains. The doc and the
+  executor's fuzzy-lookup line now say so, and that `similar_to` needs at
+  least 3 characters. Executor pin in `test_tenant.py` re-pinned.
 
 ### Added (2026-09-04)
 

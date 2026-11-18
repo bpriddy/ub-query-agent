@@ -78,18 +78,13 @@ async def org_query(
       gt, gte     {budget: {gte: 100000}}               >, >=
       lt, lte     {budget: {lt: 50000}}                 <, <=
       between     {awardedAt: {between: ["2025-01-01","2025-12-31"]}}
-      starts_with {name: {starts_with: "x"}}            text begins with the value
-      ends_with   {email: {ends_with: "@anomaly.com"}}  text ends with the value
-      contains    {name: {contains: "nike"}}            text contains the value anywhere
-                                                        These three ignore case. Write the
-                                                        text itself: no % or _ wildcards.
-      like        {name: {like: "nike"}}                same as contains (NOT an SQL
-                                                        pattern; never put % in it)
+      like        {name: {like: "nike"}}                case-insensitive substring; plain
+                                                        text, no % or _ wildcards
       similar_to  {name: {similar_to: "chevy"}}         pg_trgm fuzzy match —
                                                         matches Chevrolet, Chevy Trucks, etc.
-                                                        USE THIS for a misspelled or
-                                                        half-remembered name. Needs at least
-                                                        3 characters. Must be the SOLE
+                                                        USE THIS for fuzzy name lookups.
+                                                        Needs at least 3 characters.
+                                                        v1 limitation: must be the SOLE
                                                         filter; chain follow-ups by `id.in`.
       is_null     {endsAt: {is_null: true}}             field IS / IS NOT NULL
 
