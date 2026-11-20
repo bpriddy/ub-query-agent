@@ -10,6 +10,10 @@
 # strings for literal `{...}` — ADK's session-state injection KeyErrors on
 # any brace that isn't a real state key, visible only in engine logs.
 
+# D37 step 1 (bpriddy/gcp-universal-backend#221): os-test-491819 is UB prod.
+# The deploy job targets the GitHub Environment `prod` (main only, approval
+# by bpriddy; its variables override the repo's).
+
 name: Deploy
 
 on:
@@ -30,6 +34,7 @@ concurrency:
 
 jobs:
   deploy:
+    environment: prod
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
