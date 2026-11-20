@@ -36,7 +36,11 @@ AGENT_PACKAGE="gub_agent"          # the package exporting root_agent
 DISPLAY_NAME="gub-agent-sandbox"
 REGION="us-central1"               # engine RESOURCE region; the model stays on
                                    # the global endpoint, pinned in config.py
-PROD_ENGINE_ID="9136379226620952576"
+# The production engine this script must never touch. Read from GitHub
+# Environment `prod` (AGENT_ENGINE_ID), not a literal (D37, #105); fails closed
+# if it cannot be resolved.
+source "$REPO_ROOT/deployment/github-env.sh"
+PROD_ENGINE_ID="$(prod_engine_id)"
 DESCRIPTION="${1:-sandbox — $(git rev-parse --short HEAD 2>/dev/null || echo unknown)}"
 
 # ── Preconditions ─────────────────────────────────────────────────────────────

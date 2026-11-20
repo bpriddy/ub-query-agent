@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 #
 # deploy-service.sh — build and deploy the query agent service (query_service/,
-# ub-query-agent#92) to Cloud Run, on dev.
+# ub-query-agent#92) to Cloud Run from a laptop.
+#
+# SUPERSEDED by .github/workflows/deploy-query-service.yml (D37, #105). Kept
+# only until that workflow has deployed once: it has never been run, and its
+# deployer account still needs the IAM listed in its header. Delete this script
+# after the workflow's first good prod run.
 #
 # Private: no unauthenticated access. UB's runtime account is its only invoker
 # (UB terraform query_agent.tf, query_agent_provisioned = true after the first
@@ -10,38 +15,58 @@
 #
 # No secret is passed: the service reaches Postgres with IAM database auth.
 #
-# Usage: deployment/deploy-service.sh
+# Every per-environment value is read from the GitHub Environment named by the
+# argument (the same variables the workflow reads), so nothing here is a
+# literal copy of prod's values.
+#
+# Usage: deployment/deploy-service.sh <prod|stage|dev>
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
+source "$REPO_ROOT/deployment/github-env.sh"
 
-PROJECT="os-test-491819"
-PROJECT_NUMBER="843516467880"
-REGION="us-central1"
-ENVIRONMENT="dev"
-SERVICE="ub-query-agent-${ENVIRONMENT}"
-SA="sa-ub-query-agent-${ENVIRONMENT}@${PROJECT}.iam.gserviceaccount.com"
+GH_ENV="${1:?usage: deployment/deploy-service.sh <prod|stage|dev>}"
 
-# The SANDBOX engine: dev never talks to the engine the production Chat bot
-# uses (deploy-sandbox.env SANDBOX_AGENT_ENGINE_ID).
-ENGINE_ID="$(sed -n 's/^SANDBOX_AGENT_ENGINE_ID=//p' deploy-sandbox.env)"
-PROD_ENGINE_ID="9136379226620952576"
-[[ -n "$ENGINE_ID" && "$ENGINE_ID" != "$PROD_ENGINE_ID" ]] || {
-  echo "error: no sandbox engine id, or it is the production engine" >&2
-  exit 1
+need() {
+  local value
+  value="$(gh_env_var "$GH_ENV" "$1")"
+  [[ -n "$value" ]] || { echo "error: variable $1 is not set in GitHub Environment $GH_ENV" >&2; exit 1; }
+  printf '%s' "$value"
 }
 
-UB_BASE_URL="https://gcp-universal-backend-${ENVIRONMENT}-${PROJECT_NUMBER}.${REGION}.run.app"
+PROJECT="$(need GCP_PROJECT_ID)"
+PROJECT_NUMBER="$(need GCP_PROJECT_NUMBER)"
+REGION="$(need GCP_REGION)"
+SERVICE="$(need QUERY_SERVICE_NAME)"
+SA="$(need QUERY_SERVICE_SA)"
+ENGINE_ID="$(need QUERY_SERVICE_ENGINE_ID)"
+UB_BASE_URL="$(need UB_BASE_URL)"
+CLOUD_SQL_INSTANCE="$(need CLOUD_SQL_INSTANCE)"
+DB_NAME="$(need QUERY_SERVICE_DB_NAME)"
+GRANT_KMS_KEY="$(need QUERY_SERVICE_GRANT_KMS_KEY)"
+PROD_ENGINE_ID="$(prod_engine_id)"
+
+# Today the service talks to the SANDBOX engine, never the engine the
+# production Chat bot uses. Moving /ask to the prod engine is
+# ub-query-agent#106 (owner approval); it lifts this guard deliberately.
+[[ "$ENGINE_ID" != "$PROD_ENGINE_ID" ]] || {
+  echo "error: QUERY_SERVICE_ENGINE_ID is the production engine ($PROD_ENGINE_ID)" >&2
+  exit 1
+}
+[[ "$SA" == *"@$PROJECT.iam.gserviceaccount.com" ]] || {
+  echo "error: QUERY_SERVICE_SA ($SA) is not in project $PROJECT" >&2
+  exit 1
+}
 
 ENV_VARS=(
   "ENGINE=projects/${PROJECT_NUMBER}/locations/${REGION}/reasoningEngines/${ENGINE_ID}"
   "UB_BASE_URL=${UB_BASE_URL}"
-  "CLOUD_SQL_INSTANCE=${PROJECT}:${REGION}:gub-platform"
-  "DB_NAME=ub_query_agent_${ENVIRONMENT}"
+  "CLOUD_SQL_INSTANCE=${CLOUD_SQL_INSTANCE}"
+  "DB_NAME=${DB_NAME}"
   "DB_IAM_USER=${SA%.gserviceaccount.com}"
-  "GRANT_KMS_KEY=projects/${PROJECT}/locations/${REGION}/keyRings/${SERVICE}/cryptoKeys/workspace-grant"
+  "GRANT_KMS_KEY=${GRANT_KMS_KEY}"
 )
 
 gcloud run deploy "$SERVICE" \

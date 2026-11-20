@@ -80,5 +80,8 @@ TEST_DATABASE_URL=postgresql://postgres:test@127.0.0.1:55432/qa_test pytest test
    GRANT ALL ON SCHEMA public TO "sa-ub-query-agent-dev@os-test-491819.iam";
    ```
 
-3. `deployment/deploy-service.sh`
+3. Actions → **Deploy query service** with `environment: prod` (not yet run;
+   see the workflow header for the deployer IAM it needs). Until then,
+   `deployment/deploy-service.sh prod`, which reads the same GitHub
+   Environment variables.
 4. UB terraform `query_agent_provisioned = true`: UB's invoker grant.
