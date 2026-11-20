@@ -1,0 +1,164 @@
+# Deploy the query agent service (query_service/, UB's /ask backend) to Cloud
+# Run. D37 (bpriddy/gcp-universal-backend#221), ub-query-agent#105. Replaces
+# deployment/deploy-service.sh, which ran from a laptop with operator ADC.
+#
+# NOT YET RUN. Before its first run the deployer account
+# (vars.GCP_SERVICE_ACCOUNT_EMAIL, gha-gub-agent in prod) needs, in UB
+# terraform:
+#   - roles/artifactregistry.writer on the `cloud-run-source-deploy` repo,
+#   - roles/run.developer on the service,
+#   - roles/iam.serviceAccountUser on the service's runtime account.
+# Today it holds only roles/aiplatform.user.
+#
+# Manual dispatch from main only. The job runs in the GitHub Environment named
+# by the `environment` input and takes every per-environment value from that
+# Environment's variables; a missing one fails the run before anything is
+# built. `prod` holds the values deploy-service.sh used to hardcode. `stage`
+# and `dev` have none yet, so a run there stops at the config check.
+#
+# Builds the image once, pushes it, and deploys it BY DIGEST, so the revision
+# runs exactly the bytes that were built.
+
+name: Deploy query service
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: GitHub Environment to deploy (its variables decide the project and service)
+        type: choice
+        default: prod
+        options: [prod, stage, dev]
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-query-service-${{ inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_ENV: ${{ inputs.environment }}
+      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      PROJECT_NUMBER: ${{ vars.GCP_PROJECT_NUMBER }}
+      REGION: ${{ vars.GCP_REGION }}
+      DEPLOYER_SA: ${{ vars.GCP_SERVICE_ACCOUNT_EMAIL }}
+      PROD_ENGINE_ID: ${{ vars.AGENT_ENGINE_ID }}
+      SERVICE: ${{ vars.QUERY_SERVICE_NAME }}
+      RUNTIME_SA: ${{ vars.QUERY_SERVICE_SA }}
+      ENGINE_ID: ${{ vars.QUERY_SERVICE_ENGINE_ID }}
+      UB_BASE_URL: ${{ vars.UB_BASE_URL }}
+      CLOUD_SQL_INSTANCE: ${{ vars.CLOUD_SQL_INSTANCE }}
+      DB_NAME: ${{ vars.QUERY_SERVICE_DB_NAME }}
+      GRANT_KMS_KEY: ${{ vars.QUERY_SERVICE_GRANT_KMS_KEY }}
+    steps:
+      # First step, before checkout and before any credential is minted. The
+      # ref is read from the environment, never interpolated.
+      - name: Require main
+        env:
+          DEPLOY_REF: ${{ github.ref }}
+        run: |
+          if [ "$DEPLOY_REF" != "refs/heads/main" ]; then
+            echo "::error::Deploy runs from refs/heads/main only (got: $DEPLOY_REF)."
+            exit 1
+          fi
+
+      # Every value must come from this Environment. Repo-level variables also
+      # resolve here when the Environment lacks one, and they hold prod's
+      # values, so the account checks below refuse a prod account in another
+      # project.
+      - name: Require the environment's config
+        run: |
+          missing=0
+          for v in PROJECT_ID PROJECT_NUMBER REGION DEPLOYER_SA PROD_ENGINE_ID SERVICE RUNTIME_SA ENGINE_ID UB_BASE_URL CLOUD_SQL_INSTANCE DB_NAME GRANT_KMS_KEY; do
+            if [ -z "${!v}" ]; then echo "::error::$v is empty: set its variable in GitHub Environment $GH_ENV."; missing=1; fi
+          done
+          [ "$missing" = 0 ] || exit 1
+          for sa in "$DEPLOYER_SA" "$RUNTIME_SA"; do
+            case "$sa" in
+              *"@$PROJECT_ID.iam.gserviceaccount.com") ;;
+              *) echo "::error::$sa is not an account in $PROJECT_ID."; exit 1 ;;
+            esac
+          done
+          case "$CLOUD_SQL_INSTANCE" in
+            "$PROJECT_ID:"*) ;;
+            *) echo "::error::CLOUD_SQL_INSTANCE $CLOUD_SQL_INSTANCE is not in $PROJECT_ID."; exit 1 ;;
+          esac
+          # Today /ask runs on the SANDBOX engine, never the engine the
+          # production Chat bot uses. ub-query-agent#106 (owner approval)
+          # moves it and lifts this guard deliberately.
+          if [ "$ENGINE_ID" = "$PROD_ENGINE_ID" ]; then
+            echo "::error::QUERY_SERVICE_ENGINE_ID is the production engine ($PROD_ENGINE_ID)."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+
+      # Deploys must never CREATE the service: first-time provisioning is
+      # deliberate (UB terraform query_agent.tf, then a first deploy by hand).
+      - name: Verify the service is provisioned
+        run: |
+          gcloud run services describe "$SERVICE" --region "$REGION" --format='value(metadata.name)' >/dev/null \
+            || { echo "::error::Cloud Run service $SERVICE does not exist in $PROJECT_ID/$REGION."; exit 1; }
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker "$REGION-docker.pkg.dev" --quiet
+
+      # Same Dockerfile and build context as `gcloud run deploy --source
+      # query_service`, same repository the source deploys pushed to.
+      - name: Build and push image
+        run: |
+          IMAGE="$REGION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$SERVICE"
+          docker build -t "$IMAGE:${GITHUB_SHA::7}" query_service
+          docker push "$IMAGE:${GITHUB_SHA::7}"
+          DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE:${GITHUB_SHA::7}")"
+          case "$DIGEST" in
+            "$IMAGE@sha256:"*) ;;
+            *) echo "::error::could not read the pushed digest (got: $DIGEST)"; exit 1 ;;
+          esac
+          echo "IMAGE_DIGEST=$DIGEST" >> "$GITHUB_ENV"
+
+      # The flags are deploy-service.sh's, verbatim, with --image for --source.
+      - name: Deploy Cloud Run service
+        run: |
+          ENV_VARS=(
+            "ENGINE=projects/${PROJECT_NUMBER}/locations/${REGION}/reasoningEngines/${ENGINE_ID}"
+            "UB_BASE_URL=${UB_BASE_URL}"
+            "CLOUD_SQL_INSTANCE=${CLOUD_SQL_INSTANCE}"
+            "DB_NAME=${DB_NAME}"
+            "DB_IAM_USER=${RUNTIME_SA%.gserviceaccount.com}"
+            "GRANT_KMS_KEY=${GRANT_KMS_KEY}"
+          )
+          gcloud run deploy "$SERVICE" \
+            --project "$PROJECT_ID" \
+            --region "$REGION" \
+            --image "$IMAGE_DIGEST" \
+            --service-account "$RUNTIME_SA" \
+            --no-allow-unauthenticated \
+            --set-env-vars "^||^$(IFS='|'; echo "${ENV_VARS[*]}" | sed 's/|/||/g')" \
+            --labels "app=ub-query-agent,commit=${GITHUB_SHA::7}" \
+            --cpu 1 --memory 512Mi \
+            --concurrency 20 --min-instances 0 --max-instances 3 \
+            --timeout 300 \
+            --quiet
+
+      - name: Report deployed revision
+        run: |
+          gcloud run services describe "$SERVICE" --region "$REGION" \
+            --format='value(status.latestReadyRevisionName, status.url)'

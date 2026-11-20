@@ -22,7 +22,9 @@ cd "$REPO_ROOT"
 
 ENV_FILE="deploy-sandbox.env"
 REGION="us-central1"
-PROD_ENGINE_ID="9136379226620952576"
+# Read from GitHub Environment `prod` (AGENT_ENGINE_ID); fails closed (D37).
+source "$REPO_ROOT/deployment/github-env.sh"
+PROD_ENGINE_ID="$(prod_engine_id)"
 
 ENGINE_ID="${1:-${SANDBOX_AGENT_ENGINE_ID:-$(
   sed -nE 's/^[[:space:]]*SANDBOX_AGENT_ENGINE_ID[[:space:]]*=[[:space:]]*//p' "$ENV_FILE" 2>/dev/null | tail -1

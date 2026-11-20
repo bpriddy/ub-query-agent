@@ -23,10 +23,15 @@ load_dotenv()
 os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
 
 # ── GUB backend ───────────────────────────────────────────────────────────────
-# URL of the GUB backend this agent calls for data.
-GUB_BASE_URL: str = os.environ.get(
-    "GUB_BASE_URL", "https://gcp-universal-backend-dev-843516467880.us-central1.run.app"
-)
+# URL of the GUB backend this agent calls for data. Required, no default (D37,
+# #105): the default used to be prod's run.app URL, so an engine whose env file
+# forgot it silently talked to prod. Each deploy-*.env sets it; locally, .env.
+GUB_BASE_URL: str = os.environ.get("GUB_BASE_URL", "").strip()
+if not GUB_BASE_URL:
+    raise RuntimeError(
+        "GUB_BASE_URL is not set. Engines get it from their deploy-*.env file; "
+        "local runs from .env (see .env.example)."
+    )
 
 # Service JWT for local dev and CI — bypasses the Gemini Enterprise OAuth flow.
 # In production (Gemini Enterprise), the JWT is obtained dynamically via

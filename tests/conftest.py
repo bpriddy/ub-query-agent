@@ -7,10 +7,16 @@ tests never open a socket to a real endpoint.
 
 from __future__ import annotations
 
-import pytest
+import os
 
-from gub_agent import models
-from gub_agent.tools._client import aclose_client
+# gub_agent.config requires GUB_BASE_URL (no default, D37). Tests never reach a
+# real backend: they monkeypatch the URL or use MockGub. Set before any import.
+os.environ.setdefault("GUB_BASE_URL", "http://gub.test")
+
+import pytest  # noqa: E402
+
+from gub_agent import models  # noqa: E402
+from gub_agent.tools._client import aclose_client  # noqa: E402
 
 
 @pytest.fixture(autouse=True)

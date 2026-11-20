@@ -308,6 +308,30 @@ they address the regional engine resource, not the model.
 Then `register_agent.py` (see `deployment/`) registers the deployed engine
 with the Gemini Enterprise app — a separate, occasional step.
 
+### Per-environment config (D37, #105)
+
+No UB URL, project or engine id is a code default any more.
+
+- **Engines.** `GUB_BASE_URL` is required by `gub_agent/config.py` and set in
+  each `deploy-*.env`. An engine without it refuses to start.
+- **Engine deploy (`deploy.yml`).** `GCP_PROJECT_ID`, `GCP_REGION`,
+  `AGENT_ENGINE_ID` and `AGENT_STAGING_BUCKET` are GitHub Environment `prod`
+  variables (repo-level copies stay until every workflow reads the
+  Environment).
+- **Sandbox scripts.** `deploy-sandbox.sh` and `teardown-sandbox.sh` read the
+  production engine id from Environment `prod` (`AGENT_ENGINE_ID`) through
+  `gh` (`deployment/github-env.sh`), or from `PROD_AGENT_ENGINE_ID`. They stop
+  if neither resolves.
+- **Query service.** `.github/workflows/deploy-query-service.yml` (manual,
+  `environment` input) reads `QUERY_SERVICE_NAME`, `QUERY_SERVICE_SA`,
+  `QUERY_SERVICE_ENGINE_ID`, `QUERY_SERVICE_DB_NAME`,
+  `QUERY_SERVICE_GRANT_KMS_KEY`, `UB_BASE_URL`, `CLOUD_SQL_INSTANCE` and the
+  `GCP_*` variables from that Environment, builds once and deploys by digest.
+  It has not been run yet (see its header for the IAM it needs).
+  `deployment/deploy-service.sh <env>` reads the same variables and stays as
+  the fallback until the workflow's first good run.
+- **Still manual:** `deployment/oauth-relay/` is deployed by hand.
+
 ### Debug client → gub-sandbox-ui
 
 The debug client — trace inspection, the sandbox config panel and A/B
