@@ -273,6 +273,9 @@ python -m gub_agent
 
 ## Deploy
 
+CI deploys only by a manual run of **Actions → Deploy** on `main`. The run
+targets GitHub Environment `prod` and waits for bpriddy's approval (D37).
+
 The agent deploys to **Vertex AI Agent Engine via `adk deploy agent_engine`**
 — NOT Cloud Build. It will never appear in `gcloud builds`. Update in place
 (same engine id, so callers — the Chat bot, Agentspace — see no change):
