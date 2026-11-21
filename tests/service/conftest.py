@@ -12,6 +12,7 @@ engine, the KMS cipher and Google's token endpoint are fakes.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
@@ -37,6 +38,7 @@ DATABASE_URL = os.environ.get("TEST_DATABASE_URL")
 UB = "https://ub.test"
 APP = "holocron"
 CLIENT_ID = "client-1.apps.googleusercontent.com"
+PUBLIC = "https://qa.test"
 
 
 def pytest_collection_modifyitems(config, items):  # noqa: ARG001 — pytest hook signature
@@ -89,6 +91,7 @@ def settings(**over: Any) -> Settings:
         "grant_kms_key": "projects/p/locations/l/keyRings/r/cryptoKeys/k",
         "google_client_id": CLIENT_ID,
         "google_client_secret": "client-secret",
+        "public_base_url": PUBLIC,
     }
     base.update(over)
     return Settings(**base)
@@ -140,28 +143,80 @@ class FakeEngine:
 
 
 class FakeCipher:
-    """Reversible, and never contains the plaintext."""
+    """Reversible, never contains the plaintext, and like KMS refuses a
+    ciphertext that was changed or made for another `aad`."""
 
-    async def encrypt(self, plaintext: bytes) -> bytes:
-        return b"enc:" + bytes(b ^ 0x5A for b in plaintext)
+    @staticmethod
+    def _tag(body: bytes, aad: bytes) -> bytes:
+        return hashlib.sha256(b"k" + aad + body).digest()[:8]
 
-    async def decrypt(self, ciphertext: bytes) -> bytes:
+    async def encrypt(self, plaintext: bytes, aad: bytes = b"") -> bytes:
+        body = bytes(b ^ 0x5A for b in plaintext)
+        return b"enc:" + self._tag(body, aad) + body
+
+    async def decrypt(self, ciphertext: bytes, aad: bytes = b"") -> bytes:
         assert ciphertext.startswith(b"enc:")
-        return bytes(b ^ 0x5A for b in ciphertext[4:])
+        tag, body = ciphertext[4:12], ciphertext[12:]
+        if tag != self._tag(body, aad):
+            raise ValueError("decryption failed")
+        return bytes(b ^ 0x5A for b in body)
+
+
+ASSIST = "https://www.googleapis.com/auth/discoveryengine.assist.readwrite"
 
 
 class GoogleTokenEndpoint:
+    """Google's token and revoke endpoints, and UB's exchange and logout, as
+    the service calls them. Records every call."""
+
     def __init__(self) -> None:
         self.status = 200
         self.calls: list[dict[str, str]] = []
+        self.code_calls: list[dict[str, str]] = []
+        self.revoked: list[str] = []
+        self.revoke_status = 200
+        self.ub_calls: list[tuple[str, dict[str, Any]]] = []
+        self.ub_status = 200
+        # What the authorization-code exchange returns.
+        self.granted_scope = f"openid email {ASSIST}"
+        self.refresh_token: str | None = "1//connected-refresh-token"
+        self.person = "person-1"
 
     def handler(self, request: httpx.Request) -> httpx.Response:
-        assert str(request.url) == "https://oauth2.googleapis.com/token"
-        form = dict(httpx.QueryParams(request.content.decode()))
-        self.calls.append(form)
-        if self.status != 200:
-            return httpx.Response(self.status, json={"error": "invalid_grant"})
-        return httpx.Response(200, json={"access_token": "ya29.minted-google-token"})
+        url = str(request.url)
+        if url == "https://oauth2.googleapis.com/token":
+            form = dict(httpx.QueryParams(request.content.decode()))
+            if form.get("grant_type") == "authorization_code":
+                self.code_calls.append(form)
+                if form["code"] != "good-code":
+                    return httpx.Response(400, json={"error": "invalid_grant"})
+                body = {"access_token": "ya29.consent-access-token", "scope": self.granted_scope}
+                if self.refresh_token:
+                    body["refresh_token"] = self.refresh_token
+                return httpx.Response(200, json=body)
+            self.calls.append(form)
+            if self.status != 200:
+                return httpx.Response(self.status, json={"error": "invalid_grant"})
+            return httpx.Response(200, json={"access_token": "ya29.minted-google-token"})
+        if url == "https://oauth2.googleapis.com/revoke":
+            self.revoked.append(dict(httpx.QueryParams(request.content.decode()))["token"])
+            return httpx.Response(self.revoke_status)
+        if url == f"{UB}/auth/google/access-token-exchange":
+            body = json.loads(request.content)
+            self.ub_calls.append(("exchange", body))
+            if self.ub_status != 200:
+                return httpx.Response(self.ub_status, json={"code": "UNAUTHORIZED"})
+            return httpx.Response(
+                200,
+                json={
+                    "accessToken": ub_token(person=self.person, app=None),
+                    "refreshToken": "ub-refresh-1",
+                },
+            )
+        if url == f"{UB}/auth/logout":
+            self.ub_calls.append(("logout", json.loads(request.content)))
+            return httpx.Response(204)
+        raise AssertionError(f"unexpected call: {request.method} {url}")
 
 
 @pytest.fixture
@@ -196,7 +251,7 @@ async def service(pool, engine, google) -> AsyncIterator[SimpleNamespace]:
         http=http,
     )
     async with app.router.lifespan_context(app):
-        client = httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://svc")
+        client = httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url=PUBLIC)
         yield SimpleNamespace(client=client, app=app, pool=pool, engine=engine, google=google)
         await client.aclose()
     await http.aclose()

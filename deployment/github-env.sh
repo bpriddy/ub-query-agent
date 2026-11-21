@@ -20,7 +20,11 @@ GH_REPO_SLUG="${GH_REPO_SLUG:-bpriddy/ub-query-agent}"
 gh_env_var() {
   local env="$1" name="$2"
   command -v gh >/dev/null 2>&1 || return 0
-  gh api "repos/$GH_REPO_SLUG/environments/$env/variables/$name" --jq .value 2>/dev/null || true
+  local out
+  # gh prints the 404 body on stdout for a variable that is not set; an unset
+  # variable must read as empty, never as that body.
+  out="$(gh api "repos/$GH_REPO_SLUG/environments/$env/variables/$name" --jq .value 2>/dev/null)" || return 0
+  printf '%s' "$out"
 }
 
 # The production engine id (Chat bot + Gemini Enterprise). Every sandbox

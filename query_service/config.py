@@ -46,7 +46,19 @@ class Settings:
     # token is minted and Workspace is reported not connected (#90).
     google_client_id: str | None
     google_client_secret: str | None
+    # Where a person's browser reaches the connect page (#93), e.g.
+    # https://<host> (+ a path prefix when a proxy serves it under one). The
+    # Google redirect URI is <this>/connect/callback and must be registered on
+    # the client. Unset: the connect routes answer CONNECT_NOT_CONFIGURED and
+    # WORKSPACE_NOT_CONNECTED carries no link.
+    public_base_url: str | None = None
+    # The Workspace domain, as a hint to Google's account chooser only.
+    google_hosted_domain: str | None = None
     conversation_idle_seconds: int = 900
+
+    @property
+    def connect_url(self) -> str | None:
+        return f"{self.public_base_url}/connect" if self.public_base_url else None
 
     @property
     def engine_region(self) -> str:
@@ -70,6 +82,8 @@ class Settings:
             grant_kms_key=_optional("GRANT_KMS_KEY"),
             google_client_id=_optional("GOOGLE_CLIENT_ID"),
             google_client_secret=_optional("GOOGLE_CLIENT_SECRET"),
+            public_base_url=(_optional("PUBLIC_BASE_URL") or "").rstrip("/") or None,
+            google_hosted_domain=_optional("GOOGLE_HOSTED_DOMAIN"),
             conversation_idle_seconds=int(os.environ.get("CONVERSATION_IDLE_SECONDS", "900")),
         )
         settings.engine_region  # noqa: B018 — validates the engine name
@@ -77,4 +91,6 @@ class Settings:
             settings.cloud_sql_instance and settings.db_name and settings.db_iam_user
         ):
             raise ConfigError("set DATABASE_URL, or CLOUD_SQL_INSTANCE + DB_NAME + DB_IAM_USER")
+        if settings.public_base_url and not settings.public_base_url.startswith("https://"):
+            raise ConfigError("PUBLIC_BASE_URL must be https://")
         return settings

@@ -31,14 +31,14 @@ from fastapi import FastAPI, Header, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field, ValidationError
 
-from . import conversations
+from . import connect, conversations
 from .auth import Caller, UbTokenVerifier
 from .config import Settings
 from .db import create_pool, migrate
 from .engine import UB_TOKEN_KEY, WORKSPACE_TOKEN_KEY, Engine
 from .errors import ServiceError
 from .gcp import ServiceToken, new_client
-from .grants import Cipher, KmsCipher, mint_access_token
+from .grants import Cipher, KmsCipher, claim_reuse_notice, mint_access_token
 
 logger = logging.getLogger("query_service")
 
@@ -46,6 +46,10 @@ ASK_AUTHOR = "ask"
 PROGRESS_KEY = "progress"
 ASK_ANSWER_KEY = "ask_answer"
 SOURCES = ("ub", "runn", "workspace")
+REUSE_NOTICE = {
+    "code": "WORKSPACE_CONNECTION_REUSED",
+    "message": "Using your existing Gemini Enterprise connection.",
+}
 
 
 class ContextIn(BaseModel):
@@ -134,6 +138,8 @@ def create_app(
     async def health() -> dict[str, str]:
         return {"status": "ok"}
 
+    app.include_router(connect.router)
+
     @app.post("/ask")
     async def ask(request: Request, authorization: str | None = Header(default=None)):
         state = request.app.state
@@ -168,7 +174,9 @@ def create_app(
             if google_token:
                 state_delta[WORKSPACE_TOKEN_KEY] = google_token
 
-        stream = _relay(state.engine, state.pool, caller, conversation, body.question, state_delta)
+        stream = _relay(
+            state.engine, state.pool, caller, conversation, body.question, state_delta, s
+        )
         return StreamingResponse(
             stream,
             media_type="text/event-stream",
@@ -185,6 +193,7 @@ async def _relay(
     conversation: conversations.Conversation,
     question: str,
     state_delta: dict[str, str],
+    settings: Settings,
 ) -> AsyncIterator[bytes]:
     started = time.monotonic()
     outcome = "answer"
@@ -220,6 +229,7 @@ async def _relay(
     answer["conversation_id"] = conversation.id
     if answer.get("kind") == "error" and outcome == "answer":
         outcome = (answer.get("error") or {}).get("code", "error")
+    notice = await _workspace_extras(pool, caller, answer, state_delta, settings)
     yield _sse("answer", answer)
 
     await conversations.touch(pool, conversation.id)
@@ -234,10 +244,41 @@ async def _relay(
                 "outcome": outcome,
                 "progress": progress,
                 "workspace_token": WORKSPACE_TOKEN_KEY in state_delta,
+                "reuse_notice": notice,
                 "ms": int((time.monotonic() - started) * 1000),
             }
         )
     )
+
+
+async def _workspace_extras(
+    pool: Any,
+    caller: Caller,
+    answer: dict[str, Any],
+    state_delta: dict[str, str],
+    settings: Settings,
+) -> bool:
+    """What only this service knows about Workspace, added to the answer:
+
+    - the connect page's link on WORKSPACE_NOT_CONNECTED, from this
+      service's own config, so the link and the page are one environment's;
+    - the one-time reuse notice (#93), when this turn used the person's
+      grant and Workspace answered.
+
+    Returns whether the notice was added. A failure here never costs the
+    answer."""
+    try:
+        ws = (answer.get("sources") or {}).get("workspace") or {}
+        error = ws.get("error") or {}
+        if error.get("code") == "WORKSPACE_NOT_CONNECTED" and settings.connect_url:
+            error["link"] = settings.connect_url
+        if WORKSPACE_TOKEN_KEY in state_delta and ws.get("status") == "ok":
+            if await claim_reuse_notice(pool, caller.person_id, caller.app_id):
+                answer["notices"] = [*(answer.get("notices") or []), REUSE_NOTICE]
+                return True
+    except Exception:  # noqa: BLE001
+        logger.exception("ask.workspace_extras failed")
+    return False
 
 
 # Cloud Run reads stdout; one line per record, the record is the message.
