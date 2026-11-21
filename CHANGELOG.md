@@ -15,6 +15,27 @@ remaining exposures) lives in internal notes instead of this public log.
 
 ## [Unreleased]
 
+### Added (2026-11-21)
+
+- **Similar-ideas tools** (UB D40): `similar_ideas(facets, …)` posts weighted
+  facets to `POST /org/ideas/similar`; `similar_to_idea(idea_id, …)` reads
+  `GET /org/ideas/{id}/similar` (`gub_agent/tools/similarity.py`, in
+  `ALL_TOOLS`). Only the options the model sets are sent. Each result gains
+  `matchedOn`, the text of its top evidence entry, so the match is a citable
+  field row. Where UB answers 404 (`IDEA_SIMILARITY` off) or 503
+  `EMBEDDINGS_NOT_CONFIGURED`, the result keeps its status and code, adds
+  `similarity_unavailable: true` and tells the model to fall back to
+  `list_ideas` and match by meaning; 409 `IDEA_NOT_EMBEDDED` says how to query
+  the idea's facets instead. Other errors pass through unchanged. `/ask` maps
+  both tools to `idea` rows with their own progress lines.
+- **Prompts**: the executor (and tenant capabilities) send concept questions
+  to `similar_ideas` first with weighted facets (low for the categorical, high
+  for the specific), cite what each result matched on, and keep `list_ideas`
+  for structured listing and as the fallback. The critic accepts
+  `similar_ideas` as the retrieval for a concept question. Executor and critic
+  pins in `test_tenant.py` re-pinned. The variants compose the baseline, so
+  they pick this up.
+
 ### Changed (2026-11-18)
 
 - **Abstention is confirmed before it stands** (#102). A pass that searched

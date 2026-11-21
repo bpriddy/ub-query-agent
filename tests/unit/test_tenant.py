@@ -207,10 +207,11 @@ from gub_agent.prompts import (  # noqa: E402
 # branch; the tenant persona itself does not change the no-tenant text.
 # Re-pinned 2026-10-29: campaign status list gained in_progress and paused.
 # Re-pinned 2026-11-18 (critic only): a "none" answer needs a second search (#102).
+# Re-pinned 2026-11-21 (executor, critic): concept questions go to similar_ideas (D40).
 _BASE_SHA = {
-    "executor": "127b2cf62c5dc716a9a240c18de9ea7be61a4060e0149c4254abcd6600daa32e",
+    "executor": "03a575e20384099e09b59a6beb3b23698faf12ec4b6d05977e37af8d311032a0",
     "router": "4f1cd2536b86bcd705e72173479e5c855fe9a5f060be5cf660f3de8095a0b33e",
-    "critic": "b3f9545b41847742f9408d6184ea2f3e951e5b10f43c47ab1f2de08cf78cfbb7",
+    "critic": "57b3fcd1f04aac1f9b3a8b9268327b7b833098515793a4445bf051d647c21291",
 }
 _SCOPE = "## Scope — decide first"
 

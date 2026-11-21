@@ -84,6 +84,8 @@ TOOL_ENTITY: dict[str, str] = {
     "get_piece": "piece",
     "list_ideas": "idea",
     "get_idea": "idea",
+    "similar_ideas": "idea",
+    "similar_to_idea": "idea",
     "search_staff": "staff",
     "get_staff_profile": "staff",
     "find_staff_for_resourcing": "staff",
@@ -103,6 +105,8 @@ TOOL_PHRASES: dict[str, str] = {
     "get_piece": "Reading a piece",
     "list_ideas": "Listing ideas",
     "get_idea": "Reading an idea",
+    "similar_ideas": "Searching similar ideas",
+    "similar_to_idea": "Searching ideas like this one",
     "find_files": "Searching file names",
     "runn_allocations": "Checking staffing in Runn",
 }
