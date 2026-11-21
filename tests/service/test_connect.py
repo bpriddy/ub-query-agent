@@ -318,3 +318,33 @@ async def test_without_its_config_the_page_says_it_is_not_set_up(pool, engine, g
         assert resp.status_code == 503 and resp.json()["code"] == "CONNECT_NOT_CONFIGURED"
         await client.aclose()
     await http.aclose()
+
+
+# ── served through UB (the connect proxy) ────────────────────────────────────
+
+
+async def test_ub_serving_the_public_origin_is_accepted(service):
+    resp = await service.client.get("/connect/start", headers={"x-ub-connect-origin": PUBLIC})
+    assert resp.status_code == 302
+    query = parse_qs(urlsplit(resp.headers["location"]).query)
+    assert query["redirect_uri"] == [f"{PUBLIC}/connect/callback"]
+
+
+@pytest.mark.parametrize("path", ["/connect", "/connect/start", "/connect/callback"])
+async def test_ub_serving_another_origin_is_refused(service, path):
+    resp = await service.client.get(
+        path, headers={"x-ub-connect-origin": "https://ub-other.example"}
+    )
+    assert resp.status_code == 503
+    assert STATE_COOKIE not in resp.cookies
+    if path != "/connect":
+        assert resp.json()["code"] == "CONNECT_ORIGIN_MISMATCH"
+
+
+async def test_urls_never_come_from_forwarded_host_headers(service):
+    resp = await service.client.get(
+        "/connect/start",
+        headers={"host": "evil.example", "x-forwarded-host": "evil.example"},
+    )
+    query = parse_qs(urlsplit(resp.headers["location"]).query)
+    assert query["redirect_uri"] == [f"{PUBLIC}/connect/callback"]

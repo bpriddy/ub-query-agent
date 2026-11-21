@@ -48,6 +48,22 @@ remaining exposures) lives in internal notes instead of this public log.
   can pass a payload under the rundown's wider word budgets. `AskTurn` then
   re-validated it under the standard ones, and a 30-word bullet raised.
 
+### Changed (2026-11-21): connect page through UB, UB's own OAuth client
+
+- **The connect page is served through UB** (#93). This service stays
+  private; UB forwards exactly `/connect`, `/connect/start`,
+  `/connect/callback` and `POST /connect/disconnect`. `PUBLIC_BASE_URL` is now
+  UB's public origin, with no path (the service refuses one at startup), and
+  the redirect URI is `<it>/connect/callback`. A forwarded
+  `X-UB-Connect-Origin` that differs from it answers
+  `503 CONNECT_ORIGIN_MISMATCH`. URLs never come from Host or X-Forwarded-*.
+- **UB's own Google OAuth client per environment**, not the chat bot's.
+  `QUERY_SERVICE_CONNECT_CLIENT` (`ub`, `bot` as a prod-only fallback, or
+  unset for none, the default) picks the secret names
+  (`deployment/connect-client.sh`): `ub` mounts `ub-connect-google-client-id`
+  and `ub-connect-google-client-secret`. Unset, nothing changes. The console
+  steps are in `query_service/README.md`, "The OAuth client".
+
 ### Added (2026-11-21)
 
 - **Similar-ideas tools** (UB D40): `similar_ideas(facets, …)` posts weighted
