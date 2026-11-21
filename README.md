@@ -126,6 +126,20 @@ are unchanged: callers see no difference at the boundary.
 - `list_accounts`, `get_account_overview`, `get_campaign` — detail tools.
   These return the rich per-entity fields (e.g. `statusMarkdown`); `org_query`
   is for *finding* entities, the detail tools for *reading* one.
+- `find`, `get_piece`, `list_ideas`, `get_idea` — name discovery, pieces and
+  the ideas memory. `list_ideas` is for structured listing (an account's, a
+  campaign's or a period's ideas). (`gub_agent/tools/discovery.py`)
+- `similar_ideas`, `similar_to_idea` — ideas by meaning (UB D40,
+  `POST /org/ideas/similar`, `GET /org/ideas/{id}/similar`). The model breaks a
+  concept question into weighted facets: low weight for the categorical ("an
+  Instagram campaign", 0.2), high for the specific ("a huge grape rolls down the
+  street", 1.0). Names are off unless the user names an idea; `scoring` is
+  UB's default (`blend`) unless the question is about one element
+  (`strongest`) or overall likeness (`cumulative`). Each result carries UB's
+  per-facet `evidence` and a `matchedOn` (the match that counted most), which
+  the answer cites. Where UB has the feature off (404) or no embedding driver
+  (503 `EMBEDDINGS_NOT_CONFIGURED`) the tool result tells the model to fall back
+  to `list_ideas` and match by meaning. (`gub_agent/tools/similarity.py`)
 
 ### Synthesis principles (how the agent decides what to say)
 

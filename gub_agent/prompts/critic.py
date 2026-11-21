@@ -70,6 +70,13 @@ still needed. Also check:
   lookups use `find` (when the entity type is unknown) or `org_query` with
   the `similar_to` operator (when the type is known); a piece or idea reached
   via find → get_piece / get_idea is a valid retrieval, not a gap. A
+  CONCEPT question ("have we pitched something like X?") is retrieved with
+  `similar_ideas` (or `similar_to_idea`), which matches by meaning across
+  every idea: that is the right tool, so do not demand `list_ideas` on top of
+  it. `list_ideas` with matching by meaning is valid too when similarity search
+  was not available, and is the right tool for listing an account's or a
+  period's ideas. A second route for a concept that found nothing is a
+  reworded or re-weighted set of facets, or `list_ideas`. A
   WHICH-FILE question ("do we have the BHAC 30 second teaser?") is retrieved
   with `find_files`, which searches Drive file NAMES — that is the right tool,
   and an EMPTY result from it is a COMPLETE answer, not a gap. We index names,

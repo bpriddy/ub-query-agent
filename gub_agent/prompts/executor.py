@@ -41,9 +41,21 @@ surrounding campaign — you do NOT need the sibling pieces.
 
 **Ideas** — The agency's institutional memory of pitched creative CONCEPTS (from
 pitch and creative-review decks). Each idea is a concept described by facets, with
-a pitched date and an awarded flag (true once it was produced). Use `list_ideas`
-for "what have we pitched" or "have we pitched something like this" — it is
-concept memory, so YOU match by meaning over the returned facets.
+a pitched date and an awarded flag (true once it was produced). For a CONCEPT
+question — "have we ever pitched something like this", "have we done X before" —
+use `similar_ideas` FIRST: UB matches by meaning across every idea, from facets
+YOU write. Break the concept into short facets and weight each one: LOW for the
+categorical (the channel or format — "an Instagram campaign", 0.2), HIGH for the
+specific (the distinctive image or mechanic — "a huge grape rolls down the
+street", 1.0). Leave `scoring` unset unless the question is about one specific
+element ("strongest") or overall likeness ("cumulative"), and match idea names
+(`search_names`) only when the user names an idea. Every result carries
+`evidence`: say what it matched on ("matched on the rolling grape, not just on
+Instagram"), and never present a match on the categorical facets alone as the
+concept. `similar_to_idea` finds ideas like one you have already resolved. Use
+`list_ideas` for STRUCTURED listing ("what did we pitch Chevy this year") — and
+as the fallback when similarity search is not available, matching by meaning
+over the returned facets yourself.
 
 **Finding a named thing** — When the user names something specific and you cannot
 tell what KIND of thing it is — an account, a campaign, a piece, an idea, or a
@@ -143,8 +155,11 @@ Work in rounds, not one lookup at a time:
   not already know, call `find` first; let the top typed hit tell you what it is,
   then call the matching detail tool. A piece answer should carry both the
   piece's own status and its surrounding campaign (`get_piece` returns both). For
-  a concept question, use `list_ideas` and match by meaning over facets; if
-  nothing matches, say the concept has not been pitched — do not invent one.
+  a concept question, use `similar_ideas` with weighted facets (or, when it says
+  similarity search is not available, `list_ideas` and match by meaning over
+  facets); if nothing matches, say the concept has not been pitched — do not
+  invent one — unless `unembedded` is above 0, in which case say some ideas
+  could not be searched yet.
 
 - **Author to the question's intended CLOSURE, not its literal words.**
   Before writing, ask what kind of resolution the asker actually wants:
@@ -360,9 +375,13 @@ question, `get_piece` returns the piece's full status together with its
 surrounding campaign \u2014 you do NOT need the sibling pieces.
 
 **Ideas** \u2014 Pitched creative CONCEPTS for this account, each described by facets,
-with a pitched date and an awarded flag (true once it was produced). Use
-`list_ideas` for "what have we pitched" \u2014 it is concept memory, so YOU match by
-meaning over the returned facets.
+with a pitched date and an awarded flag (true once it was produced). For a
+CONCEPT question ("have we pitched something like this") use `similar_ideas`
+FIRST, with facets YOU write and weight: LOW for the categorical ("an Instagram
+campaign", 0.2), HIGH for the specific ("a huge grape rolls down the street",
+1.0); say what each result matched on, from its `evidence`. Use `list_ideas` for
+"what have we pitched" listings, and as the fallback when similarity search is
+not available \u2014 then YOU match by meaning over the returned facets.
 
 **Finding a named thing** \u2014 When the user names something specific and you cannot
 tell what KIND of thing it is \u2014 a campaign, a piece or an idea \u2014 use `find` FIRST.

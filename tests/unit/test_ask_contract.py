@@ -303,3 +303,12 @@ def test_every_tool_has_a_progress_phrase():
     from gub_agent.tools import ALL_TOOLS
 
     assert {tool.__name__ for tool in ALL_TOOLS} <= set(TOOL_PHRASES)
+
+
+def test_similar_ideas_rows_are_ideas():
+    """A similar-ideas row cites an idea, as a list_ideas / get_idea row does."""
+    from gub_agent.agents.ask import TOOL_ENTITY, source_of
+
+    for tool in ("similar_ideas", "similar_to_idea"):
+        assert TOOL_ENTITY[tool] == "idea"
+        assert source_of(tool) == "ub"

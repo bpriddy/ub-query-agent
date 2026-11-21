@@ -6,6 +6,9 @@ Tools:
   get_piece   — a campaign piece + its surrounding campaign
   list_ideas  — search the ideas memory (pitched creative concepts)
   get_idea    — a single idea by id
+
+Concept search by meaning (`similar_ideas`, `similar_to_idea`) lives in
+`similarity.py`.
 """
 
 from __future__ import annotations
@@ -87,15 +90,20 @@ async def list_ideas(
     idea is a concept described by `facets` (natural-language rows), with a
     `pitchedAt` date and an `awarded` flag (true once it was produced).
 
-    This is CONCEPT memory, not a plain list — the point is "have we already
-    pitched something like X?". YOU do the concept matching: call this with
-    whatever structured filters narrow the field, then read the returned
-    `facets` and pick the ideas that match the concept the user meant BY MEANING.
+    Use this for STRUCTURED listing: the ideas of an account, a campaign or a
+    period, most recently pitched first. For a CONCEPT question ("have we
+    already pitched something like X?") call `similar_ideas` first: it searches
+    the whole memory by meaning. Come here for a concept question only when
+    `similar_ideas` says similarity search is not available; then YOU do the
+    concept matching: call this with whatever structured filters narrow the
+    field, read the returned `facets` and pick the ideas that match the concept
+    the user meant BY MEANING.
 
     All filters are OPTIONAL and combine:
     - "what have we pitched Chevy this year?" → account_id=<chevy>, since="2026-01-01"
-    - "have we pitched a loyalty program before?" → no filters; match by meaning
     - "ideas on the Silverado campaign" → campaign_id=<silverado>
+    - concept fallback ("have we pitched a loyalty program before?" when
+      similarity search is not available) → no filters; match by meaning
 
     Args:
         account_id: UUID of an account to scope to (resolve via find/list_accounts).

@@ -33,6 +33,8 @@ EXPECTED_TOOLS = {
     "get_piece",
     "list_ideas",
     "get_idea",
+    "similar_ideas",
+    "similar_to_idea",
 }
 
 

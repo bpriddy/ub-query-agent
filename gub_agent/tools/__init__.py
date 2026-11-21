@@ -13,6 +13,7 @@ from .accounts import get_account_overview, get_campaign, list_accounts
 from .discovery import find, get_idea, get_piece, list_ideas
 from .files import find_files
 from .org_query import org_query
+from .similarity import similar_ideas, similar_to_idea
 from .staff import find_staff_for_resourcing, get_staff_profile, search_staff
 
 ALL_TOOLS = [
@@ -38,6 +39,9 @@ ALL_TOOLS = [
     get_piece,
     list_ideas,
     get_idea,
+    # Idea similarity by meaning (UB D40): weighted facets the model writes
+    similar_ideas,
+    similar_to_idea,
 ]
 
 __all__ = [
@@ -54,4 +58,6 @@ __all__ = [
     "get_piece",
     "list_ideas",
     "get_idea",
+    "similar_ideas",
+    "similar_to_idea",
 ]

@@ -248,7 +248,7 @@ def _scope_headers(state: Any) -> dict[str, str]:
 # several org endpoints answer with a bare JSON array and an array has nowhere
 # to put a field.
 #
-# That signal has to reach the model, and this is the ONE place all 12 tools
+# That signal has to reach the model, and this is the ONE place all 14 tools
 # funnel through. Without it a filtered read is indistinguishable from an
 # empty one, and a model being truthful about what it got says "Budweiser has
 # no campaigns" — a claim about the world built from a fact about permissions,

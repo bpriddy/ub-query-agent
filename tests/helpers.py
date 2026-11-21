@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+from typing import Any
 
 from google.adk.agents import BaseAgent
 from google.adk.agents.invocation_context import InvocationContext
@@ -34,7 +35,9 @@ class MockGub:
     `connections` counts TCP connections (for pooling assertions);
     `requests` records every (method, path) hit (for call-count assertions);
     `targets` records the same hits with the query string still attached, for
-    the assertions that are about what was SENT rather than how often.
+    the assertions that are about what was SENT rather than how often;
+    `bodies` records each request's JSON body (None when it had none), in the
+    same order.
     """
 
     def __init__(self) -> None:
@@ -42,6 +45,7 @@ class MockGub:
         self.connections = 0
         self.requests: list[tuple[str, str]] = []
         self.targets: list[tuple[str, str]] = []
+        self.bodies: list[Any] = []
         self._server: asyncio.Server | None = None
         self.port: int | None = None
 
@@ -66,11 +70,11 @@ class MockGub:
                 for line in header_lines:
                     if line.lower().startswith("content-length:"):
                         content_length = int(line.split(":", 1)[1])
-                if content_length:
-                    await reader.readexactly(content_length)
+                raw = await reader.readexactly(content_length) if content_length else b""
 
                 self.requests.append((method, path))
                 self.targets.append((method, target))
+                self.bodies.append(json.loads(raw) if raw else None)
                 status, payload, *rest = self.routes.get(
                     (method, path), (404, {"detail": "not found"})
                 )
