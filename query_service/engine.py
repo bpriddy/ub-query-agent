@@ -7,7 +7,9 @@ engine.py — the Agent Engine, over its REST data plane.
 A turn goes through `async_stream_query`, which hands `state_delta` to ADK's
 `runner.run_async`; `temp:` keys in it are applied for the turn and stripped
 before the session is saved (gcp-universal-backend#162, checked live on the
-sandbox engine 2026-11-09).
+sandbox engine 2026-11-09). The agent reads them during the turn: proved on
+the engine's own stack (AdkApp over VertexAiSessionService, pinned ADK) by
+tests/unit/test_temp_state_on_engine.py.
 
 The engine answers 200 even when the run dies inside it, so an empty stream
 is a failure signal, and the caller treats "no answer event" as one.

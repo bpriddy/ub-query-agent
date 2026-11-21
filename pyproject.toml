@@ -53,6 +53,10 @@ service = [
     "cloud-sql-python-connector[asyncpg]>=1.18.0",
 ]
 dev = [
+    # The Agent Engine's AdkApp template: tests/unit/test_temp_state_on_engine.py
+    # runs a turn through it to prove the temp: token is read and never saved
+    # (gcp-universal-backend#162).
+    "google-cloud-aiplatform[agent_engines]>=1.148.1",
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "ruff>=0.4.0",

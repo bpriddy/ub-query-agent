@@ -302,3 +302,26 @@ async def test_production_deploy_verifies_the_env_landed():
         "deploy.yml must read the env back off the engine after deploying"
     )
     assert (REPO / "deployment" / "verify-engine-env.sh").exists()
+
+
+# The Gemini Enterprise app the production Chat bot federates over. The /ask
+# engine must use its own environment's app (ub-query-agent#90, D37), never
+# this one: a dev turn would otherwise run on prod's app and connectors.
+PROD_WORKSPACE_APP = "gub-and-federated-blend"
+
+
+async def test_workspace_is_configured_per_engine_and_never_on_prods_app():
+    """Workspace's app and data stores come only from the engine's env file
+    (config.py has no defaults). The sandbox engine, which UB dev's /ask
+    calls, must never name the production Chat bot's app; the stores and the
+    app are set together or not at all."""
+    values = _env(_sandbox_env_file())
+    app = values.get("WORKSPACE_ENGINE", "")
+    assert PROD_WORKSPACE_APP not in app
+    assert bool(app) == bool(values.get("WORKSPACE_DATA_STORE_IDS")), (
+        "set WORKSPACE_ENGINE and WORKSPACE_DATA_STORE_IDS together"
+    )
+    if app:
+        assert re.fullmatch(
+            r"projects/[^/]+/locations/[^/]+/collections/[^/]+/engines/[^/]+", app
+        ), app
