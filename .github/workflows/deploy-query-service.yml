@@ -57,6 +57,15 @@ jobs:
       CLOUD_SQL_INSTANCE: ${{ vars.CLOUD_SQL_INSTANCE }}
       DB_NAME: ${{ vars.QUERY_SERVICE_DB_NAME }}
       GRANT_KMS_KEY: ${{ vars.QUERY_SERVICE_GRANT_KMS_KEY }}
+      # Optional: the connect page and Workspace (#93, #90). All three unset,
+      # the service mints no Google token and the page answers
+      # CONNECT_NOT_CONFIGURED. The two *_SECRET values are Secret Manager
+      # secret NAMES (the Gemini Enterprise client's id and secret), never
+      # the values; the runtime account needs secretAccessor on both.
+      PUBLIC_URL: ${{ vars.QUERY_SERVICE_PUBLIC_URL }}
+      GOOGLE_CLIENT_ID_SECRET: ${{ vars.QUERY_SERVICE_GOOGLE_CLIENT_ID_SECRET }}
+      GOOGLE_CLIENT_SECRET_SECRET: ${{ vars.QUERY_SERVICE_GOOGLE_CLIENT_SECRET_SECRET }}
+      GOOGLE_HOSTED_DOMAIN: ${{ vars.QUERY_SERVICE_GOOGLE_HOSTED_DOMAIN }}
     steps:
       # First step, before checkout and before any credential is minted. The
       # ref is read from the environment, never interpolated.
@@ -80,6 +89,15 @@ jobs:
             if [ -z "${!v}" ]; then echo "::error::$v is empty: set its variable in GitHub Environment $GH_ENV."; missing=1; fi
           done
           [ "$missing" = 0 ] || exit 1
+          if { [ -n "$GOOGLE_CLIENT_ID_SECRET" ] || [ -n "$GOOGLE_CLIENT_SECRET_SECRET" ]; } \
+             && { [ -z "$GOOGLE_CLIENT_ID_SECRET" ] || [ -z "$GOOGLE_CLIENT_SECRET_SECRET" ]; }; then
+            echo "::error::set both QUERY_SERVICE_GOOGLE_CLIENT_ID_SECRET and QUERY_SERVICE_GOOGLE_CLIENT_SECRET_SECRET, or neither."
+            exit 1
+          fi
+          case "$PUBLIC_URL" in
+            ""|https://*) ;;
+            *) echo "::error::QUERY_SERVICE_PUBLIC_URL must be https://"; exit 1 ;;
+          esac
           for sa in "$DEPLOYER_SA" "$RUNTIME_SA"; do
             case "$sa" in
               *"@$PROJECT_ID.iam.gserviceaccount.com") ;;
@@ -145,6 +163,12 @@ jobs:
             "DB_IAM_USER=${RUNTIME_SA%.gserviceaccount.com}"
             "GRANT_KMS_KEY=${GRANT_KMS_KEY}"
           )
+          [ -z "$PUBLIC_URL" ] || ENV_VARS+=("PUBLIC_BASE_URL=${PUBLIC_URL}")
+          [ -z "$GOOGLE_HOSTED_DOMAIN" ] || ENV_VARS+=("GOOGLE_HOSTED_DOMAIN=${GOOGLE_HOSTED_DOMAIN}")
+          SECRETS=()
+          if [ -n "$GOOGLE_CLIENT_ID_SECRET" ]; then
+            SECRETS=(--update-secrets "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID_SECRET}:latest,GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET_SECRET}:latest")
+          fi
           gcloud run deploy "$SERVICE" \
             --project "$PROJECT_ID" \
             --region "$REGION" \
@@ -152,6 +176,7 @@ jobs:
             --service-account "$RUNTIME_SA" \
             --no-allow-unauthenticated \
             --set-env-vars "^||^$(IFS='|'; echo "${ENV_VARS[*]}" | sed 's/|/||/g')" \
+            "${SECRETS[@]}" \
             --labels "app=ub-query-agent,commit=${GITHUB_SHA::7}" \
             --cpu 1 --memory 512Mi \
             --concurrency 20 --min-instances 0 --max-instances 3 \

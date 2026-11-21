@@ -123,6 +123,16 @@ class AskError(BaseModel):
     record: RecordRef | None = None
 
 
+class Notice(BaseModel):
+    """A one-time line for the person, outside the answer's prose. Today only
+    WORKSPACE_CONNECTION_REUSED: the first answer in a second or later app
+    that used their Gemini Enterprise connection (ub-query-agent#93). Added by
+    the query agent service, never by the model."""
+
+    code: str
+    message: str
+
+
 class AskResponse(AnswerPayload):
     """THE `/ask` answer: the formatter's payload, plus sources, records and
     the conversation, assembled in code."""
@@ -133,6 +143,7 @@ class AskResponse(AnswerPayload):
     sources: dict[Source, SourceReport]
     error: AskError | None = None
     conversation_id: str | None = None
+    notices: list[Notice] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _ask_contract(self) -> AskResponse:

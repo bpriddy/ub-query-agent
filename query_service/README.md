@@ -43,6 +43,11 @@ The answer is always last and always sent; a failed turn is
 | 502 | `ENGINE_UNAVAILABLE` |
 | 503 | `UB_KEYS_UNAVAILABLE` |
 
+A turn that used the person's Gemini Enterprise connection in a second or
+later app carries, once, `notices: [{"code": "WORKSPACE_CONNECTION_REUSED",
+"message": "Using your existing Gemini Enterprise connection."}]` (#93).
+`WORKSPACE_NOT_CONNECTED` carries this service's connect page as its `link`.
+
 ## Conversations
 
 Resumed only by the same person in the same app, within 15 minutes idle.
@@ -55,6 +60,49 @@ Per turn, the person's UB token goes to the engine as `temp:gub_jwt`, and a
 Google access token minted from their Gemini Enterprise grant (when they have
 one) as `temp:workspace_token`. ADK never saves `temp:` state. The only token
 stored is the grant's refresh token, encrypted with the service's KMS key.
+
+## Connect page (#93)
+
+Where a person connects Gemini Enterprise once, for every app. Code:
+`connect.py`.
+
+| Route | What it does |
+|---|---|
+| `GET /connect` | The page: connected or not, Connect / Disconnect |
+| `GET /connect/start` | To Google consent (`?intent=manage`: sign in only) |
+| `GET /connect/callback` | Google's redirect URI |
+| `POST /connect/disconnect` | Revoke at Google, delete the grant |
+| `GET /connection`, `DELETE /connection` | The same for an app through UB, with the person's UB token |
+
+- **Sign in with UB.** The callback gives the Google access token to UB's
+  `/auth/google/access-token-exchange`; UB says who the person is, and the
+  grant is stored under that UB user id. The UB session the exchange opens is
+  closed at once. So the client must be one UB admits (the chat bot's is).
+- **Consent:** `openid email discoveryengine.assist.readwrite`, offline,
+  `prompt=consent`. Only the assist scope is recorded on the grant.
+- **Cookies:** the OAuth state (10 min) and the manage sign-in (15 min), each
+  a KMS ciphertext with its own `aad`. No extra secret.
+- **Config:** `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` (Secret Manager,
+  mounted by name), `PUBLIC_BASE_URL` (where browsers reach the page; the
+  redirect URI is `<PUBLIC_BASE_URL>/connect/callback`), optional
+  `GOOGLE_HOSTED_DOMAIN` (account chooser hint). Any of the first three
+  unset: the page answers `503 CONNECT_NOT_CONFIGURED`, and no Google token
+  is minted.
+- **Reaching it.** This service is IAM-only (UB is its only invoker), so a
+  browser cannot reach `/connect` on its run.app URL. Something must serve
+  it to browsers: UB proxying `/connect*`, or a second deployment of this
+  image behind IAP. That choice is open; until it is made the page works only
+  in tests.
+
+### Chat bot grants
+
+The sunsetting chat bot holds its users' grants (`chat_user_sessions`,
+encrypted with the bot's KMS key, issued to the same client). **Default:
+bot users reconnect here.** A one-time copy is possible (run as a service
+identity that can decrypt with the bot's key and encrypt with this one,
+re-encrypt, never print; copy only rows whose scopes include the assist
+scope) but it is not built, and must not be run without the owner's
+decision.
 
 ## Database
 
@@ -85,3 +133,8 @@ TEST_DATABASE_URL=postgresql://postgres:test@127.0.0.1:55432/qa_test pytest test
    `deployment/deploy-service.sh prod`, which reads the same GitHub
    Environment variables.
 4. UB terraform `query_agent_provisioned = true`: UB's invoker grant.
+5. Connect page (optional, #93): Environment variables
+   `QUERY_SERVICE_PUBLIC_URL`, `QUERY_SERVICE_GOOGLE_CLIENT_ID_SECRET`,
+   `QUERY_SERVICE_GOOGLE_CLIENT_SECRET_SECRET` (secret names), optionally
+   `QUERY_SERVICE_GOOGLE_HOSTED_DOMAIN`; `secretAccessor` on both secrets for
+   the runtime account; the redirect URI registered on the client.

@@ -31,6 +31,9 @@ class Caller:
     person_id: str
     app_id: str | None
     token: str
+    # For display only (the connect page's "signed in as"); never for
+    # permission.
+    email: str | None = None
 
 
 class UbTokenVerifier:
@@ -59,7 +62,13 @@ class UbTokenVerifier:
             raise ServiceError(401, "INVALID_TOKEN", "The UB access token is not valid.") from err
         aud = claims["aud"]
         apps = [a for a in (aud if isinstance(aud, list) else [aud]) if a != self._audience]
-        return Caller(person_id=str(claims["sub"]), app_id=apps[0] if apps else None, token=token)
+        email = claims.get("email")
+        return Caller(
+            person_id=str(claims["sub"]),
+            app_id=apps[0] if apps else None,
+            token=token,
+            email=email if isinstance(email, str) else None,
+        )
 
     async def caller(self, authorization: str | None) -> Caller:
         scheme, _, token = (authorization or "").partition(" ")
