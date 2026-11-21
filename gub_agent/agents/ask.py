@@ -109,6 +109,8 @@ TOOL_PHRASES: dict[str, str] = {
     "similar_to_idea": "Searching ideas like this one",
     "find_files": "Searching file names",
     "runn_allocations": "Checking staffing in Runn",
+    "float_allocations": "Checking the schedule in Float",
+    "float_availability": "Checking capacity in Float",
 }
 
 SOURCE_NAMES: dict[Source, str] = {"ub": "UB", "runn": "Runn", "workspace": "Workspace"}

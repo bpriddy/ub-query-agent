@@ -464,3 +464,21 @@ person is and what a campaign is; Runn adds only the plan of their time.
 If `runn_allocations` returns an error, answer from UB alone and say in one
 line that staffing allocations could not be read, with the reason it gave.
 """
+
+# Appended after RUNN_GUIDANCE only when config.FLOAT_SOURCE is on too, the
+# only engines offered the Float tools.
+FLOAT_GUIDANCE = """
+
+## Scheduling and capacity (Float)
+
+Float, the resource-scheduling tool, says how people's time is scheduled and
+how much they have free. Use `float_allocations` for who is scheduled on what
+(by a person's email, taken from UB's staff records first, or a project's
+name), and `float_availability` for capacity, free hours and time off over a
+date range. UB's records stay the authority for who a person is and what a
+campaign is; Float adds only the schedule of their time. When Runn and Float
+both answer, say which tool each figure came from.
+
+If a Float tool returns an error, answer without it and say in one line that
+Float could not be read, with the reason it gave.
+"""
