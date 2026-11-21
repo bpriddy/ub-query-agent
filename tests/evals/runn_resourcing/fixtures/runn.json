@@ -1,0 +1,7334 @@
+{
+ "people": [
+  {
+   "id": 1,
+   "firstName": "Jane",
+   "lastName": "Park",
+   "email": "jane.park@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 505,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2,
+   "firstName": "Marcus",
+   "lastName": "Bell",
+   "email": "marcus.bell@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 506,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3,
+   "firstName": "Sofia",
+   "lastName": "Reyes",
+   "email": "sofia.reyes@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    },
+    {
+     "id": 605,
+     "name": "Part-time"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 513,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 4,
+   "firstName": "Theo",
+   "lastName": "Grant",
+   "email": "theo.grant@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 5,
+   "firstName": "Priya",
+   "lastName": "Nair",
+   "email": "priya.nair@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 502,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 6,
+   "firstName": "Dylan",
+   "lastName": "Cho",
+   "email": "dylan.cho@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 502,
+     "level": 3
+    },
+    {
+     "id": 504,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 7,
+   "firstName": "Ava",
+   "lastName": "Thompson",
+   "email": "ava.thompson@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 503,
+     "level": 3
+    },
+    {
+     "id": 505,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 8,
+   "firstName": "Leo",
+   "lastName": "Martinez",
+   "email": "leo.martinez@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 503,
+     "level": 2
+    },
+    {
+     "id": 513,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 9,
+   "firstName": "Hannah",
+   "lastName": "Lee",
+   "email": "hannah.lee@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 507,
+     "level": 3
+    },
+    {
+     "id": 505,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 10,
+   "firstName": "Omar",
+   "lastName": "Haddad",
+   "email": "omar.haddad@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    },
+    {
+     "id": 604,
+     "name": "Freelancer"
+    }
+   ],
+   "skills": [
+    {
+     "id": 507,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 11,
+   "firstName": "Grace",
+   "lastName": "Kim",
+   "email": "grace.kim@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 403,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 508,
+     "level": 3
+    },
+    {
+     "id": 510,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 12,
+   "firstName": "Ben",
+   "lastName": "Carter",
+   "email": "ben.carter@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 404,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 511,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 13,
+   "firstName": "Nina",
+   "lastName": "Patel",
+   "email": "nina.patel@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 404,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 512,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 14,
+   "firstName": "Ruby",
+   "lastName": "Alvarez",
+   "email": "ruby.alvarez@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    },
+    {
+     "id": 605,
+     "name": "Part-time"
+    }
+   ],
+   "skills": [
+    {
+     "id": 504,
+     "level": 3
+    },
+    {
+     "id": 502,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 15,
+   "firstName": "Chris",
+   "lastName": "Doyle",
+   "email": "chris.doyle@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 601,
+     "name": "LA"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 507,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 601,
+        "name": "LA"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 16,
+   "firstName": "Ethan",
+   "lastName": "Brooks",
+   "email": "ethan.brooks@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 503,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 17,
+   "firstName": "Maya",
+   "lastName": "Singh",
+   "email": "maya.singh@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 18,
+   "firstName": "Lucas",
+   "lastName": "Wright",
+   "email": "lucas.wright@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 503,
+     "level": 3
+    },
+    {
+     "id": 506,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 19,
+   "firstName": "Zoe",
+   "lastName": "Chen",
+   "email": "zoe.chen@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 502,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 20,
+   "firstName": "Isaac",
+   "lastName": "Moore",
+   "email": "isaac.moore@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 502,
+     "level": 3
+    },
+    {
+     "id": 505,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 21,
+   "firstName": "Olivia",
+   "lastName": "Hayes",
+   "email": "olivia.hayes@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 507,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 22,
+   "firstName": "Daniel",
+   "lastName": "Kim",
+   "email": "daniel.kim@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 403,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 508,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 23,
+   "firstName": "Fatima",
+   "lastName": "Ali",
+   "email": "fatima.ali@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 403,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    },
+    {
+     "id": 605,
+     "name": "Part-time"
+    }
+   ],
+   "skills": [
+    {
+     "id": 509,
+     "level": 3
+    },
+    {
+     "id": 510,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 24,
+   "firstName": "Sam",
+   "lastName": "Rivera",
+   "email": "sam.rivera@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 404,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 512,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 25,
+   "firstName": "Emma",
+   "lastName": "Collins",
+   "email": "emma.collins@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 404,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 511,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 26,
+   "firstName": "Jack",
+   "lastName": "Turner",
+   "email": "jack.turner@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 507,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 27,
+   "firstName": "Lily",
+   "lastName": "Wong",
+   "email": "lily.wong@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 503,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 28,
+   "firstName": "Ryan",
+   "lastName": "Foster",
+   "email": "ryan.foster@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 403,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 508,
+     "level": 3
+    },
+    {
+     "id": 509,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 29,
+   "firstName": "Chloe",
+   "lastName": "Martin",
+   "email": "chloe.martin@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 602,
+     "name": "NYC"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 504,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 701,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 602,
+        "name": "NYC"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 30,
+   "firstName": "Jane",
+   "lastName": "Okafor",
+   "email": "jane.okafor@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 403,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 508,
+     "level": 3
+    },
+    {
+     "id": 510,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 31,
+   "firstName": "Oliver",
+   "lastName": "Hughes",
+   "email": "oliver.hughes@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 32,
+   "firstName": "Amelia",
+   "lastName": "Clarke",
+   "email": "amelia.clarke@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 501,
+     "level": 3
+    },
+    {
+     "id": 505,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 33,
+   "firstName": "Harry",
+   "lastName": "Evans",
+   "email": "harry.evans@anomaly.co.uk",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 502,
+     "level": 3
+    },
+    {
+     "id": 503,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 34,
+   "firstName": "Isla",
+   "lastName": "Murray",
+   "email": "isla.murray@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    },
+    {
+     "id": 605,
+     "name": "Part-time"
+    }
+   ],
+   "skills": [
+    {
+     "id": 504,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 35,
+   "firstName": "George",
+   "lastName": "Patel",
+   "email": "george.patel@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 401,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 507,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 36,
+   "firstName": "Freya",
+   "lastName": "Lewis",
+   "email": "freya.lewis@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 403,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 509,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 37,
+   "firstName": "Noah",
+   "lastName": "Bennett",
+   "email": "noah.bennett@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 404,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 512,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 38,
+   "firstName": "Poppy",
+   "lastName": "Shaw",
+   "email": "poppy.shaw@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 404,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 511,
+     "level": 3
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 39,
+   "firstName": "Arjun",
+   "lastName": "Mehta",
+   "email": "arjun.mehta@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 403,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    }
+   ],
+   "skills": [
+    {
+     "id": 510,
+     "level": 3
+    },
+    {
+     "id": 508,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 40,
+   "firstName": "Ella",
+   "lastName": "Ward",
+   "email": "ella.ward@anomaly.com",
+   "isArchived": false,
+   "references": [],
+   "teamId": 402,
+   "tags": [
+    {
+     "id": 603,
+     "name": "London"
+    },
+    {
+     "id": 604,
+     "name": "Freelancer"
+    }
+   ],
+   "skills": [
+    {
+     "id": 503,
+     "level": 3
+    },
+    {
+     "id": 506,
+     "level": 2
+    }
+   ],
+   "holidaysGroupId": 702,
+   "customFields": {
+    "select": [
+     {
+      "id": 1,
+      "name": "Office",
+      "values": [
+       {
+        "id": 603,
+        "name": "London"
+       }
+      ]
+     }
+    ],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managers": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "placeholders": [
+  {
+   "id": 901,
+   "firstName": "Designer",
+   "lastName": "Placeholder",
+   "isArchived": false,
+   "tags": [],
+   "references": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 902,
+   "firstName": "Producer",
+   "lastName": "Placeholder",
+   "isArchived": false,
+   "tags": [],
+   "references": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 903,
+   "firstName": "Art Director",
+   "lastName": "Placeholder",
+   "isArchived": false,
+   "tags": [],
+   "references": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "contracts": [
+  {
+   "id": 1001,
+   "personId": 1,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1002,
+   "personId": 2,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1003,
+   "personId": 3,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 0
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1004,
+   "personId": 4,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1005,
+   "personId": 5,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1006,
+   "personId": 6,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1007,
+   "personId": 7,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1008,
+   "personId": 8,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1009,
+   "personId": 9,
+   "roleId": 304,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1010,
+   "personId": 10,
+   "roleId": 304,
+   "jobTitle": null,
+   "employmentType": "contractor",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": "2026-12-04",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1011,
+   "personId": 11,
+   "roleId": 305,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1012,
+   "personId": 12,
+   "roleId": 306,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1013,
+   "personId": 13,
+   "roleId": 306,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1014,
+   "personId": 14,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 240,
+   "rosteredDays": {
+    "monday": 240,
+    "tuesday": 240,
+    "wednesday": 240,
+    "thursday": 240,
+    "friday": 240
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1015,
+   "personId": 15,
+   "roleId": 301,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1016,
+   "personId": 16,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1017,
+   "personId": 17,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1018,
+   "personId": 18,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1019,
+   "personId": 19,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1020,
+   "personId": 20,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1021,
+   "personId": 21,
+   "roleId": 304,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1022,
+   "personId": 22,
+   "roleId": 305,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1023,
+   "personId": 23,
+   "roleId": 305,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 0,
+    "friday": 0
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1024,
+   "personId": 24,
+   "roleId": 306,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1025,
+   "personId": 25,
+   "roleId": 306,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1026,
+   "personId": 26,
+   "roleId": 304,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1027,
+   "personId": 27,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1028,
+   "personId": 28,
+   "roleId": 305,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1029,
+   "personId": 29,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1030,
+   "personId": 30,
+   "roleId": 305,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1031,
+   "personId": 31,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1032,
+   "personId": 32,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1033,
+   "personId": 33,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1034,
+   "personId": 34,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 0,
+    "friday": 0
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1035,
+   "personId": 35,
+   "roleId": 304,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1036,
+   "personId": 36,
+   "roleId": 305,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1037,
+   "personId": 37,
+   "roleId": 306,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1038,
+   "personId": 38,
+   "roleId": 306,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1039,
+   "personId": 39,
+   "roleId": 305,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1040,
+   "personId": 40,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "contractor",
+   "minutesPerDay": 450,
+   "rosteredDays": {
+    "monday": 450,
+    "tuesday": 450,
+    "wednesday": 450,
+    "thursday": 450,
+    "friday": 450
+   },
+   "costPerHour": null,
+   "startDate": "2025-01-06",
+   "endDate": "2026-12-23",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1901,
+   "personId": 901,
+   "roleId": 303,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2026-11-01",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1902,
+   "personId": 902,
+   "roleId": 306,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2026-11-01",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 1903,
+   "personId": 903,
+   "roleId": 302,
+   "jobTitle": null,
+   "employmentType": "employee",
+   "minutesPerDay": 480,
+   "rosteredDays": {
+    "monday": 480,
+    "tuesday": 480,
+    "wednesday": 480,
+    "thursday": 480,
+    "friday": 480
+   },
+   "costPerHour": null,
+   "startDate": "2026-11-01",
+   "endDate": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "roles": [
+  {
+   "id": 301,
+   "name": "Creative Director",
+   "isArchived": false,
+   "defaultHourCost": 0,
+   "standardRate": 0,
+   "references": [],
+   "personIds": [
+    15
+   ],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 302,
+   "name": "Art Director",
+   "isArchived": false,
+   "defaultHourCost": 0,
+   "standardRate": 0,
+   "references": [],
+   "personIds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    16,
+    17,
+    29,
+    31,
+    32,
+    903
+   ],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 303,
+   "name": "Designer",
+   "isArchived": false,
+   "defaultHourCost": 0,
+   "standardRate": 0,
+   "references": [],
+   "personIds": [
+    6,
+    7,
+    8,
+    14,
+    18,
+    19,
+    20,
+    27,
+    33,
+    34,
+    40,
+    901
+   ],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 304,
+   "name": "Copywriter",
+   "isArchived": false,
+   "defaultHourCost": 0,
+   "standardRate": 0,
+   "references": [],
+   "personIds": [
+    9,
+    10,
+    21,
+    26,
+    35
+   ],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 305,
+   "name": "Strategist",
+   "isArchived": false,
+   "defaultHourCost": 0,
+   "standardRate": 0,
+   "references": [],
+   "personIds": [
+    11,
+    22,
+    23,
+    28,
+    30,
+    36,
+    39
+   ],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 306,
+   "name": "Producer",
+   "isArchived": false,
+   "defaultHourCost": 0,
+   "standardRate": 0,
+   "references": [],
+   "personIds": [
+    12,
+    13,
+    24,
+    25,
+    37,
+    38,
+    902
+   ],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "teams": [
+  {
+   "id": 401,
+   "name": "Creative",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 402,
+   "name": "Design",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 403,
+   "name": "Strategy",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 404,
+   "name": "Production",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "skills": [
+  {
+   "id": 501,
+   "name": "Art Direction",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 502,
+   "name": "Brand Identity",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 503,
+   "name": "Motion Design",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 504,
+   "name": "Retouching",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 505,
+   "name": "Social Content",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 506,
+   "name": "CGI / 3D",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 507,
+   "name": "Copywriting",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 508,
+   "name": "Brand Strategy",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 509,
+   "name": "Comms Planning",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 510,
+   "name": "Research",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 511,
+   "name": "Broadcast Production",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 512,
+   "name": "Integrated Production",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 513,
+   "name": "Spanish",
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "people_skills": [
+  {
+   "personId": 1,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 1,
+   "skillId": 505,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 2,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 2,
+   "skillId": 506,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 3,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 3,
+   "skillId": 513,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 4,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 5,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 5,
+   "skillId": 502,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 6,
+   "skillId": 502,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 6,
+   "skillId": 504,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 7,
+   "skillId": 503,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 7,
+   "skillId": 505,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 8,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 8,
+   "skillId": 503,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 8,
+   "skillId": 513,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 9,
+   "skillId": 507,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 9,
+   "skillId": 505,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 10,
+   "skillId": 507,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 11,
+   "skillId": 508,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 11,
+   "skillId": 510,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 12,
+   "skillId": 511,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 13,
+   "skillId": 512,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 14,
+   "skillId": 504,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 14,
+   "skillId": 502,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 15,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 15,
+   "skillId": 507,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 16,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 16,
+   "skillId": 503,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 17,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 18,
+   "skillId": 503,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 18,
+   "skillId": 506,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 19,
+   "skillId": 502,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 20,
+   "skillId": 502,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 20,
+   "skillId": 505,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 21,
+   "skillId": 507,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 22,
+   "skillId": 508,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 23,
+   "skillId": 509,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 23,
+   "skillId": 510,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 24,
+   "skillId": 512,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 25,
+   "skillId": 511,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 26,
+   "skillId": 507,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 27,
+   "skillId": 503,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 28,
+   "skillId": 508,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 28,
+   "skillId": 509,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 29,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 29,
+   "skillId": 504,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 30,
+   "skillId": 508,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 30,
+   "skillId": 510,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 31,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 32,
+   "skillId": 501,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 32,
+   "skillId": 505,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 33,
+   "skillId": 502,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 33,
+   "skillId": 503,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 34,
+   "skillId": 504,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 35,
+   "skillId": 507,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 36,
+   "skillId": 509,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 37,
+   "skillId": 512,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 38,
+   "skillId": 511,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 39,
+   "skillId": 510,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 39,
+   "skillId": 508,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 40,
+   "skillId": 503,
+   "level": 3,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "personId": 40,
+   "skillId": 506,
+   "level": 2,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "people_tags": [
+  {
+   "id": 601,
+   "name": "LA",
+   "archived": false,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 602,
+   "name": "NYC",
+   "archived": false,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 603,
+   "name": "London",
+   "archived": false,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 604,
+   "name": "Freelancer",
+   "archived": false,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 605,
+   "name": "Part-time",
+   "archived": false,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "clients": [
+  {
+   "id": 201,
+   "name": "Halcyon Hotels"
+  },
+  {
+   "id": 202,
+   "name": "Vela Motors"
+  },
+  {
+   "id": 203,
+   "name": "Lumen Bank"
+  },
+  {
+   "id": 204,
+   "name": "Orchard Foods"
+  },
+  {
+   "id": 205,
+   "name": "Northwind Air"
+  },
+  {
+   "id": 206,
+   "name": "Solace Health"
+  },
+  {
+   "id": 207,
+   "name": "Kite Mobile"
+  },
+  {
+   "id": 208,
+   "name": "Anomaly"
+  }
+ ],
+ "projects": [
+  {
+   "id": 101,
+   "name": "Halcyon Hotels - Winter Campaign",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "fp",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 201,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 102,
+   "name": "Vela Motors - EV Launch",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "tm",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 202,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 103,
+   "name": "Lumen Bank - Brand Refresh",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "fp",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 203,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 104,
+   "name": "Orchard Foods - Holiday Social",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "fp",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 204,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 105,
+   "name": "Northwind Air - Q1 Retainer",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "tm",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 205,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 106,
+   "name": "Solace Health - Pitch",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": false,
+   "pricingModel": "nb",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 206,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 107,
+   "name": "Kite Mobile - Spring Launch",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": false,
+   "pricingModel": "fp",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 207,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 108,
+   "name": "Northwind Air - Always On",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "tm",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 205,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 109,
+   "name": "Anomaly - New Business",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "nb",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 208,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 110,
+   "name": "Lumen Bank - Annual Report",
+   "isTemplate": false,
+   "isArchived": false,
+   "isConfirmed": true,
+   "pricingModel": "fp",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 203,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 111,
+   "name": "Orchard Foods - Spring Packaging",
+   "isTemplate": false,
+   "isArchived": true,
+   "isConfirmed": true,
+   "pricingModel": "fp",
+   "rateType": "hours",
+   "budgetMethod": "ROLE",
+   "teamId": null,
+   "budget": null,
+   "expensesBudget": null,
+   "references": [],
+   "clientId": 204,
+   "rateCardId": 1,
+   "customFields": {
+    "select": [],
+    "text": [],
+    "checkbox": [],
+    "date": []
+   },
+   "managerIds": [],
+   "tags": [],
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "assignments": [
+  {
+   "id": 3001,
+   "personId": 1,
+   "projectId": 101,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3002,
+   "personId": 2,
+   "projectId": 104,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-11-20",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3003,
+   "personId": 2,
+   "projectId": 105,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3004,
+   "personId": 3,
+   "projectId": 102,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-10-05",
+   "endDate": "2027-01-29",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3005,
+   "personId": 4,
+   "projectId": 102,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-10-05",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3006,
+   "personId": 5,
+   "projectId": 106,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-16",
+   "endDate": "2026-12-04",
+   "minutesPerDay": 480,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3007,
+   "personId": 6,
+   "projectId": 101,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3008,
+   "personId": 6,
+   "projectId": 104,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2026-11-30",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3009,
+   "personId": 7,
+   "projectId": 104,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-11-20",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3010,
+   "personId": 7,
+   "projectId": 105,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3011,
+   "personId": 8,
+   "projectId": 109,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-12-31",
+   "minutesPerDay": 120,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3012,
+   "personId": 9,
+   "projectId": 101,
+   "roleId": 304,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 360,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3013,
+   "personId": 10,
+   "projectId": 106,
+   "roleId": 304,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-16",
+   "endDate": "2026-12-04",
+   "minutesPerDay": 480,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3014,
+   "personId": 11,
+   "projectId": 102,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-10-05",
+   "endDate": "2027-01-29",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3015,
+   "personId": 11,
+   "projectId": 105,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3016,
+   "personId": 12,
+   "projectId": 101,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3017,
+   "personId": 12,
+   "projectId": 102,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-10-05",
+   "endDate": "2027-01-29",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3018,
+   "personId": 13,
+   "projectId": 104,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-12-23",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3019,
+   "personId": 14,
+   "projectId": 102,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-10-05",
+   "endDate": "2027-01-29",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3020,
+   "personId": 15,
+   "projectId": 101,
+   "roleId": 301,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3021,
+   "personId": 15,
+   "projectId": 102,
+   "roleId": 301,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-10-05",
+   "endDate": "2027-01-29",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3022,
+   "personId": 16,
+   "projectId": 108,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-11-20",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3023,
+   "personId": 16,
+   "projectId": 107,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-11",
+   "endDate": "2027-03-26",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3024,
+   "personId": 17,
+   "projectId": 103,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3025,
+   "personId": 17,
+   "projectId": 108,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-12-31",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3026,
+   "personId": 18,
+   "projectId": 103,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3027,
+   "personId": 20,
+   "projectId": 108,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-11-20",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3028,
+   "personId": 20,
+   "projectId": 105,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3029,
+   "personId": 21,
+   "projectId": 103,
+   "roleId": 304,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3030,
+   "personId": 22,
+   "projectId": 103,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3031,
+   "personId": 22,
+   "projectId": 105,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3032,
+   "personId": 23,
+   "projectId": 108,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-12-31",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3033,
+   "personId": 23,
+   "projectId": 107,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-11",
+   "endDate": "2027-03-26",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3034,
+   "personId": 24,
+   "projectId": 103,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3035,
+   "personId": 24,
+   "projectId": 108,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-12-31",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3036,
+   "personId": 24,
+   "projectId": 106,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-16",
+   "endDate": "2026-12-04",
+   "minutesPerDay": 120,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3037,
+   "personId": 25,
+   "projectId": 108,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-12-31",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3038,
+   "personId": 26,
+   "projectId": 108,
+   "roleId": 304,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-12-11",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3039,
+   "personId": 27,
+   "projectId": 107,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-11",
+   "endDate": "2027-03-26",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3040,
+   "personId": 27,
+   "projectId": 106,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-16",
+   "endDate": "2026-12-04",
+   "minutesPerDay": 480,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3041,
+   "personId": 28,
+   "projectId": 103,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3042,
+   "personId": 28,
+   "projectId": 109,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 120,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3043,
+   "personId": 29,
+   "projectId": 108,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-09-01",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3044,
+   "personId": 29,
+   "projectId": 105,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 240,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3045,
+   "personId": 30,
+   "projectId": 110,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-11",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3046,
+   "personId": 30,
+   "projectId": 103,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-12-14",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 225,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3047,
+   "personId": 31,
+   "projectId": 110,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-11",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3048,
+   "personId": 32,
+   "projectId": 104,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-11-20",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3049,
+   "personId": 32,
+   "projectId": 107,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-11",
+   "endDate": "2027-03-26",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3050,
+   "personId": 33,
+   "projectId": 110,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-11",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3051,
+   "personId": 34,
+   "projectId": 110,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-11",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3052,
+   "personId": 35,
+   "projectId": 110,
+   "roleId": 304,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-11",
+   "minutesPerDay": 225,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3053,
+   "personId": 35,
+   "projectId": 107,
+   "roleId": 304,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-11",
+   "endDate": "2027-03-26",
+   "minutesPerDay": 225,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3054,
+   "personId": 36,
+   "projectId": 103,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 225,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3055,
+   "personId": 37,
+   "projectId": 110,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-11",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3056,
+   "personId": 37,
+   "projectId": 103,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-09",
+   "endDate": "2027-02-26",
+   "minutesPerDay": 225,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3057,
+   "personId": 38,
+   "projectId": 107,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-11",
+   "endDate": "2027-03-26",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3058,
+   "personId": 39,
+   "projectId": 105,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 450,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3059,
+   "personId": 39,
+   "projectId": 109,
+   "roleId": 305,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-02",
+   "endDate": "2026-11-30",
+   "minutesPerDay": 90,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": false,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3060,
+   "personId": 901,
+   "projectId": 103,
+   "roleId": 303,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-18",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": true,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3061,
+   "personId": 902,
+   "projectId": 105,
+   "roleId": 306,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2027-01-04",
+   "endDate": "2027-03-31",
+   "minutesPerDay": 480,
+   "isBillable": true,
+   "isNonWorkingDay": false,
+   "isPlaceholder": true,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 3062,
+   "personId": 903,
+   "projectId": 106,
+   "roleId": 302,
+   "phaseId": null,
+   "workstreamId": null,
+   "startDate": "2026-11-23",
+   "endDate": "2026-12-04",
+   "minutesPerDay": 480,
+   "isBillable": false,
+   "isNonWorkingDay": false,
+   "isPlaceholder": true,
+   "isTemplate": false,
+   "isActive": true,
+   "note": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "time_offs_leave": [
+  {
+   "id": 2001,
+   "personId": 4,
+   "startDate": "2026-11-23",
+   "endDate": "2026-11-27",
+   "note": "Vacation",
+   "minutesPerDay": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2002,
+   "personId": 19,
+   "startDate": "2026-11-02",
+   "endDate": "2027-01-29",
+   "note": "Parental leave",
+   "minutesPerDay": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2003,
+   "personId": 26,
+   "startDate": "2026-12-14",
+   "endDate": "2026-12-31",
+   "note": "Vacation",
+   "minutesPerDay": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2004,
+   "personId": 29,
+   "startDate": "2026-12-21",
+   "endDate": "2027-01-01",
+   "note": "Vacation",
+   "minutesPerDay": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2005,
+   "personId": 36,
+   "startDate": "2026-12-21",
+   "endDate": "2027-01-04",
+   "note": "Vacation",
+   "minutesPerDay": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2006,
+   "personId": 13,
+   "startDate": "2026-12-21",
+   "endDate": "2026-12-24",
+   "note": "Vacation",
+   "minutesPerDay": null,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "time_offs_holidays": [
+  {
+   "id": 2501,
+   "personId": 1,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2502,
+   "personId": 2,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2503,
+   "personId": 3,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2504,
+   "personId": 4,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2505,
+   "personId": 5,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2506,
+   "personId": 6,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2507,
+   "personId": 7,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2508,
+   "personId": 8,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2509,
+   "personId": 9,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2510,
+   "personId": 10,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2511,
+   "personId": 11,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2512,
+   "personId": 12,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2513,
+   "personId": 13,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2514,
+   "personId": 14,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2515,
+   "personId": 15,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2516,
+   "personId": 16,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2517,
+   "personId": 17,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2518,
+   "personId": 18,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2519,
+   "personId": 19,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2520,
+   "personId": 20,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2521,
+   "personId": 21,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2522,
+   "personId": 22,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2523,
+   "personId": 23,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2524,
+   "personId": 24,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2525,
+   "personId": 25,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2526,
+   "personId": 26,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2527,
+   "personId": 27,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2528,
+   "personId": 28,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2529,
+   "personId": 29,
+   "startDate": "2026-11-26",
+   "endDate": "2026-11-26",
+   "note": "Thanksgiving Day",
+   "minutesPerDay": null,
+   "holidayId": 801,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2530,
+   "personId": 1,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2531,
+   "personId": 2,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2532,
+   "personId": 3,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2533,
+   "personId": 4,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2534,
+   "personId": 5,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2535,
+   "personId": 6,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2536,
+   "personId": 7,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2537,
+   "personId": 8,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2538,
+   "personId": 9,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2539,
+   "personId": 10,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2540,
+   "personId": 11,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2541,
+   "personId": 12,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2542,
+   "personId": 13,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2543,
+   "personId": 14,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2544,
+   "personId": 15,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2545,
+   "personId": 16,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2546,
+   "personId": 17,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2547,
+   "personId": 18,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2548,
+   "personId": 19,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2549,
+   "personId": 20,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2550,
+   "personId": 21,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2551,
+   "personId": 22,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2552,
+   "personId": 23,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2553,
+   "personId": 24,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2554,
+   "personId": 25,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2555,
+   "personId": 26,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2556,
+   "personId": 27,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2557,
+   "personId": 28,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2558,
+   "personId": 29,
+   "startDate": "2026-11-27",
+   "endDate": "2026-11-27",
+   "note": "Day after Thanksgiving",
+   "minutesPerDay": null,
+   "holidayId": 802,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2559,
+   "personId": 1,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2560,
+   "personId": 2,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2561,
+   "personId": 3,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2562,
+   "personId": 4,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2563,
+   "personId": 5,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2564,
+   "personId": 6,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2565,
+   "personId": 7,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2566,
+   "personId": 8,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2567,
+   "personId": 9,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2568,
+   "personId": 10,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2569,
+   "personId": 11,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2570,
+   "personId": 12,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2571,
+   "personId": 13,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2572,
+   "personId": 14,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2573,
+   "personId": 15,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2574,
+   "personId": 16,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2575,
+   "personId": 17,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2576,
+   "personId": 18,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2577,
+   "personId": 19,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2578,
+   "personId": 20,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2579,
+   "personId": 21,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2580,
+   "personId": 22,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2581,
+   "personId": 23,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2582,
+   "personId": 24,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2583,
+   "personId": 25,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2584,
+   "personId": 26,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2585,
+   "personId": 27,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2586,
+   "personId": 28,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2587,
+   "personId": 29,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 803,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2588,
+   "personId": 1,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2589,
+   "personId": 2,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2590,
+   "personId": 3,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2591,
+   "personId": 4,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2592,
+   "personId": 5,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2593,
+   "personId": 6,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2594,
+   "personId": 7,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2595,
+   "personId": 8,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2596,
+   "personId": 9,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2597,
+   "personId": 10,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2598,
+   "personId": 11,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2599,
+   "personId": 12,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2600,
+   "personId": 13,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2601,
+   "personId": 14,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2602,
+   "personId": 15,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2603,
+   "personId": 16,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2604,
+   "personId": 17,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2605,
+   "personId": 18,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2606,
+   "personId": 19,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2607,
+   "personId": 20,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2608,
+   "personId": 21,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2609,
+   "personId": 22,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2610,
+   "personId": 23,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2611,
+   "personId": 24,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2612,
+   "personId": 25,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2613,
+   "personId": 26,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2614,
+   "personId": 27,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2615,
+   "personId": 28,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2616,
+   "personId": 29,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 804,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2617,
+   "personId": 1,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2618,
+   "personId": 2,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2619,
+   "personId": 3,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2620,
+   "personId": 4,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2621,
+   "personId": 5,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2622,
+   "personId": 6,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2623,
+   "personId": 7,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2624,
+   "personId": 8,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2625,
+   "personId": 9,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2626,
+   "personId": 10,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2627,
+   "personId": 11,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2628,
+   "personId": 12,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2629,
+   "personId": 13,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2630,
+   "personId": 14,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2631,
+   "personId": 15,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2632,
+   "personId": 16,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2633,
+   "personId": 17,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2634,
+   "personId": 18,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2635,
+   "personId": 19,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2636,
+   "personId": 20,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2637,
+   "personId": 21,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2638,
+   "personId": 22,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2639,
+   "personId": 23,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2640,
+   "personId": 24,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2641,
+   "personId": 25,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2642,
+   "personId": 26,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2643,
+   "personId": 27,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2644,
+   "personId": 28,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2645,
+   "personId": 29,
+   "startDate": "2027-01-18",
+   "endDate": "2027-01-18",
+   "note": "Martin Luther King Jr. Day",
+   "minutesPerDay": null,
+   "holidayId": 805,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2646,
+   "personId": 1,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2647,
+   "personId": 2,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2648,
+   "personId": 3,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2649,
+   "personId": 4,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2650,
+   "personId": 5,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2651,
+   "personId": 6,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2652,
+   "personId": 7,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2653,
+   "personId": 8,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2654,
+   "personId": 9,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2655,
+   "personId": 10,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2656,
+   "personId": 11,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2657,
+   "personId": 12,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2658,
+   "personId": 13,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2659,
+   "personId": 14,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2660,
+   "personId": 15,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2661,
+   "personId": 16,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2662,
+   "personId": 17,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2663,
+   "personId": 18,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2664,
+   "personId": 19,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2665,
+   "personId": 20,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2666,
+   "personId": 21,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2667,
+   "personId": 22,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2668,
+   "personId": 23,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2669,
+   "personId": 24,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2670,
+   "personId": 25,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2671,
+   "personId": 26,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2672,
+   "personId": 27,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2673,
+   "personId": 28,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2674,
+   "personId": 29,
+   "startDate": "2027-02-15",
+   "endDate": "2027-02-15",
+   "note": "Presidents' Day",
+   "minutesPerDay": null,
+   "holidayId": 806,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2675,
+   "personId": 30,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2676,
+   "personId": 31,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2677,
+   "personId": 32,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2678,
+   "personId": 33,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2679,
+   "personId": 34,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2680,
+   "personId": 35,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2681,
+   "personId": 36,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2682,
+   "personId": 37,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2683,
+   "personId": 38,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2684,
+   "personId": 39,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2685,
+   "personId": 40,
+   "startDate": "2026-12-25",
+   "endDate": "2026-12-25",
+   "note": "Christmas Day",
+   "minutesPerDay": null,
+   "holidayId": 811,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2686,
+   "personId": 30,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2687,
+   "personId": 31,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2688,
+   "personId": 32,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2689,
+   "personId": 33,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2690,
+   "personId": 34,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2691,
+   "personId": 35,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2692,
+   "personId": 36,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2693,
+   "personId": 37,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2694,
+   "personId": 38,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2695,
+   "personId": 39,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2696,
+   "personId": 40,
+   "startDate": "2026-12-28",
+   "endDate": "2026-12-28",
+   "note": "Boxing Day (substitute day)",
+   "minutesPerDay": null,
+   "holidayId": 812,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2697,
+   "personId": 30,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2698,
+   "personId": 31,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2699,
+   "personId": 32,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2700,
+   "personId": 33,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2701,
+   "personId": 34,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2702,
+   "personId": 35,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2703,
+   "personId": 36,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2704,
+   "personId": 37,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2705,
+   "personId": 38,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2706,
+   "personId": 39,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  },
+  {
+   "id": 2707,
+   "personId": 40,
+   "startDate": "2027-01-01",
+   "endDate": "2027-01-01",
+   "note": "New Year's Day",
+   "minutesPerDay": null,
+   "holidayId": 813,
+   "createdAt": "2026-10-01T09:00:00.000Z",
+   "updatedAt": "2026-10-01T09:00:00.000Z"
+  }
+ ],
+ "holiday_groups": [
+  {
+   "id": 701,
+   "name": "United States",
+   "countryCode": "US",
+   "countryName": "United States",
+   "regionName": null,
+   "holidayIds": [
+    801,
+    802,
+    803,
+    804,
+    805,
+    806
+   ]
+  },
+  {
+   "id": 702,
+   "name": "United Kingdom",
+   "countryCode": "GB",
+   "countryName": "United Kingdom",
+   "regionName": null,
+   "holidayIds": [
+    811,
+    812,
+    813
+   ]
+  }
+ ],
+ "holidays": [
+  {
+   "id": 801,
+   "name": "Thanksgiving Day",
+   "date": "2026-11-26",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 802,
+   "name": "Day after Thanksgiving",
+   "date": "2026-11-27",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 803,
+   "name": "Christmas Day",
+   "date": "2026-12-25",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 804,
+   "name": "New Year's Day",
+   "date": "2027-01-01",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 805,
+   "name": "Martin Luther King Jr. Day",
+   "date": "2027-01-18",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 806,
+   "name": "Presidents' Day",
+   "date": "2027-02-15",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 811,
+   "name": "Christmas Day",
+   "date": "2026-12-25",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 812,
+   "name": "Boxing Day (substitute day)",
+   "date": "2026-12-28",
+   "observed": null,
+   "type": "public"
+  },
+  {
+   "id": 813,
+   "name": "New Year's Day",
+   "date": "2027-01-01",
+   "observed": null,
+   "type": "public"
+  }
+ ]
+}
