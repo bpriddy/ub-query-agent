@@ -53,6 +53,6 @@ def test_off_the_executor_is_offered_exactly_todays_tools_and_prompt():
 
 def test_on_runn_is_offered_and_explained_and_the_root_is_the_ask_turn():
     on = _probe("1")
-    assert on["tools"] == [*on["all"], "runn_allocations"]
+    assert on["tools"] == [*on["all"], "runn_allocations", "runn_capacity"]
     assert on["runn_in_prompt"] is True
     assert on["root"] == "AskTurn"

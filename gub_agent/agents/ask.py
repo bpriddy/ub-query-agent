@@ -48,7 +48,7 @@ from google.adk.agents.invocation_context import InvocationContext
 from google.adk.events import Event, EventActions
 
 from .. import config
-from ..schemas.answer import AnswerPayload
+from ..schemas.answer import AnswerPayload, answer_budgets
 from ..schemas.ask import (
     SOURCES,
     AskError,
@@ -73,7 +73,7 @@ PROGRESS_KEY = "progress"
 ASK_ANSWER_KEY = "ask_answer"
 
 #: The source behind each tool that does not read UB. Every other tool reads UB.
-TOOL_SOURCE: dict[str, Source] = {"runn_allocations": "runn"}
+TOOL_SOURCE: dict[str, Source] = {"runn_allocations": "runn", "runn_capacity": "runn"}
 
 #: The UB record type each tool's rows are. `find` and `org_query` span types,
 #: so their rows carry none.
@@ -109,8 +109,10 @@ TOOL_PHRASES: dict[str, str] = {
     "similar_to_idea": "Searching ideas like this one",
     "find_files": "Searching file names",
     "runn_allocations": "Checking staffing in Runn",
+    "runn_capacity": "Working out capacity in Runn",
     "float_allocations": "Checking the schedule in Float",
     "float_availability": "Checking capacity in Float",
+    "float_capacity": "Working out capacity in Float",
 }
 
 SOURCE_NAMES: dict[Source, str] = {"ub": "UB", "runn": "Runn", "workspace": "Workspace"}
@@ -452,13 +454,20 @@ class AskTurn(BaseAgent):
                 actions=EventActions(state_delta=ws.session_delta),
             )
 
-        response = build_response(
-            AnswerPayload.model_validate(payload),
-            evidence_index(ctx.invocation_id),
-            log,
-            conversation_id,
-            workspace_facts=ws.facts,
-        )
+        # The format gate accepted this payload, possibly under a rundown's
+        # wider word budgets, which it alone decides. Read it (and the
+        # response that carries its blocks) under those: every rundown budget
+        # is at least the standard one, so nothing the gate passed fails here.
+        # Under the standard budgets a 30-word bullet in a rundown used to
+        # crash the turn after the gate had passed it (Runn eval, run 1).
+        with answer_budgets(rundown=True):
+            response = build_response(
+                AnswerPayload.model_validate(payload),
+                evidence_index(ctx.invocation_id),
+                log,
+                conversation_id,
+                workspace_facts=ws.facts,
+            )
         for source, report in response.sources.items():
             if report.status == "skipped":
                 continue

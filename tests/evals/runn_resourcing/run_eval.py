@@ -4,13 +4,16 @@ run_eval.py — run the Runn resourcing questions through the real `/ask` agent.
     GOOGLE_CLOUD_PROJECT=os-test-491819 \\
         .venv/bin/python -m tests.evals.runn_resourcing.run_eval --out /tmp/runn-eval
 
+`--source float` runs the Float subset (questions.FLOAT_SUBSET) against the
+same agency in Float, with FLOAT_SOURCE on and the Runn relay not configured.
+
 What it does, per question (questions.py):
   * builds the real root agent with ASK_CONTRACT=1 (the `/ask` engine's tree:
     router, dispatcher, executor with `runn_allocations`, format gate, critic)
     and runs it on an ADK InMemoryRunner, one session per chain, so a
     follow-up reads the turn before it;
   * points every UB tool at a localhost fake UB (fake_ub.py) serving the
-    fixtures through today's Runn relay routes, and nothing more;
+    fixtures through the relay's routes, and nothing more;
   * pins "today" to world.TODAY in the agent's instructions;
   * uses the real Gemini model on Vertex with application-default
     credentials (GOOGLE_CLOUD_PROJECT, location global, as config.py pins);
@@ -37,9 +40,23 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+
+# Which planner the fake UB has: Runn (the full question set), or Float with
+# Runn not configured (the Float subset). Read before gub_agent is imported,
+# because FLOAT_SOURCE decides at import whether the Float tools are offered.
+def _source(argv: list[str]) -> str:
+    for i, arg in enumerate(argv):
+        if arg == "--source=float" or (arg == "--source" and argv[i + 1 : i + 2] == ["float"]):
+            return "float"
+    return "runn"
+
+
+SOURCE = _source(sys.argv)
+
 # Before gub_agent is imported: config.py reads these at import.
 os.environ.setdefault("GUB_BASE_URL", "http://127.0.0.1:9")  # replaced once the fake is up
 os.environ["ASK_CONTRACT"] = "1"
+os.environ["FLOAT_SOURCE"] = "1" if SOURCE == "float" else "0"
 os.environ["GUB_SERVICE_JWT"] = "eval"  # a label, not a credential: the fake UB accepts any
 os.environ["SANDBOX_ENABLED"] = "0"
 os.environ["FILE_SEARCH_ENABLED"] = "0"
@@ -139,19 +156,20 @@ async def _judge(client: Any, q: dict, prior: list[dict], record: dict) -> dict:
             f"Context: {truth['note']}"
         )
     )
+    planner = "Float" if SOURCE == "float" else "Runn"
     prompt = f"""You grade an AI assistant's answer to a resource manager's question about
-staffing in Runn (the resource planner). Today is {world.TODAY.isoformat()} (a Wednesday).
+staffing in {planner} (the resource planner). Today is {world.TODAY.isoformat()} (a Wednesday).
 
 Earlier turns in this conversation: {json.dumps([p["text"] for p in prior]) or "none"}
 Question: {q["text"]}
 
-GROUND TRUTH (computed from the full Runn data): {truth_text}
+GROUND TRUTH (computed from the full {planner} data): {truth_text}
 
 The assistant's tool calls (name, arguments, start of the result):
 {json.dumps(record["tool_calls"], indent=0)[:6000]}
 
-The HTTP calls those tools made to UB (UB's own records under /org, Runn under
-/relay/runn; the fast path calls UB in code, so this list can be longer):
+The HTTP calls those tools made to UB (UB's own records under /org, the planner under
+/relay/runn or /relay/float; the fast path calls UB in code, so this list can be longer):
 {json.dumps(record["relay_calls"], indent=0)[:3000]}
 
 The assistant's answer:
@@ -164,7 +182,7 @@ Grade it:
   of acceptable names are fine; honest caveats are fine).
 - partial: some of it is right, but it misses core people/facts or adds a wrong one.
 - fail: wrong, misleading, made up, or no real answer when one was possible. An honest
-  "I can't tell from the data I have" is a fail too (the data exists in Runn), but give it
+  "I can't tell from the data I have" is a fail too (the data exists in {planner}), but give it
   the failure type that says WHY it could not answer.
 failure_type: the main reason it is not a pass ("none" for a pass), one of {FAILURE_TYPES}.
 Use data_not_exposed / cannot_enumerate when the tools it had could not return what was
@@ -244,16 +262,22 @@ async def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--only", nargs="*", help="question ids (their whole chains run)")
     parser.add_argument("--concurrency", type=int, default=4)
     parser.add_argument("--no-judge", action="store_true")
+    parser.add_argument(
+        "--source",
+        choices=["runn", "float"],
+        default="runn",
+        help="runn: every question, Runn configured; float: the Float subset, Runn not",
+    )
     args = parser.parse_args(argv)
 
     data = world.load()
     truth = Truth(data)
-    qs = questions_module.build(truth)
+    qs = (questions_module.build_float if SOURCE == "float" else questions_module.build)(truth)
     if args.only:
         chains = {q["chain"] for q in qs if q["id"] in args.only}
         qs = [q for q in qs if q["chain"] in chains]
 
-    fake = FakeUb(data)
+    fake = FakeUb(data, sources=(SOURCE,))
     await fake.start()
 
     from google import genai
@@ -336,7 +360,7 @@ def summary(rows: list[dict]) -> str:
     for r in rows:
         counts[r["judge"]["verdict"]] = counts.get(r["judge"]["verdict"], 0) + 1
     lines = [
-        f"# Runn resourcing eval — {world.TODAY.isoformat()} pinned",
+        f"# Runn resourcing eval ({SOURCE}) — {world.TODAY.isoformat()} pinned",
         "",
         f"Score: {total:g}/{len(rows)} (pass 1, partial 0.5) — "
         + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())),

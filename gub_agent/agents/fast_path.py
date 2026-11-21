@@ -149,6 +149,22 @@ class _ToolShim:
     def __init__(self, ctx: InvocationContext) -> None:
         self.state = ctx.session.state
         self.invocation_id = ctx.invocation_id
+        #: The user's previous message in this session, for a follow-up
+        #: ("Jane Park, in LA.") whose subject the earlier turn set.
+        self.prior_question = _prior_user_text(ctx)
+
+
+def _prior_user_text(ctx: Any) -> str:
+    """The user's message before this invocation's, or ""."""
+    session = getattr(ctx, "session", None)
+    for event in reversed(getattr(session, "events", None) or []):
+        if event.author != "user" or event.invocation_id == ctx.invocation_id:
+            continue
+        parts = event.content.parts if event.content and event.content.parts else []
+        text = "".join(p.text for p in parts if getattr(p, "text", None))
+        if text.strip():
+            return text
+    return ""
 
 
 def _where(shim: Any) -> tuple[Any, str]:
@@ -596,7 +612,49 @@ async def _account(decision: RouterDecision, shim: _ToolShim, question: str) -> 
     return Lookup(evidence=[("get_account_overview", response)], tool="get_account_overview")
 
 
+# A question about a person's TIME — bookings, availability, leave — rather
+# than who they are. On the /ask engine, where Runn is a source, the answer
+# lives in the planner, which the fast path's one UB lookup never reads: a
+# profile would answer "is Marcus free?" with his job title, or worse, as
+# "nothing booked". Those turns go to the deep path, which has the planner
+# tools. Run 1 of the Runn eval (#114): all seven such questions failed here.
+_STAFFING = re.compile(
+    r"\b(free|availab\w*|unavailab\w*|booked|overbooked|underbooked|booking\w*|busy|"
+    r"capacity|allocat\w*|staffed|scheduled?|utili[sz]\w*|bench|tentative|"
+    r"leave|holiday\w*|vacation|time off|day off|days off|out of office|ooo|"
+    r"back from|back on|working on|workload|hours|part[- ]time|"
+    r"on (?:this|next|that) (?:week|month)|"
+    r"(?:people|who|who's|anyone|everyone)\s+(?:is\s+|are\s+)?(?:on|staffed)\b|"
+    r"(?:off|out) (?:on|next|this|over|until|till|today|tomorrow)|"
+    r"cover for|take on|pick up|start on)",
+    re.IGNORECASE,
+)
+
+
+def is_staffing_question(question: str) -> bool:
+    """Is this about how a person's time is planned (see `_STAFFING`)?"""
+    return bool(_STAFFING.search(question or ""))
+
+
+#: A message this short is read as a follow-up to the one before it.
+FOLLOW_UP_MAX_WORDS = 8
+
+
+def _declines_staffing(question: str, shim: Any = None) -> bool:
+    """On the /ask engine: a staffing question, or a short follow-up to one
+    ("What's Jane on next week?" → "Jane Park, in LA.")."""
+    if not config.ASK_CONTRACT:
+        return False
+    if is_staffing_question(question):
+        return True
+    prior = getattr(shim, "prior_question", "") or ""
+    return len(question.split()) <= FOLLOW_UP_MAX_WORDS and is_staffing_question(prior)
+
+
 async def _staff(decision: RouterDecision, shim: _ToolShim, question: str) -> Lookup | None:
+    if _declines_staffing(question, shim):
+        logger.info("fast_path: declined staffing question (inv=%s) tenant=%s", *_where(shim))
+        return None
     resolution = await _resolve(decision.entity_surface, ("staff",), shim)
     if resolution.kind == "ambiguous":
         return None
@@ -623,6 +681,10 @@ async def _staff(decision: RouterDecision, shim: _ToolShim, question: str) -> Lo
 
 
 async def _count_or_rank(decision: RouterDecision, shim: _ToolShim, question: str) -> Lookup | None:
+    if _declines_staffing(question, shim):
+        # "how many people are on Vela?" counts bookings, not UB staff rows.
+        logger.info("fast_path: declined staffing question (inv=%s) tenant=%s", *_where(shim))
+        return None
     args = await org_query_args(decision, shim, question)
     if args is None:
         return None
@@ -683,7 +745,9 @@ async def declined_before_lookup(
       `entity_id` is ignored), and `_resolve` answers "none" for a blank
       surface without a call;
     - staff_lookup: a FALSY surface only — a whitespace-only one still reaches
-      `search_staff`, whose answer nobody can predict;
+      `search_staff`, whose answer nobody can predict — or, on the /ask
+      engine, a question about the person's time (`is_staffing_question`),
+      which `_staff` declines before any call (as `_count_or_rank` does);
     - campaign_*: a bot-supplied id whose type is not campaign (`_campaign`
       hands the turn over before any call) — "entity_type" when the prefix
       names the type, "entity_type_unknown" when no prefix vouched for the id —
@@ -703,6 +767,8 @@ async def declined_before_lookup(
     if lookup is _account:
         return "no_surface" if blank else None
     if lookup is _staff:
+        if _declines_staffing(question, shim):
+            return "staffing"
         return "no_surface" if not surface else None
     if lookup is _campaign:
         if decision.entity_id:
@@ -711,6 +777,8 @@ async def declined_before_lookup(
             return TYPED_ID_REASON if decision.entity_type else UNVOUCHED_ID_REASON
         return "no_surface" if blank else None
     if lookup is _count_or_rank:
+        if _declines_staffing(question, shim):
+            return "staffing"
         why: list[str] = []
         args = await org_query_args(decision, shim, question, resolve=_resolved_offline, why=why)
         if args is not None:

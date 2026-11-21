@@ -15,6 +15,39 @@ remaining exposures) lives in internal notes instead of this public log.
 
 ## [Unreleased]
 
+### Added (2026-11-21) — staffing capacity from Runn and Float
+
+- **`runn_capacity(start, end, office?, role?, skill?, team?, person?)`**
+  and **`float_capacity(...)`** (same interface, same answer): one call
+  reads the planner in bulk through UB's relay (paged, at most 4 requests
+  at a time) and works out each person's capacity (contract hours on their
+  working days, less leave, rostered days off and public holidays),
+  confirmed, tentative and free hours, with totals and whole name lists
+  (on leave, over capacity, nothing booked, part-time). Office comes from
+  UB staff joined on email, then on normalized name (flagged). UB staff
+  with no planner record are listed as "no record", never as free. The
+  shared arithmetic is in `gub_agent/tools/capacity.py`.
+- **`runn_allocations`**: confirmed vs tentative, placeholders, role names,
+  the person's working days, their leave, and a project summary (people
+  and hours a day). A date range alone is enough. A UB email that Runn
+  holds differently is matched by the name it spells, with a note.
+- **Routing**: on the `/ask` engine, the fast path declines staffing
+  questions about a named person (free, booked, on, leave, capacity), and
+  short follow-ups to one, so they reach the deep path and the planner.
+- **Prompt**: ask which person or project when ambiguous, state the window's
+  working days and holidays, keep tentative work apart, never call someone
+  with no planner record free, and use the capacity tools for totals.
+- **Eval** (`tests/evals/runn_resourcing/`): the fake UB serves the new
+  Runn routes and a Float relay; `--source float` runs 16 questions against
+  the same agency in Float. Live run: 31.5/37 on Runn (9.5/37 before) and
+  15/16 on Float.
+
+### Fixed (2026-11-21)
+
+- **An accepted rundown no longer crashes the `/ask` turn.** The format gate
+  can pass a payload under the rundown's wider word budgets. `AskTurn` then
+  re-validated it under the standard ones, and a 30-word bullet raised.
+
 ### Added (2026-11-21)
 
 - **Similar-ideas tools** (UB D40): `similar_ideas(facets, …)` posts weighted

@@ -4,6 +4,9 @@ float.py — Float (float.com) as a resourcing source for `/ask`.
 Tools:
   float_allocations   — who is scheduled on what, and for how many hours a day
   float_availability  — a person's capacity, scheduled hours and time off
+  float_capacity      — everyone's capacity, bookings and free hours over a
+                        window, by office, role, skill (tag) or team
+                        (department); the same answer shape as runn_capacity
 
 Float is read through UB's relay (`/relay/float/*`), as the user, so the
 "Float reader" grant is checked in UB and nowhere else. It mirrors runn.py:
@@ -24,6 +27,20 @@ from datetime import date, timedelta
 from typing import Any
 
 from ._client import gub_get
+from .capacity import (
+    Booking,
+    Person,
+    Scope,
+    TimeOff,
+    bounded,
+    capacity_answer,
+    load_of,
+    parse_window,
+    resolve_office,
+    term_matches,
+    to_date,
+    ub_directory,
+)
 
 RELAY = "/relay/float"
 PAGE = 200
@@ -45,10 +62,13 @@ def _is_error(response: Any) -> bool:
     return isinstance(response, dict) and response.get("error") is True
 
 
-async def _all(path: str, tool_context: Any, **params: Any) -> list[dict] | dict:
-    """Every row of a list endpoint, up to MAX_PAGES pages; an error dict on failure."""
+async def _collect(
+    path: str, tool_context: Any, max_pages: int = MAX_PAGES, **params: Any
+) -> tuple[list[dict], bool] | dict:
+    """Every row of a list endpoint, up to `max_pages` pages, and whether it
+    was cut short; an error dict on failure."""
     rows: list[dict] = []
-    for page_no in range(1, MAX_PAGES + 1):
+    for page_no in range(1, max_pages + 1):
         page = await gub_get(path, tool_context, page=page_no, **{"per-page": PAGE}, **params)
         if _is_error(page):
             return page
@@ -56,8 +76,14 @@ async def _all(path: str, tool_context: Any, **params: Any) -> list[dict] | dict
         rows.extend(values)
         page_count = (page.get("pagination") or {}).get("pageCount")
         if len(values) < PAGE or (isinstance(page_count, int) and page_no >= page_count):
-            break
-    return rows
+            return rows, False
+    return rows, True
+
+
+async def _all(path: str, tool_context: Any, **params: Any) -> list[dict] | dict:
+    """Every row of a list endpoint, up to MAX_PAGES pages; an error dict on failure."""
+    got = await _collect(path, tool_context, **params)
+    return got if _is_error(got) else got[0]
 
 
 def _range(start_date: str | None, end_date: str | None) -> dict[str, str]:
@@ -73,6 +99,13 @@ def _range(start_date: str | None, end_date: str | None) -> dict[str, str]:
     except ValueError:
         pass  # sent as given; the relay answers 400 FLOAT_BAD_QUERY
     return {"start_date": start_date or "", "end_date": end_date or ""}
+
+
+def _no_record(email: str) -> str:
+    return (
+        f"Float has no person with the email {email}. Their time is not scheduled in Float: "
+        "do not call them free or unbooked; say they have no Float record."
+    )
 
 
 def _people_of(row: dict) -> list[int]:
@@ -159,7 +192,7 @@ async def float_allocations(
         if found is None:
             return {
                 "allocations": [],
-                "note": f"Float has no person with the email {person_email}.",
+                "note": _no_record(person_email),
             }
         person = found
         filters["people_id"] = person["people_id"]
@@ -280,7 +313,7 @@ async def float_availability(
         if _is_error(found):
             return found
         if found is None:
-            return {"people": [], "note": f"Float has no person with the email {person_email}."}
+            return {"people": [], "note": _no_record(person_email)}
         person = found
         params["people_id"] = person["people_id"]
 
@@ -340,4 +373,242 @@ async def float_availability(
     return result
 
 
-FLOAT_TOOLS = [float_allocations, float_availability]
+# ── float_capacity ────────────────────────────────────────────────────────────
+
+CAPACITY_MAX_PAGES = 25
+#: Float's task and time-off statuses (developer.float.com).
+TENTATIVE, CANCELED = 1, 4
+#: Float project statuses that are not yet confirmed work: draft, tentative.
+UNCONFIRMED_PROJECT = {0, 1}
+DEFAULT_DAY_MINUTES = 480
+
+
+def _tag_names(person: dict) -> list[str]:
+    out = []
+    for t in person.get("tags") or []:
+        name = t.get("name") if isinstance(t, dict) else t
+        if isinstance(name, str) and name:
+            out.append(name)
+    return out
+
+
+def _week_pattern(person: dict) -> list[float] | None:
+    """Minutes Monday..Sunday from `work_days_hours` (Float sends Sun..Sat),
+    or None for the company's default week."""
+    hours = person.get("work_days_hours")
+    if not isinstance(hours, list) or len(hours) != 7 or not any(hours):
+        return None
+    return [float(hours[(i + 1) % 7] or 0) * 60 for i in range(7)]
+
+
+def _pattern(week: list[float], start: date | None, end: date | None):
+    def minutes(day: date) -> float:
+        if (start and day < start) or (end and day > end):
+            return 0
+        return week[day.weekday()]
+
+    return minutes
+
+
+async def float_capacity(
+    start: str,
+    end: str,
+    office: str | None = None,
+    role: str | None = None,
+    skill: str | None = None,
+    team: str | None = None,
+    person: str | None = None,
+    tool_context: Any = None,
+) -> dict:
+    """
+    Work out, from Float, how much time people have over a date range: each
+    person's capacity (their working days and hours, less time off and
+    public holidays, as Float reports it), their confirmed and tentative
+    scheduled hours, and their free hours, with totals. All the arithmetic is
+    done here; the answer has the same shape as `runn_capacity`.
+
+    Use this for: who is free or available, who has capacity, who is over
+    capacity or underbooked, who is on the bench, how booked or utilized a
+    team or office is, who is part-time, who is off in a period, and who
+    could cover for someone. One call covers everyone; filter by office,
+    role, skill or team as the question says.
+
+    Examples:
+    - "who's free for art direction in LA next week?" → start="2026-11-23",
+      end="2026-11-27", office="LA", role="art director"
+    - "how booked is the Strategy department in Q1?" → start="2027-01-01",
+      end="2027-03-31", team="Strategy"
+
+    Args:
+        start: First day of the window (YYYY-MM-DD)
+        end: Last day of the window (YYYY-MM-DD), at most about six months on
+        office: A UB office as the user said it ("LA", "New York", "London")
+        role: A job role as the user said it ("art director", "strategy")
+        skill: A skill, matched to Float's people tags ("motion design")
+        team: A Float department ("Design")
+        person: One person, by work email or full name, for a question about
+            them alone
+
+    Returns:
+        The same as `runn_capacity`: 'start', 'end', 'weekdays',
+        'public_holidays', 'totals', 'lists', 'people' (one row
+        each, most free first, with capacity_h, confirmed_h, tentative_h,
+        free_h, free_if_tentative_drops_h, booked_pct, works, leave,
+        holidays, contract_ends, projects, flags), 'no_record' (UB staff in
+        scope with no Float record: NOT free), 'warnings', or an 'error'
+        dict with its 'code'.
+    """
+    window = parse_window(start, end)
+    if isinstance(window, dict):
+        return window
+    office_rec, err = await resolve_office(office, tool_context)
+    if err is not None:
+        return err
+
+    span = {"start_date": window.start.isoformat(), "end_date": window.end.isoformat()}
+    pages = CAPACITY_MAX_PAGES
+    fetched = await bounded(
+        [
+            lambda: _collect(f"{RELAY}/people", tool_context, pages, active="1"),
+            lambda: gub_get(f"{RELAY}/reports/people", tool_context, **span),
+            lambda: _collect(f"{RELAY}/tasks", tool_context, pages, **span),
+            lambda: _collect(f"{RELAY}/projects", tool_context, pages),
+            lambda: _collect(f"{RELAY}/roles", tool_context, pages),
+            lambda: _collect(f"{RELAY}/timeoffs", tool_context, pages, **span),
+            lambda: _collect(f"{RELAY}/public-holidays", tool_context, pages, **span),
+            lambda: _collect(f"{RELAY}/holidays", tool_context, pages),
+            lambda: ub_directory(tool_context, office_rec),
+        ]
+    )
+    (people_r, report_r, tasks_r, projects_r, roles_r, timeoffs_r, public_r, team_hol_r,
+     directory) = fetched  # fmt: skip
+    for required in (people_r, tasks_r, projects_r):
+        if _is_error(required):
+            return required
+    if _is_error(directory):
+        return directory
+
+    warnings: list[str] = []
+    if any(r[1] for r in (people_r, tasks_r) if not _is_error(r)):
+        warnings.append("Float returned more rows than one call reads; totals may be short.")
+
+    def optional(result: Any, what: str) -> list[dict]:
+        if _is_error(result):
+            warnings.append(f"{what} could not be read from Float ({result.get('status')}).")
+            return []
+        return result[0] if isinstance(result, tuple) else result.get("values") or []
+
+    report = {r.get("people_id"): r for r in optional(report_r, "The people report")}
+    roles = {r.get("id"): r.get("name") for r in optional(roles_r, "Roles")}
+    timeoffs = optional(timeoffs_r, "Time off")
+    projects = {p.get("project_id"): p for p in projects_r[0]}
+
+    # Public holidays by region, and the company's own (team) holidays.
+    calendars: dict[str, list[tuple[date, str]]] = {}
+    for h in optional(public_r, "Public holidays"):
+        cal = f"region {h.get('region')}"
+        for raw in h.get("dates") or []:
+            if day := to_date(raw):
+                calendars.setdefault(cal, []).append((day, h.get("name") or "Public holiday"))
+    company: list[tuple[date, str]] = []
+    for h in optional(team_hol_r, "Company holidays"):
+        first, last = to_date(h.get("date")), to_date(h.get("end_date")) or to_date(h.get("date"))
+        while first and last and first <= last:
+            company.append((first, h.get("name") or "Company holiday"))
+            first = date.fromordinal(first.toordinal() + 1)
+    if company:
+        calendars["company"] = company
+
+    off_by_person: dict[int, list[TimeOff]] = {}
+    for t in timeoffs:
+        s, e = to_date(t.get("start_date")), to_date(t.get("end_date"))
+        if not (s and e):
+            continue
+        whole = t.get("full_day") == 1 or not t.get("hours")
+        minutes = None if whole else float(t["hours"]) * 60
+        for pid in _people_of(t):
+            off_by_person.setdefault(pid, []).append(TimeOff(s, e, "leave", minutes))
+
+    tasks_by_person: dict[int, list[Booking]] = {}
+    for t in tasks_r[0]:
+        s, e = to_date(t.get("start_date")), to_date(t.get("end_date"))
+        status = t.get("status")
+        if not (s and e) or status == CANCELED:
+            continue
+        proj = projects.get(t.get("project_id")) or {}
+        if proj.get("status") == CANCELED:
+            continue
+        confirmed = status != TENTATIVE and proj.get("status") not in UNCONFIRMED_PROJECT
+        for pid in _people_of(t):
+            tasks_by_person.setdefault(pid, []).append(
+                Booking(s, e, float(t.get("hours") or 0) * 60, confirmed, proj.get("name"))
+            )
+
+    scope = Scope(office=office_rec, role=role, skill=skill, team=team, person=person)
+    people = [p for p in people_r[0] if p.get("people_type_id") != 3]  # 3 = placeholder
+    if skill:
+        scope.skill_keys = {
+            p.get("people_id") for p in people if any(term_matches(skill, t) for t in _tag_names(p))
+        }
+
+    planned: list[Person] = []
+    for p in people:
+        pid = p.get("people_id")
+        hired, leaves = to_date(p.get("start_date")), to_date(p.get("end_date"))
+        cal = f"region {p.get('region_id')}" if p.get("region_id") else None
+        off = list(off_by_person.get(pid, []))
+        for c in (cal, "company"):
+            off += [TimeOff(d, d, "holiday", None, n) for d, n in calendars.get(c or "", [])]
+        rep = report.get(pid) or {}
+        reported = rep.get("capacity")
+        week = _week_pattern(p)
+        if week is None:
+            # The company's default week, Monday to Friday. Its hours are not
+            # in the API; the people report's capacity over the window gives
+            # them, else a standard 8 h day.
+            day_minutes = DEFAULT_DAY_MINUTES
+            if isinstance(reported, (int, float)) and reported > 0:
+                probe = Person(
+                    key=pid,
+                    name="",
+                    email=None,
+                    pattern=_pattern([1, 1, 1, 1, 1, 0, 0], hired, leaves),
+                    time_off=off,
+                )
+                days = load_of(probe, window).capacity
+                if days:
+                    day_minutes = round(reported * 60 / days / 15) * 15
+            week = [day_minutes] * 5 + [0, 0]
+        dept = p.get("department") or {}
+        planned.append(
+            Person(
+                key=pid,
+                name=p.get("name") or f"Float person {pid}",
+                email=p.get("email"),
+                pattern=_pattern(week, hired, leaves),
+                role=roles.get(p.get("role_id")) or p.get("job_title"),
+                team=dept.get("name") if isinstance(dept, dict) else None,
+                planner_offices=_tag_names(p),
+                time_off=off,
+                bookings=tasks_by_person.get(pid, []),
+                employment_end=leaves,
+                calendar=cal,
+                reported_capacity=reported * 60 if isinstance(reported, (int, float)) else None,
+            )
+        )
+    if "company" in calendars:
+        for person in planned:
+            person.calendar = person.calendar or "company"
+
+    return capacity_answer(
+        source="Float",
+        people=planned,
+        directory=directory,
+        window=window,
+        scope=scope,
+        calendars=calendars,
+        warnings=warnings,
+    )
+
+
+FLOAT_TOOLS = [float_allocations, float_availability, float_capacity]

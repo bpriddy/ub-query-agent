@@ -613,3 +613,35 @@ def build(t: Truth) -> list[dict]:
         },
     )
     return q
+
+
+# The Float run: the same agency in Float (float_world.py), Runn not
+# configured, a representative subset of the questions above — each failure
+# type of run 1, by chain so follow-ups keep the turn they follow. The truth
+# is the same: the Float fixtures are built from the Runn ones.
+FLOAT_SUBSET = (
+    "avail-ad-la-next-week",
+    "avail-ad-la-week-after",
+    "over-nyc-month",
+    "over-la-month-followup",
+    "free-design-3wk",
+    "leave-december",
+    "strategy-q1",
+    "marcus-free",
+    "london-tentative",
+    "producers-friday",
+    "harry-next-week",
+    "kai-booked",
+    "part-time-design",
+    "london-util-month",
+    "cover-theo",
+    "nyc-strategy-week-after-next",
+)
+
+
+def build_float(t: Truth) -> list[dict]:
+    return [
+        {**q, "id": f"float-{q['id']}", "chain": f"float-{q['chain']}"}
+        for q in build(t)
+        if q["id"] in FLOAT_SUBSET
+    ]
