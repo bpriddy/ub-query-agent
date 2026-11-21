@@ -28,6 +28,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 source "$REPO_ROOT/deployment/github-env.sh"
+source "$REPO_ROOT/deployment/connect-client.sh"
 
 GH_ENV="${1:?usage: deployment/deploy-service.sh <prod|stage|dev>}"
 
@@ -51,14 +52,16 @@ GRANT_KMS_KEY="$(need QUERY_SERVICE_GRANT_KMS_KEY)"
 PROD_ENGINE_ID="$(prod_engine_id)"
 # Optional (connect page and Workspace, #93 / #90): see the workflow.
 PUBLIC_URL="$(gh_env_var "$GH_ENV" QUERY_SERVICE_PUBLIC_URL)"
+CONNECT_CLIENT="$(gh_env_var "$GH_ENV" QUERY_SERVICE_CONNECT_CLIENT)"
 GOOGLE_CLIENT_ID_SECRET="$(gh_env_var "$GH_ENV" QUERY_SERVICE_GOOGLE_CLIENT_ID_SECRET)"
 GOOGLE_CLIENT_SECRET_SECRET="$(gh_env_var "$GH_ENV" QUERY_SERVICE_GOOGLE_CLIENT_SECRET_SECRET)"
 GOOGLE_HOSTED_DOMAIN="$(gh_env_var "$GH_ENV" QUERY_SERVICE_GOOGLE_HOSTED_DOMAIN)"
-if [[ -n "$GOOGLE_CLIENT_ID_SECRET" || -n "$GOOGLE_CLIENT_SECRET_SECRET" ]] \
-   && [[ -z "$GOOGLE_CLIENT_ID_SECRET" || -z "$GOOGLE_CLIENT_SECRET_SECRET" ]]; then
-  echo "error: set both QUERY_SERVICE_GOOGLE_CLIENT_ID_SECRET and ..._CLIENT_SECRET_SECRET, or neither" >&2
-  exit 1
-fi
+resolve_connect_client || exit 1
+case "$PUBLIC_URL" in
+  https://*/*) echo "error: QUERY_SERVICE_PUBLIC_URL must be UB's origin, with no path or trailing slash" >&2; exit 1 ;;
+  ""|https://*) ;;
+  *) echo "error: QUERY_SERVICE_PUBLIC_URL must be https://" >&2; exit 1 ;;
+esac
 
 # Today the service talks to the SANDBOX engine, never the engine the
 # production Chat bot uses. Moving /ask to the prod engine is

@@ -57,12 +57,17 @@ jobs:
       CLOUD_SQL_INSTANCE: ${{ vars.CLOUD_SQL_INSTANCE }}
       DB_NAME: ${{ vars.QUERY_SERVICE_DB_NAME }}
       GRANT_KMS_KEY: ${{ vars.QUERY_SERVICE_GRANT_KMS_KEY }}
-      # Optional: the connect page and Workspace (#93, #90). All three unset,
-      # the service mints no Google token and the page answers
-      # CONNECT_NOT_CONFIGURED. The two *_SECRET values are Secret Manager
-      # secret NAMES (the Gemini Enterprise client's id and secret), never
-      # the values; the runtime account needs secretAccessor on both.
+      # Optional: the connect page and Workspace (#93, #90). PUBLIC_URL is
+      # UB's public origin (UB forwards /connect* here; it must equal UB's
+      # CONNECT_PUBLIC_URL). CONNECT_CLIENT picks the OAuth client's Secret
+      # Manager NAMES (deployment/connect-client.sh): `ub` = UB's own client,
+      # ub-connect-google-client-{id,secret}; `bot` = the chat bot's, a prod
+      # fallback only; unset = no client, the service mints no Google token
+      # and the page answers CONNECT_NOT_CONFIGURED. The two *_SECRET
+      # variables, when set, name the secrets explicitly and win. Names only,
+      # never values; the runtime account needs secretAccessor on both.
       PUBLIC_URL: ${{ vars.QUERY_SERVICE_PUBLIC_URL }}
+      CONNECT_CLIENT: ${{ vars.QUERY_SERVICE_CONNECT_CLIENT }}
       GOOGLE_CLIENT_ID_SECRET: ${{ vars.QUERY_SERVICE_GOOGLE_CLIENT_ID_SECRET }}
       GOOGLE_CLIENT_SECRET_SECRET: ${{ vars.QUERY_SERVICE_GOOGLE_CLIENT_SECRET_SECRET }}
       GOOGLE_HOSTED_DOMAIN: ${{ vars.QUERY_SERVICE_GOOGLE_HOSTED_DOMAIN }}
@@ -89,12 +94,12 @@ jobs:
             if [ -z "${!v}" ]; then echo "::error::$v is empty: set its variable in GitHub Environment $GH_ENV."; missing=1; fi
           done
           [ "$missing" = 0 ] || exit 1
-          if { [ -n "$GOOGLE_CLIENT_ID_SECRET" ] || [ -n "$GOOGLE_CLIENT_SECRET_SECRET" ]; } \
-             && { [ -z "$GOOGLE_CLIENT_ID_SECRET" ] || [ -z "$GOOGLE_CLIENT_SECRET_SECRET" ]; }; then
-            echo "::error::set both QUERY_SERVICE_GOOGLE_CLIENT_ID_SECRET and QUERY_SERVICE_GOOGLE_CLIENT_SECRET_SECRET, or neither."
-            exit 1
-          fi
+          case "${CONNECT_CLIENT:-none}" in
+            none|ub|bot) ;;
+            *) echo "::error::QUERY_SERVICE_CONNECT_CLIENT must be none, ub or bot."; exit 1 ;;
+          esac
           case "$PUBLIC_URL" in
+            https://*/*) echo "::error::QUERY_SERVICE_PUBLIC_URL must be UB's origin, with no path or trailing slash"; exit 1 ;;
             ""|https://*) ;;
             *) echo "::error::QUERY_SERVICE_PUBLIC_URL must be https://"; exit 1 ;;
           esac
@@ -165,6 +170,10 @@ jobs:
           )
           [ -z "$PUBLIC_URL" ] || ENV_VARS+=("PUBLIC_BASE_URL=${PUBLIC_URL}")
           [ -z "$GOOGLE_HOSTED_DOMAIN" ] || ENV_VARS+=("GOOGLE_HOSTED_DOMAIN=${GOOGLE_HOSTED_DOMAIN}")
+          PROJECT="$PROJECT_ID"
+          source deployment/connect-client.sh
+          resolve_connect_client || { echo "::error::the connect client config is not valid (above)."; exit 1; }
+          echo "Connect client secrets: ${GOOGLE_CLIENT_ID_SECRET:-none} ${GOOGLE_CLIENT_SECRET_SECRET:-}"
           SECRETS=()
           if [ -n "$GOOGLE_CLIENT_ID_SECRET" ]; then
             SECRETS=(--update-secrets "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID_SECRET}:latest,GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET_SECRET}:latest")

@@ -11,8 +11,8 @@ The flow, in the person's browser:
 
 **Sign in with UB.** Who the person is comes from UB, never from Google
 directly: the callback hands the Google access token to UB's
-`/auth/google/access-token-exchange`, the same exchange the chat bot uses with
-the same client, and the UB token UB returns is checked against UB's keys like
+`/auth/google/access-token-exchange`, the same exchange the chat bot uses
+(the client must be one UB admits), and the UB token UB returns is checked against UB's keys like
 any caller's (auth.py). Its subject is the person the grant is stored under,
 which is the person `/ask` mints for (D28). The UB session that exchange
 opens is closed at once (`/auth/logout`): the page needs one answer, not a
@@ -31,6 +31,17 @@ nothing.
 the OAuth state (10 minutes, CSRF) and, after a sign-in, who is managing the
 page (15 minutes). Both are HttpOnly, Secure, SameSite=Lax, so a cross-site
 POST to disconnect carries neither; the POST also checks Origin.
+
+**Served through UB.** This service is private (UB is its only invoker), so
+browsers reach these four routes on UB, which forwards exactly them (UB
+`src/modules/connect/connect.proxy.ts`). UB forwards the query string, the two
+cookies below, Origin on the POST, and `X-UB-Connect-Origin`: the public origin
+UB served the request on. Nothing else, and no Authorization. Every URL this
+page builds comes from `PUBLIC_BASE_URL`, never from Host or X-Forwarded-*. The
+one forwarded header trusted is `X-UB-Connect-Origin`, and only to refuse to
+run when it disagrees with `PUBLIC_BASE_URL` (a misconfiguration: the state
+cookie and Google's redirect would land on different hosts). It is trusted
+because only UB can invoke this service.
 
 **UB-facing API.** `GET /connection` and `DELETE /connection` do the same for
 an app through UB, with the person's UB token like `/ask`.
@@ -80,8 +91,13 @@ router = APIRouter()
 # ── settings and cookies ─────────────────────────────────────────────────────
 
 
+FORWARDED_ORIGIN_HEADER = "x-ub-connect-origin"
+COOKIE_PATH = "/connect"
+
+
 def _ready(request: Request) -> Settings:
-    """The connect page needs the client, the public URL and the KMS key."""
+    """The connect page needs the client, the public URL and the KMS key, and
+    UB must be serving it on the same origin as PUBLIC_BASE_URL."""
     s: Settings = request.app.state.settings
     if not (
         s.google_client_id
@@ -92,11 +108,15 @@ def _ready(request: Request) -> Settings:
         raise ServiceError(
             503, "CONNECT_NOT_CONFIGURED", "The connect page is not set up on this service."
         )
+    served_on = request.headers.get(FORWARDED_ORIGIN_HEADER)
+    if served_on is not None and served_on.rstrip("/") != s.public_base_url:
+        logger.error("connect: UB serves %s but PUBLIC_BASE_URL differs", served_on)
+        raise ServiceError(
+            503,
+            "CONNECT_ORIGIN_MISMATCH",
+            "The connect page is set up for a different address than the one serving it.",
+        )
     return s
-
-
-def _cookie_path(s: Settings) -> str:
-    return (urlsplit(s.public_base_url or "").path.rstrip("/") or "") + "/connect"
 
 
 async def _seal(request: Request, payload: dict[str, Any], aad: bytes) -> str:
@@ -123,7 +143,7 @@ def _set_cookie(resp: Response, s: Settings, name: str, value: str, max_age: int
         name,
         value,
         max_age=max_age,
-        path=_cookie_path(s),
+        path=COOKIE_PATH,
         secure=True,
         httponly=True,
         samesite="lax",
@@ -131,7 +151,7 @@ def _set_cookie(resp: Response, s: Settings, name: str, value: str, max_age: int
 
 
 def _clear_cookie(resp: Response, s: Settings, name: str) -> None:
-    resp.delete_cookie(name, path=_cookie_path(s), secure=True, httponly=True, samesite="lax")
+    resp.delete_cookie(name, path=COOKIE_PATH, secure=True, httponly=True, samesite="lax")
 
 
 def _page_url(s: Settings, result: str | None = None) -> str:
@@ -237,7 +257,7 @@ async def start(request: Request, intent: str = "connect") -> Response:
     scopes = [*IDENTITY_SCOPES, ASSIST_SCOPE] if intent == "connect" else list(IDENTITY_SCOPES)
     params = {
         "client_id": s.google_client_id,
-        "redirect_uri": f"{s.public_base_url}/connect/callback",
+        "redirect_uri": s.callback_url,
         "response_type": "code",
         "scope": " ".join(scopes),
         "state": nonce,
@@ -289,7 +309,7 @@ async def callback(
             "code": code,
             "client_id": s.google_client_id,
             "client_secret": s.google_client_secret,
-            "redirect_uri": f"{s.public_base_url}/connect/callback",
+            "redirect_uri": s.callback_url,
         },
     )
     if resp.status_code != 200:
