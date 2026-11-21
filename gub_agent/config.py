@@ -512,6 +512,13 @@ EVIDENCE_ROWS_EVENT: bool = os.environ.get("EVIDENCE_ROWS_EVENT", "0").lower() i
 # import.
 ASK_CONTRACT: bool = os.environ.get("ASK_CONTRACT", "0").lower() in ("1", "true", "yes")
 
+# Float as a resourcing source (tools/float.py), read through UB's
+# /relay/float. Offered only on the /ask engine (ASK_CONTRACT) and only when
+# on: turn it on once UB's Float relay has a token in that environment (off,
+# the relay answers FLOAT_NOT_CONFIGURED to every call). Off, the default, the
+# engine's tools and prompt are unchanged. Read at import.
+FLOAT_SOURCE: bool = os.environ.get("FLOAT_SOURCE", "0").lower() in ("1", "true", "yes")
+
 # Workspace as a /ask source (gub-agent#90, agents/workspace.py): Gemini
 # Enterprise's streamAssist, called as the person with the token the query
 # agent service puts in `temp:workspace_token`. WORKSPACE_ENGINE is the Gemini
