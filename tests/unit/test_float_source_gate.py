@@ -48,7 +48,7 @@ def _probe(ask: str | None, float_source: str | None) -> dict:
 
 def test_an_ask_engine_without_float_is_unchanged():
     probe = _probe("1", None)
-    assert probe["tools"] == [*probe["all"], "runn_allocations"]
+    assert probe["tools"] == [*probe["all"], "runn_allocations", "runn_capacity"]
     assert probe["float_in_prompt"] is False
 
 
@@ -57,8 +57,10 @@ def test_an_ask_engine_with_float_is_offered_and_told_about_it():
     assert probe["tools"] == [
         *probe["all"],
         "runn_allocations",
+        "runn_capacity",
         "float_allocations",
         "float_availability",
+        "float_capacity",
     ]
     assert probe["float_in_prompt"] is True
 

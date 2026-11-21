@@ -7,8 +7,9 @@ people-tags, time-offs/leave, holiday-groups, placeholders, projects,
 assignments), and the matching UB records (offices, staff, staff metadata).
 
 Everything is written by hand here, then `python -m
-tests.evals.runn_resourcing.world` dumps it to `fixtures/` as JSON; the eval
-and its tests read the JSON. The dates are fixed: the eval pins "today" to
+tests.evals.runn_resourcing.world` dumps it to `fixtures/` as JSON, with the
+same agency in Float's shapes (float_world.py); the eval and its tests read
+the JSON. The dates are fixed: the eval pins "today" to
 TODAY (a Wednesday), so "next week" is the week of 2026-11-23, US
 Thanksgiving week.
 
@@ -23,7 +24,7 @@ Deliberate traps, each one a question in questions.py:
   * UB staff with no Runn record, and one person whose Runn email differs
     from UB's;
   * office lives in UB (staff.officeId) and in Runn only as a people tag
-    and a custom field (the relay drops custom fields).
+    and a select custom field.
 """
 
 from __future__ import annotations
@@ -718,21 +719,31 @@ def build_ub() -> dict:
 
 
 def build() -> dict:
-    return {"today": TODAY.isoformat(), "runn": build_runn(), "ub": build_ub()}
+    from . import float_world
+
+    runn = build_runn()
+    return {
+        "today": TODAY.isoformat(),
+        "runn": runn,
+        "ub": build_ub(),
+        "float": float_world.build(runn),
+    }
 
 
 def write() -> None:
     FIXTURES.mkdir(exist_ok=True)
     world = build()
-    (FIXTURES / "runn.json").write_text(json.dumps(world["runn"], indent=1) + "\n")
-    (FIXTURES / "ub.json").write_text(json.dumps(world["ub"], indent=1) + "\n")
+    for name in ("runn", "ub", "float"):
+        (FIXTURES / f"{name}.json").write_text(json.dumps(world[name], indent=1) + "\n")
 
 
 def load() -> dict:
     return {
         "today": TODAY.isoformat(),
-        "runn": json.loads((FIXTURES / "runn.json").read_text()),
-        "ub": json.loads((FIXTURES / "ub.json").read_text()),
+        **{
+            name: json.loads((FIXTURES / f"{name}.json").read_text())
+            for name in ("runn", "ub", "float")
+        },
     }
 
 

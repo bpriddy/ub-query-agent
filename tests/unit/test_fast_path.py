@@ -1383,3 +1383,86 @@ async def test_the_reason_lines_carry_inv_and_tenant(caplog):
         f"fast_path: 500 from the lookup — deep path (inv={INV}) tenant=chevy",
         f"fast_path: declined before lookup reason=slots_incomplete (inv={INV}) tenant=chevy",
     ]
+
+
+# ── staffing questions on the /ask engine (Runn eval, run 1) ───────────────────
+
+STAFFING = [
+    ("staff_lookup", "Marcus Bell", "Is Marcus Bell free next week?"),
+    ("staff_lookup", "maya.singh@anomaly.com", "What is maya.singh@anomaly.com working on?"),
+    ("staff_lookup", "Kai Nakamura", "What is Kai Nakamura booked on?"),
+    ("staff_lookup", "Jack Turner", "When is Jack Turner back from leave?"),
+    ("staff_lookup", "Isaac Moore", "Is Isaac Moore overbooked anywhere before Christmas?"),
+    ("count_or_rank", None, "How many people are on Vela Motors EV Launch right now?"),
+]
+
+
+@pytest.mark.parametrize(("intent", "surface", "question"), STAFFING)
+async def test_on_ask_a_staffing_question_goes_to_the_planner_not_a_profile(
+    monkeypatch, all_succeed, intent, surface, question
+):
+    """A person's bookings, availability or leave live in Runn, which the one
+    UB lookup never reads: on the /ask engine the lookup declines before any
+    call, and the precheck says so (so the speculative root keeps its run)."""
+    monkeypatch.setattr(fp.config, "ASK_CONTRACT", True)
+    over = {"intent": intent, "entity_surface": surface, "language": "en"}
+    if intent == "count_or_rank":
+        over["slots"] = {"entity": "staff", "complete": True}
+    decision = _decision(**over)
+    shim = fp._ToolShim(await _ctx(decision, question))
+    assert await fp._LOOKUPS[intent](decision, shim, question) is None
+    assert await fp.declined_before_lookup(decision, question, shim) == "staffing"
+    assert all_succeed.calls == []
+
+
+@pytest.mark.parametrize(
+    "question",
+    ["Who is Marcus Bell?", "What office is Jane Park in?", "What team is Harry on?"],
+)
+async def test_a_question_about_who_someone_is_stays_on_the_fast_path(monkeypatch, question):
+    monkeypatch.setattr(fp.config, "ASK_CONTRACT", True)
+    assert not fp.is_staffing_question(question)
+
+
+async def test_off_the_ask_engine_staffing_questions_are_not_declined(monkeypatch):
+    """The chat bot's engine has no planner tools: its fast path is unchanged."""
+    monkeypatch.setattr(fp.config, "ASK_CONTRACT", False)
+    decision = _decision(intent="staff_lookup", entity_surface="Marcus Bell", language="en")
+    question = "Is Marcus Bell free next week?"
+    shim = fp._ToolShim(await _ctx(decision, question))
+    assert await fp.declined_before_lookup(decision, question, shim) is None
+
+
+async def test_a_short_follow_up_to_a_staffing_question_is_one_too(monkeypatch, all_succeed):
+    """Run 1's "What's Jane on next week?" → "Jane Park, in LA.": the second
+    message names a person and nothing else, so it reads as staff_lookup."""
+    monkeypatch.setattr(fp.config, "ASK_CONTRACT", True)
+    decision = _decision(intent="staff_lookup", entity_surface="Jane Park", language="en")
+    shim = fp._ToolShim(await _ctx(decision, "Jane Park, in LA."))
+    shim.prior_question = "What's Jane on next week?"
+    assert await fp.declined_before_lookup(decision, "Jane Park, in LA.", shim) == "staffing"
+    shim.prior_question = "Who is Jane Park?"
+    assert await fp.declined_before_lookup(decision, "Jane Park, in LA.", shim) is None
+
+
+def test_the_prior_question_is_the_users_last_message_before_this_turn():
+    from types import SimpleNamespace
+
+    def said(author, inv, text):
+        return SimpleNamespace(
+            author=author,
+            invocation_id=inv,
+            content=genai_types.Content(role="user", parts=[genai_types.Part(text=text)]),
+        )
+
+    ctx = SimpleNamespace(
+        invocation_id="now",
+        session=SimpleNamespace(
+            events=[
+                said("user", "before", "What's Jane on next week?"),
+                said("gub_agent", "before", "Which Jane?"),
+                said("user", "now", "Jane Park, in LA."),
+            ]
+        ),
+    )
+    assert fp._prior_user_text(ctx) == "What's Jane on next week?"

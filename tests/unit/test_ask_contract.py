@@ -24,7 +24,7 @@ from types import SimpleNamespace
 
 import pytest
 from google.adk.agents import BaseAgent, SequentialAgent
-from google.adk.events import Event
+from google.adk.events import Event, EventActions
 from google.adk.runners import InMemoryRunner
 from google.genai import types as genai_types
 from pydantic import ValidationError
@@ -39,6 +39,7 @@ from gub_agent.agents.ask import (
 )
 from gub_agent.agents.evidence_index import evidence_index, record_evidence, reset_evidence_index
 from gub_agent.agents.format_gate import FormatGate
+from gub_agent.agents.formatter import ANSWER_STATE_KEY
 from gub_agent.config import AGENT_NAME
 from gub_agent.schemas.answer import AnswerPayload
 from gub_agent.schemas.ask import AskResponse, ProgressEvent, SourceReport
@@ -312,3 +313,26 @@ def test_similar_ideas_rows_are_ideas():
     for tool in ("similar_ideas", "similar_to_idea"):
         assert TOOL_ENTITY[tool] == "idea"
         assert source_of(tool) == "ub"
+
+
+class _RundownAnswer(BaseAgent):
+    """A format gate that accepted a rundown: one bullet over the standard
+    budget (25 words) and inside the rundown's (40)."""
+
+    async def _run_async_impl(self, ctx):
+        payload = _valid_dict()
+        payload["blocks"] = [{"kind": "bullets", "items": [" ".join(["word"] * 30)]}]
+        yield Event(
+            invocation_id=ctx.invocation_id,
+            author=self.name,
+            actions=EventActions(state_delta={ANSWER_STATE_KEY: payload}),
+        )
+
+
+async def test_a_rundown_the_gate_accepted_is_not_rejected_on_the_way_out():
+    """Run 1 of the Runn eval: "Who's free for strategy work in New York the
+    week after next?" crashed after the gate had passed its rundown."""
+    streamed, _, _ = await _run(AskTurn(name="ask", sub_agents=[_RundownAnswer(name="gub_root")]))
+    sent = streamed[-1].custom_metadata[ASK_ANSWER_KEY]
+    assert sent["kind"] == "answer"
+    assert len(sent["blocks"][0]["items"][0].split()) == 30

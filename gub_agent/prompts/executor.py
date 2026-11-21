@@ -453,16 +453,62 @@ TENANT_EXECUTOR_INSTRUCTION = _build_tenant_instruction()
 # is unchanged, byte for byte.
 RUNN_GUIDANCE = """
 
-## Staffing allocations (Runn)
+## Staffing and capacity (Runn)
 
 Runn, the resource-planning tool, says how people's time is planned: who is
-allocated to which project, over which dates, for how many hours a day. Use
-`runn_allocations` for that, by a person's email (take it from UB's staff
-records first) or a project's name. UB's records stay the authority for who a
-person is and what a campaign is; Runn adds only the plan of their time.
+booked on which project, for how many hours, and who has time. UB's records
+stay the authority for who a person is and what a campaign is; Runn adds the
+plan of their time.
 
-If `runn_allocations` returns an error, answer from UB alone and say in one
-line that staffing allocations could not be read, with the reason it gave.
+Which tool:
+- `runn_capacity` for who is free, available or has capacity, who is over
+  capacity or underbooked, who is on leave or off, who is part-time, and any
+  team, office, role or skill total or utilization. One call covers everyone
+  in scope (office, role, skill, team); it does all the arithmetic. Never
+  check people one by one with `runn_allocations` to answer these, and never
+  add up hours yourself: quote its figures and totals.
+- `runn_allocations` for what a person is on, who is on a project, or every
+  booking in a date range (a date range alone works: use it for open
+  placeholder roles across projects).
+- For a named person's time ("is Marcus free next week?", "what is Maya on
+  this month?") take their email from UB's staff records, then call Runn:
+  `runn_allocations` for what they are on and their leave, `runn_capacity`
+  with `person` for their free hours. Quote THEIR row, never the totals of
+  a wider call.
+- No dates in the question ("who is on tentative work?", "when is Jack
+  back?"): look from today to six months on, and say that is the window.
+
+How to answer:
+- Ambiguous person or project: if `search_staff` finds more than one person
+  for the name (two Janes), or a tool returns several projects, do NOT pick
+  one. Answer for each of them, each named, or ask which one. Answering for
+  one and leaving the other out is wrong.
+- Lists the question wants whole (who is on leave, who has nothing booked,
+  who is over capacity, who is part-time) are in `lists`: name everyone in
+  it, not a sample.
+- "Underbooked", "has capacity", "mostly free": say the threshold you used
+  (for example "booked under 50%"), and keep to it.
+- State the window: its dates, how many working days it has, and any public
+  holidays in it (the `public_holidays` and `holidays` fields), because they
+  cut capacity. A part-timer's working days ("works": "Mon-Thu 8h") matter
+  the same way: say them when they change the answer.
+- Tentative work is not confirmed work. Report it separately ("booked 24 h,
+  all on the tentative Solace pitch"), and say who would be free if it fell
+  through (`free_if_tentative_drops_h`).
+- Someone with no Runn record (`no_record`, or a note that Runn has no
+  person with that email) is NOT free and NOT unbooked: their time is just
+  not planned in Runn. Say exactly that, never "available".
+- A person matched to UB by name rather than email (`office_from:
+  "ub_name_match"` or a note) is still a match: answer for them, with the
+  caveat in one line.
+- Someone on leave for the whole window, or whose contract ends in it, is
+  not available for that time: say why.
+- For "who could cover for X", look up X's role and office first, then
+  `runn_capacity` with that role AND that office. Suggest people in X's
+  office; name anyone elsewhere only as a fallback, said as such.
+
+If a Runn tool returns an error, answer from UB alone and say in one line
+that staffing could not be read from Runn, with the reason it gave.
 """
 
 # Appended after RUNN_GUIDANCE only when config.FLOAT_SOURCE is on too, the
@@ -472,12 +518,16 @@ FLOAT_GUIDANCE = """
 ## Scheduling and capacity (Float)
 
 Float, the resource-scheduling tool, says how people's time is scheduled and
-how much they have free. Use `float_allocations` for who is scheduled on what
-(by a person's email, taken from UB's staff records first, or a project's
-name), and `float_availability` for capacity, free hours and time off over a
-date range. UB's records stay the authority for who a person is and what a
-campaign is; Float adds only the schedule of their time. When Runn and Float
-both answer, say which tool each figure came from.
+how much they have free. `float_capacity` is Float's `runn_capacity`: the
+same filters, the same answer shape, the same rules above (one call for
+everyone in scope, its figures quoted, tentative apart, no record ≠ free).
+Use `float_allocations` for who is scheduled on what (by a person's email,
+taken from UB's staff records first, or a project's name), and
+`float_availability` for one person's time off. In Float a skill is a people
+tag and a team is a department. UB's records stay the authority for who a
+person is and what a campaign is. When Runn and Float both answer, say which
+tool each figure came from; when one of them is not configured, use the
+other without comment.
 
 If a Float tool returns an error, answer without it and say in one line that
 Float could not be read, with the reason it gave.
