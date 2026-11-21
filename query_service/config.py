@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from urllib.parse import urlsplit
 
 
 class ConfigError(RuntimeError):
@@ -46,11 +47,13 @@ class Settings:
     # token is minted and Workspace is reported not connected (#90).
     google_client_id: str | None
     google_client_secret: str | None
-    # Where a person's browser reaches the connect page (#93), e.g.
-    # https://<host> (+ a path prefix when a proxy serves it under one). The
-    # Google redirect URI is <this>/connect/callback and must be registered on
-    # the client. Unset: the connect routes answer CONNECT_NOT_CONFIGURED and
-    # WORKSPACE_NOT_CONNECTED carries no link.
+    # Where a person's browser reaches the connect page (#93): UB's public
+    # origin, e.g. https://ub.anomaly.com, because UB forwards /connect* here
+    # (this service is private). An https origin with no path; it must equal
+    # UB's CONNECT_PUBLIC_URL. The Google redirect URI is
+    # <this>/connect/callback and must be registered on the client. Unset: the
+    # connect routes answer CONNECT_NOT_CONFIGURED and WORKSPACE_NOT_CONNECTED
+    # carries no link.
     public_base_url: str | None = None
     # The Workspace domain, as a hint to Google's account chooser only.
     google_hosted_domain: str | None = None
@@ -59,6 +62,11 @@ class Settings:
     @property
     def connect_url(self) -> str | None:
         return f"{self.public_base_url}/connect" if self.public_base_url else None
+
+    @property
+    def callback_url(self) -> str | None:
+        """The Google redirect URI: UB's public origin + /connect/callback."""
+        return f"{self.public_base_url}/connect/callback" if self.public_base_url else None
 
     @property
     def engine_region(self) -> str:
@@ -91,6 +99,11 @@ class Settings:
             settings.cloud_sql_instance and settings.db_name and settings.db_iam_user
         ):
             raise ConfigError("set DATABASE_URL, or CLOUD_SQL_INSTANCE + DB_NAME + DB_IAM_USER")
-        if settings.public_base_url and not settings.public_base_url.startswith("https://"):
-            raise ConfigError("PUBLIC_BASE_URL must be https://")
+        if settings.public_base_url:
+            parts = urlsplit(settings.public_base_url)
+            if parts.scheme != "https" or not parts.netloc:
+                raise ConfigError("PUBLIC_BASE_URL must be https://")
+            if parts.path or parts.query or parts.fragment:
+                # UB forwards exactly /connect* at its root.
+                raise ConfigError("PUBLIC_BASE_URL must be an origin, with no path")
         return settings
