@@ -1,6 +1,6 @@
 """
-capacity.py — the arithmetic and the matching shared by runn_capacity and
-float_capacity. The end-to-end check against the ground truth is in
+capacity.py — the arithmetic and the matching behind float_capacity (and the
+UB office lookup resourcing_capacity reuses). The end-to-end check against the ground truth is in
 tests/evals/test_runn_resourcing_eval.py; this pins the pieces.
 """
 

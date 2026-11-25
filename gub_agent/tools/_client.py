@@ -387,6 +387,9 @@ def _error_dict(resp: httpx.Response, path: str) -> dict:
         return out
     if isinstance(body, dict) and isinstance(body.get("code"), str):
         out["code"] = body["code"]
+    # e.g. FIELD_NOT_PERMITTED's { entity, fields }: which fields were refused.
+    if isinstance(body, dict) and isinstance(body.get("details"), dict):
+        out["details"] = body["details"]
     return out
 
 

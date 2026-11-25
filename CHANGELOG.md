@@ -12,8 +12,33 @@ remaining exposures) lives in internal notes instead of this public log.
   preserved) and became the QA sandbox UI on Cloud Run behind IAP
   (`task-specs/sandbox-07`). A pointer README stays; `src/lib/sandbox.ts`
   there still mirrors `gub_agent/sandbox.py`.
+- **UB's field tiers (gcp-universal-backend#300):** a column UB withholds from the user is named in the tool's `withheld`, and the model says the user isn't allowed to see it. A `FIELD_NOT_PERMITTED` refusal is passed back with its fields and doesn't count as the source failing. The UB client now keeps an error's `details`.
 
 ## [Unreleased]
+
+### Changed (2026-11-24) — staffing from resourcing, not the Runn relay (#117)
+
+- **`resourcing_allocations(person_email?, project_name?, start_date?,
+  end_date?)`** and **`resourcing_capacity(start, end, office?, role?,
+  team?, person?)`** replace `runn_allocations` and `runn_capacity`
+  (`gub_agent/tools/runn.py` is removed). They read UB's
+  `/relay/resourcing/*` (gcp-universal-backend#301) as the person, so UB
+  checks the "Resourcing reader" grant. Allocations join resourcing's blended
+  `assignments`, `projects` and `people` views by leg; a date range reads the
+  open-ended allocations apart (`end_date.is_null`) and merges them.
+  Capacity is resourcing's own (`/relay/resourcing/capacity`, at most 100
+  days); the agent no longer computes Runn capacity. Office still comes from
+  UB's staff directory, joined to the planner's people by email, then by
+  name, with a warning naming who could not be placed. Role and team are
+  `.contains` filters; the skill filter is gone (planners hold almost no
+  skills). Every result carries `sources`, each leg with its `as_of`, and the
+  prompt asks the answer to cite it.
+- **Errors are failed sources, not failed turns**: `RESOURCING_NO_GRANT`,
+  `RESOURCING_CAPACITY_OFF` (UB serves no capacity yet) and the other relay
+  codes come back with a `hint`. On the wire the source is still `runn`
+  until UB #302 renames it.
+- **Eval**: the fake UB serves `/relay/resourcing` over the Runn fixtures,
+  with capacity from the ground truth.
 
 ### Added (2026-11-21) — staffing capacity from Runn and Float
 

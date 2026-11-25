@@ -32,6 +32,8 @@ from pydantic import BaseModel, Field, model_validator
 
 from .answer import AnswerPayload, Fact
 
+# "runn" is resourcing's source (Runn is its only leg today). UB's /ask takes
+# only ub|runn|workspace until UB #302 renames it; that rename is a separate change.
 Source = Literal["ub", "runn", "workspace"]
 SOURCES: tuple[Source, ...] = ("ub", "runn", "workspace")
 

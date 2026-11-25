@@ -3,8 +3,8 @@ Float is offered only on an /ask engine that turns it on (config.FLOAT_SOURCE).
 
 Both flags are read at import, so each mode is imported in its own
 interpreter. Without FLOAT_SOURCE, an /ask engine is offered exactly what it
-was (UB's tools plus Runn's) and its prompt never names Float. With it, the
-Float tools follow Runn's and the Float section is appended. FLOAT_SOURCE
+was (UB's tools plus resourcing's) and its prompt never names Float. With it, the
+Float tools follow resourcing's and the Float section is appended. FLOAT_SOURCE
 alone, on an engine without the /ask contract, changes nothing.
 """
 
@@ -48,7 +48,7 @@ def _probe(ask: str | None, float_source: str | None) -> dict:
 
 def test_an_ask_engine_without_float_is_unchanged():
     probe = _probe("1", None)
-    assert probe["tools"] == [*probe["all"], "runn_allocations", "runn_capacity"]
+    assert probe["tools"] == [*probe["all"], "resourcing_allocations", "resourcing_capacity"]
     assert probe["float_in_prompt"] is False
 
 
@@ -56,8 +56,8 @@ def test_an_ask_engine_with_float_is_offered_and_told_about_it():
     probe = _probe("1", "1")
     assert probe["tools"] == [
         *probe["all"],
-        "runn_allocations",
-        "runn_capacity",
+        "resourcing_allocations",
+        "resourcing_capacity",
         "float_allocations",
         "float_availability",
         "float_capacity",
