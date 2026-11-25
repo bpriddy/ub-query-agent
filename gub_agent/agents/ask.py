@@ -192,6 +192,10 @@ def _counts_as_failure(source: Source, response: dict[str, Any]) -> bool:
     any other source, every error means the source could not be read."""
     if response.get("error") is not True:
         return False
+    # The user isn't allowed to see some fields (UB's field tiers): an answer
+    # about permissions, not the source failing.
+    if response.get("code") == "FIELD_NOT_PERMITTED":
+        return False
     if source != "ub":
         return True
     status = response.get("status")

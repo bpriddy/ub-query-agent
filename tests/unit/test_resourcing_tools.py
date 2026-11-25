@@ -46,6 +46,8 @@ class FakeRelay:
         self.errors: dict[str, dict] = {}
         self.offices = [LA, LONDON]
         self.staff: list[dict] = []
+        #: columns UB withholds from this user (its field tiers), on every answer
+        self.withheld: list[str] = []
 
     def _meta(self, legs: list[str], page: dict) -> dict:
         sources = [{"source": s, "asOf": AS_OF[s], "contractVersion": 1} for s in legs]
@@ -72,7 +74,7 @@ class FakeRelay:
         status, body = resourcing_read(rows, params)
         if status != 200:
             return {"error": True, "status": status, **body}
-        return {**body, "meta": self._meta(legs, body["meta"])}
+        return {**body, "meta": self._meta(legs, body["meta"]), "withheld": self.withheld}
 
     async def post(self, path: str, body: dict, tool_context: Any = None) -> Any:
         assert path == "/org/query" and body["entity"] == "staff"
@@ -421,3 +423,63 @@ def test_a_long_in_list_is_split_under_the_relays_limit():
     parts = _chunks(ids)
     assert len(parts) > 1 and all(len(p) <= MAX_IN_CHARS for p in parts)
     assert ",".join(parts).split(",") == ids
+
+
+# ── UB's field tiers (gcp-universal-backend#300) ─────────────────────────────
+
+
+async def test_withheld_columns_are_named_so_the_answer_says_so(relay):
+    relay.legs = {"runn": {
+        "people": [_person("1", "Ada Lovelace", None)],
+        "projects": [{"id": "20", "name": "Nike Holiday", "client": "Nike", "is_archived": False,
+                      "is_tentative": False}],
+        "assignments": [_assignment("100", "1", "20", "2026-11-01", None)],
+    }}  # fmt: skip
+    relay.withheld = ["email"]
+    result = await resourcing_allocations(project_name="nike")
+    assert result["withheld"] == ["email"]
+    assert "isn't allowed" in result["withheld_note"]
+
+
+async def test_nothing_withheld_adds_nothing(relay):
+    relay.legs = {"runn": {"people": [], "projects": [], "assignments": []}}
+    result = await resourcing_allocations(project_name="nike")
+    assert "withheld" not in result
+
+
+async def test_field_not_permitted_is_said_plainly_and_not_a_failed_source(relay):
+    from gub_agent.agents.ask import _counts_as_failure
+
+    refused = {
+        "error": True,
+        "status": 403,
+        "message": "Access denied",
+        "code": "FIELD_NOT_PERMITTED",
+        "details": {"entity": "resourcing", "fields": ["role"]},
+    }
+    relay.errors["/relay/resourcing"] = refused
+    result = await resourcing_capacity("2026-11-23", "2026-11-27", role="designer")
+    assert result["code"] == "FIELD_NOT_PERMITTED"
+    assert result["details"]["fields"] == ["role"]
+    assert "not a failure" in result["hint"]
+    assert _counts_as_failure("runn", result) is False
+    assert _counts_as_failure("runn", {"error": True, "status": 403, "code": "RESOURCING_NO_GRANT"})
+
+
+def test_ub_error_details_are_kept():
+    import httpx
+
+    from gub_agent.tools._client import _error_dict
+
+    resp = httpx.Response(
+        403,
+        json={
+            "code": "FIELD_NOT_PERMITTED",
+            "message": "m",
+            "details": {"entity": "resourcing", "fields": ["records"]},
+        },  # fmt: skip
+        request=httpx.Request("GET", "https://ub.example/relay/resourcing/records"),
+    )
+    out = _error_dict(resp, "/relay/resourcing/records")
+    assert out["code"] == "FIELD_NOT_PERMITTED"
+    assert out["details"] == {"entity": "resourcing", "fields": ["records"]}

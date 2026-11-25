@@ -12,6 +12,7 @@ remaining exposures) lives in internal notes instead of this public log.
   preserved) and became the QA sandbox UI on Cloud Run behind IAP
   (`task-specs/sandbox-07`). A pointer README stays; `src/lib/sandbox.ts`
   there still mirrors `gub_agent/sandbox.py`.
+- **UB's field tiers (gcp-universal-backend#300):** a column UB withholds from the user is named in the tool's `withheld`, and the model says the user isn't allowed to see it. A `FIELD_NOT_PERMITTED` refusal is passed back with its fields and doesn't count as the source failing. The UB client now keeps an error's `details`.
 
 ## [Unreleased]
 

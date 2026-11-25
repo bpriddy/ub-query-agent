@@ -76,7 +76,12 @@ class _Read:
     def __init__(self) -> None:
         self.rows: list[dict] = []
         self.sources: dict[str, dict] = {}
+        # Columns UB withheld from this user (its field tiers): left out of rows.
+        self.withheld: set[str] = set()
         self.cut = False
+
+    def add_withheld(self, withheld: Any) -> None:
+        self.withheld.update(str(w) for w in (withheld or []) if isinstance(w, str))
 
     def add_meta(self, meta: Any) -> None:
         for s in (meta or {}).get("sources") or []:
@@ -86,6 +91,7 @@ class _Read:
     def merge(self, other: _Read) -> None:
         self.rows.extend(other.rows)
         self.sources.update(other.sources)
+        self.withheld |= other.withheld
         self.cut = self.cut or other.cut
 
 
@@ -99,6 +105,7 @@ async def _get(path: str, tool_context: Any, max_pages: int = MAX_PAGES, **param
         if is_error(page):
             return page
         out.add_meta(page.get("meta"))
+        out.add_withheld(page.get("withheld"))
         data = page.get("data") or []
         out.rows.extend(r for r in data if isinstance(r, dict))
         nxt = (page.get("meta") or {}).get("nextOffset")
@@ -161,6 +168,19 @@ def _sources(*reads: _Read) -> list[dict]:
     ]
 
 
+def _withheld(*reads: Any) -> dict:
+    """The columns UB withheld from this user, for the answer to say so; empty
+    (and left out) when nothing was."""
+    fields = sorted(set().union(*(r.withheld for r in reads if isinstance(r, _Read))))
+    if not fields:
+        return {}
+    return {
+        "withheld": fields,
+        "withheld_note": "The user isn't allowed to see these fields. Say so plainly; "
+        "don't present them as missing or unknown.",
+    }
+
+
 def _with_hint(err: dict) -> dict:
     """The relay's error as is, with what it means for the answer."""
     hints = {
@@ -170,6 +190,8 @@ def _with_hint(err: dict) -> dict:
         "RESOURCING_NOT_CONFIGURED": "Resourcing is not configured in this environment.",
         "RESOURCING_BAD_QUERY": "Resourcing refused the query's filters.",
         "RESOURCING_UPSTREAM_ERROR": "Resourcing could not be read.",
+        "FIELD_NOT_PERMITTED": "The user isn't allowed to see what this asked for "
+        "(UB's field tiers): say so plainly. It is not missing data and not a failure.",
     }
     hint = hints.get(str(err.get("code")))
     return {**err, "hint": hint} if hint else err
@@ -313,6 +335,7 @@ async def resourcing_allocations(
                 "note": f"Resourcing has no person with the email {person_email}. Their time is "
                 "not planned there: do not call them free or unbooked; say they have no record.",
                 "sources": _sources(found),
+                **_withheld(found),
             }
         if how == "name":
             p = found.rows[0]
@@ -342,6 +365,7 @@ async def resourcing_allocations(
                 "allocations": [],
                 "note": f"Resourcing has no project named like {project_name!r}.",
                 "sources": _sources(found),
+                **_withheld(found),
             }
         if len(names) > 1:
             return {
@@ -356,6 +380,7 @@ async def resourcing_allocations(
                 ],  # fmt: skip
                 "note": "Several projects match; ask the user which one.",
                 "sources": _sources(found),
+                **_withheld(found),
             }
         # One name, possibly in more than one planner.
         project_keys = {_key(p) for p in matches}
@@ -508,6 +533,7 @@ async def resourcing_allocations(
     if len(rows) > MAX_ALLOCATIONS or assignments.cut:
         notes.append("More allocations exist than are listed; narrow the dates or the filter.")
     out["sources"] = _sources(*reads)
+    out.update(_withheld(*reads))
     if notes:
         out["notes"] = notes
     return out
@@ -624,6 +650,7 @@ async def resourcing_capacity(
                 "note": f"Resourcing has no person matching {person!r}. Their time is not "
                 "planned there: do not call them free; say they have no record.",
                 "sources": _sources(found),
+                **_withheld(found),
             }
         if how == "name" and "@" in person:
             warnings.append(f"Matched {person} by the name it spells; the planner's email differs.")
@@ -782,6 +809,7 @@ async def resourcing_capacity(
         ],
         "people": rows[:MAX_ROWS],
         "sources": _sources(*reads),
+        **_withheld(*reads),
     }
     if len(rows) > MAX_ROWS:
         out["people_not_listed"] = len(rows) - MAX_ROWS
