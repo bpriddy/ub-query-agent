@@ -99,7 +99,7 @@ from .models import bind_model_call
 from .prompts import (
     EXECUTOR_INSTRUCTION,
     FLOAT_GUIDANCE,
-    RUNN_GUIDANCE,
+    RESOURCING_GUIDANCE,
     TENANT_EXECUTOR_INSTRUCTION,
 )
 from .sandbox import (
@@ -111,9 +111,9 @@ from .sandbox import (
 from .tenant import tenant_instruction
 from .tools import ALL_TOOLS
 from .tools.float import FLOAT_TOOLS
-from .tools.runn import RUNN_TOOLS
+from .tools.resourcing import RESOURCING_TOOLS
 
-# Float joins Runn only on an /ask engine that turns it on (config.FLOAT_SOURCE).
+# Float joins resourcing only on an /ask engine that turns it on (config.FLOAT_SOURCE).
 FLOAT_ON = ASK_CONTRACT and FLOAT_SOURCE
 
 
@@ -208,7 +208,7 @@ executor_agent = Agent(
         sandbox_instruction(
             with_current_date(
                 EXECUTOR_INSTRUCTION
-                + (RUNN_GUIDANCE if ASK_CONTRACT else "")
+                + (RESOURCING_GUIDANCE if ASK_CONTRACT else "")
                 + (FLOAT_GUIDANCE if FLOAT_ON else "")
             ),
             role="executor",
@@ -226,10 +226,12 @@ executor_agent = Agent(
     # (EXECUTOR_THINKING_LEVEL, so the sandbox provenance can't drift from what
     # actually runs; a sandbox run overrides it per call in _before_model.)
     planner=build_thinking_planner(EXECUTOR_THINKING_LEVEL),
-    # Runn is a source only on the /ask engine (config.ASK_CONTRACT); every
-    # other engine is offered exactly today's tools.
+    # Resourcing (Runn today) is a source only on the /ask engine
+    # (config.ASK_CONTRACT); every other engine is offered exactly today's tools.
     # Float is offered only where FLOAT_SOURCE is on too.
-    tools=ALL_TOOLS + (RUNN_TOOLS if ASK_CONTRACT else []) + (FLOAT_TOOLS if FLOAT_ON else []),
+    tools=ALL_TOOLS
+    + (RESOURCING_TOOLS if ASK_CONTRACT else [])
+    + (FLOAT_TOOLS if FLOAT_ON else []),
     # Reset the per-pass round + tool budgets at the start of each executor pass
     # (so critic-requested retries aren't born over budget). See _before_agent.
     before_agent_callback=_before_agent,

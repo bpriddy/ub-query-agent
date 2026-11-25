@@ -1,10 +1,11 @@
 """
 capacity.py — who has time over a date range, worked out in code.
 
-Shared by `runn_capacity` (runn.py) and `float_capacity` (float.py). Each
-source reads its own planner and hands over the same plain shapes: a person's
-working pattern, their time off, and their bookings. Everything after that is
-here, so both tools count the same way and answer in the same shape:
+Used by `float_capacity` (float.py), which reads Float and hands over plain
+shapes: a person's working pattern, their time off, and their bookings.
+Everything after that is here. (Runn's capacity is computed by resourcing
+now, gub-agent#117; `resourcing.py` reuses only the UB side below: offices,
+staff and the matching helpers.)
 
   capacity   the minutes a person is contracted for on each day of the
              window, less leave, rostered days off and public holidays
@@ -515,7 +516,7 @@ def capacity_answer(
     warnings: list[str],
 ) -> dict:
     """Join the planner's people to UB, apply the filters, compute, and shape
-    the answer `runn_capacity` and `float_capacity` both return."""
+    the answer `float_capacity` returns."""
     by_email: dict[str, dict] = {}
     by_name: dict[str, list[dict]] = {}
     for s in directory.staff:

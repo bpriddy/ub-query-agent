@@ -6,10 +6,12 @@ The live run (run_eval.py) costs tokens and never runs here. What does:
   * the ground truth says what the fixtures were built to say;
   * the question set is the size the eval promises, and every name it
     grades on exists;
-  * the fake UB serves the relay (Runn's, and Float's when asked) and only
-    the relay, and the real `runn_allocations` reads it;
-  * `runn_capacity` and `float_capacity` agree with the ground truth for
-    every person over several windows.
+  * the fake UB serves the relays (resourcing's over a Runn leg, Runn's, and
+    Float's when asked), and the real `resourcing_allocations` reads it;
+  * `resourcing_capacity` joins UB's offices and filters by role, team and
+    person, and `float_capacity` agrees with the ground truth for every
+    person over several windows. (Resourcing computes Runn's capacity; the
+    fake serves the ground truth's figures for it.)
 """
 
 from __future__ import annotations
@@ -20,7 +22,7 @@ import pytest
 
 from gub_agent.tools import _client
 from gub_agent.tools.float import float_capacity
-from gub_agent.tools.runn import runn_allocations, runn_capacity
+from gub_agent.tools.resourcing import resourcing_allocations, resourcing_capacity
 from tests.evals.runn_resourcing import questions, world
 from tests.evals.runn_resourcing.fake_ub import FakeUb
 from tests.evals.runn_resourcing.truth import Truth, d
@@ -117,7 +119,7 @@ def test_the_question_set(truth):
 
 
 async def test_the_fake_serves_the_relay_and_the_tool_reads_it(fake):
-    result = await runn_allocations(
+    result = await resourcing_allocations(
         person_email="sofia.reyes@anomaly.com", start_date="2026-11-23", end_date="2026-11-27"
     )
     assert result["allocations"] == [
@@ -125,32 +127,59 @@ async def test_the_fake_serves_the_relay_and_the_tool_reads_it(fake):
             "person": "Sofia Reyes",
             "email": "sofia.reyes@anomaly.com",
             "project": "Vela Motors - EV Launch",
+            "client": "Vela Motors",
             "start_date": "2026-10-05",
             "end_date": "2027-01-29",
             "hours_per_day": 4.0,
             "billable": True,
             "status": "confirmed",
             "role": "Art Director",
+            "source": "runn",
             "works": "Mon-Thu 8h",
         }
     ]
+    assert result["sources"] == [
+        {"source": "runn", "as_of": "2026-11-18T06:00:00Z", "contract_version": 1}
+    ]
     # Harry Evans's Runn email is not UB's: found by the name it spells, and said so.
-    harry = await runn_allocations(person_email="harry.evans@anomaly.com")
+    harry = await resourcing_allocations(person_email="harry.evans@anomaly.com")
     assert harry["allocations"][0]["email"] == "harry.evans@anomaly.co.uk"
     assert "by name" in harry["notes"][0]
     # Jack Turner's leave comes with his allocations: "when is he back?"
-    jack = await runn_allocations(person_email="jack.turner@anomaly.com", start_date="2026-11-18")
+    jack = await resourcing_allocations(
+        person_email="jack.turner@anomaly.com", start_date="2026-11-18"
+    )
     assert jack["leave"][0]["end_date"] == "2026-12-31"
     # A project's people and hours a day are summed in code.
-    vela = await runn_allocations(project_name="Vela Motors - EV Launch", start_date="2026-11-18")
+    vela = await resourcing_allocations(
+        project_name="Vela Motors - EV Launch", start_date="2026-11-18"
+    )
     assert vela["summary"][0]["people"] == 6
     # Kai Nakamura has no Runn record: the note says that is not "free".
-    kai = await runn_allocations(person_email="kai.nakamura@anomaly.com")
+    kai = await resourcing_allocations(person_email="kai.nakamura@anomaly.com")
     assert kai["allocations"] == [] and "do not call them free" in kai["note"]
     # A date range alone lists every booking in it, placeholders marked.
-    window = await runn_allocations(start_date="2026-11-23", end_date="2026-12-04")
+    window = await resourcing_allocations(start_date="2026-11-23", end_date="2026-12-04")
     open_roles = {a["project"] for a in window["allocations"] if a.get("placeholder")}
     assert open_roles == {"Lumen Bank - Brand Refresh", "Solace Health - Pitch"}
+
+
+def test_the_fake_serves_the_resourcing_relay(fake):
+    status, page = fake.route("GET", "/relay/resourcing/people", {"limit": "1000"}, None)
+    assert status == 200 and len(page["data"]) == 40  # placeholders are not people
+    assert page["data"][0]["source"] == "runn" and page["meta"]["nextOffset"] is None
+    assert page["meta"]["sources"][0]["asOf"] == "2026-11-18T06:00:00Z"
+    paged = fake.route("GET", "/relay/resourcing/people", {"limit": "30"}, None)[1]
+    assert paged["meta"]["nextOffset"] == 30
+    leg = fake.route("GET", "/relay/resourcing/legs/runn/projects", {}, None)[1]["data"]
+    assert "source" not in leg[0] and {"is_tentative", "client"} <= set(leg[0])
+    bad = fake.route("GET", "/relay/resourcing/people", {"salary.gt": "1"}, None)
+    assert bad[0] == 400 and bad[1]["code"] == "RESOURCING_BAD_QUERY"
+    assert fake.route("GET", "/relay/resourcing/records", {}, None)[0] == 404
+    off = FakeUb(fake.world, capacity=False)
+    assert off.route("GET", "/relay/resourcing/capacity", {}, None)[1]["code"] == (
+        "RESOURCING_CAPACITY_OFF"
+    )
 
 
 async def test_the_fake_serves_what_the_relay_serves(fake):
@@ -204,20 +233,18 @@ WINDOWS = [
 OFFICE = {"LA": "Los Angeles", "NYC": "New York", "London": "London"}
 
 
-@pytest.mark.parametrize("source", ["runn", "float"])
-async def test_the_capacity_tools_agree_with_the_ground_truth(data, truth, source):
-    """runn_capacity and float_capacity, through the fake relays, give every
-    person exactly the capacity, confirmed and tentative hours, and office,
-    that truth.py computes from Runn's own records."""
-    server = FakeUb(data, sources=(source,))
+async def test_float_capacity_agrees_with_the_ground_truth(data, truth):
+    """float_capacity, through the fake Float relay, gives every person exactly
+    the capacity, confirmed and tentative hours, and office, that truth.py
+    computes from Runn's own records (the same agency in Float's shapes)."""
+    server = FakeUb(data, sources=("float",))
     await server.start()
     _client.GUB_BASE_URL, _client.GUB_SERVICE_JWT = server.url, "eval-test"
-    tool = runn_capacity if source == "runn" else float_capacity
     try:
         for start, end in WINDOWS:
-            result = await tool(start, end)
+            result = await float_capacity(start, end)
             rows = {r["person"]: r for r in result["people"]}
-            assert len(rows) == 40, (source, start)
+            assert len(rows) == 40, start
             for pid in truth.people:
                 load = truth.load(pid, d(start), d(end))
                 row = rows[truth.name(pid)]
@@ -228,7 +255,7 @@ async def test_the_capacity_tools_agree_with_the_ground_truth(data, truth, sourc
                     round(load.tentative / 60, 1),
                     OFFICE[truth.office(pid)],
                 )
-                assert got == want, (source, start, truth.name(pid))
+                assert got == want, (start, truth.name(pid))
             # UB staff with no planner record are listed apart, never as free.
             assert {p["person"] for p in result["no_record"]["people"]} == {
                 "Kai Nakamura",
@@ -239,9 +266,28 @@ async def test_the_capacity_tools_agree_with_the_ground_truth(data, truth, sourc
         await server.stop()
 
 
-async def test_capacity_filters_by_office_role_skill_and_team(fake):
+@pytest.mark.parametrize("office", sorted(OFFICE))
+async def test_resourcing_capacity_places_everyone_in_their_ub_office(fake, truth, office):
+    """Office comes from UB's directory joined to the planner's people, by email
+    then by name: each office holds exactly the people truth.py puts there."""
+    result = await resourcing_capacity("2026-11-23", "2026-11-27", office=office)
+    want = {truth.name(p) for p in truth.select(office=office)}
+    assert {r["person"] for r in result["people"]} == want
+    for r in result["people"]:
+        pid = next(p for p in truth.people if truth.name(p) == r["person"])
+        load = truth.load(pid, d("2026-11-23"), d("2026-11-27"))
+        assert r["capacity_h"] == round(load.capacity / 60, 1)
+        assert r["allocated_h"] == round(load.booked / 60, 1)
+    if office != "London":
+        assert {p["person"] for p in result["no_record"]["people"]} <= {
+            "Kai Nakamura",
+            "Rosa Diaz",
+        }
+
+
+async def test_capacity_filters_by_office_role_team_and_person(fake):
     week = ("2026-11-23", "2026-11-27")
-    la_ads = await runn_capacity(*week, office="LA", role="art direction")
+    la_ads = await resourcing_capacity(*week, office="LA", role="art direction")
     assert [r["person"] for r in la_ads["people"]] == [
         "Marcus Bell",
         "Sofia Reyes",
@@ -249,45 +295,30 @@ async def test_capacity_filters_by_office_role_skill_and_team(fake):
         "Priya Nair",
         "Theo Grant",
     ]
-    assert [h["name"] for h in la_ads["public_holidays"]] == [
-        "Thanksgiving Day",
-        "Day after Thanksgiving",
-    ]
-    assert la_ads["weekdays"] == 5
-    sofia = la_ads["people"][1]
-    assert sofia["works"] == "Mon-Thu 8h" and "part_time" in sofia["flags"]
-    assert la_ads["people"][3]["projects"] == "Solace Health - Pitch (TENTATIVE) 24h"
-    assert la_ads["people"][3]["free_if_tentative_drops_h"] == 24.0
-    assert "on_leave_whole_window" in la_ads["people"][4]["flags"]
-    assert la_ads["no_record"]["people"][0]["person"] == "Kai Nakamura"
+    assert la_ads["days"] == 5
+    assert la_ads["lists"][0]["no_capacity"] == "Theo Grant"  # on leave all week
+    # Thanksgiving is out of capacity already: 3 of 5 days for a full-timer.
+    assert la_ads["people"][0]["capacity_h"] == 24.0
+    assert la_ads["sources"][0]["as_of"] == "2026-11-18T06:00:00Z"
 
-    strategists = await runn_capacity("2027-01-01", "2027-03-31", role="strategy")
+    strategists = await resourcing_capacity("2027-01-01", "2027-03-31", role="strategy")
     assert strategists["totals"][0]["people"] == 7
 
-    motion = await runn_capacity(*week, skill="motion design")
-    assert {r["person"] for r in motion["people"]} == {
-        truth_name for truth_name in ("Ava Thompson", "Leo Martinez", "Ethan Brooks",
-                                      "Lucas Wright", "Lily Wong", "Harry Evans", "Ella Ward")
-    }  # fmt: skip
-    london = await runn_capacity("2026-12-01", "2026-12-31", office="London", team="design")
+    london = await resourcing_capacity("2026-12-01", "2026-12-31", office="London", team="design")
     harry = next(r for r in london["people"] if r["person"] == "Harry Evans")
     assert harry["office_from"] == "ub_name_match"
     assert any("Harry Evans" in w for w in london["warnings"])
 
-    isaac = await runn_capacity("2026-11-18", "2026-12-24", person="isaac.moore@anomaly.com")
+    isaac = await resourcing_capacity("2026-11-18", "2026-12-24", person="isaac.moore@anomaly.com")
     assert [r["person"] for r in isaac["people"]] == ["Isaac Moore"]
     assert isaac["totals"][0]["people"] == 1 and isaac["lists"][0]["over_capacity"] == "nobody"
-    december = await runn_capacity("2026-12-01", "2026-12-31")
-    on_leave = december["lists"][0]["on_leave"]
-    assert all(n in on_leave for n in ("Zoe Chen", "Jack Turner", "Chloe Martin", "Freya Lewis",
-                                       "Nina Patel"))  # fmt: skip
-    january = await runn_capacity("2027-01-01", "2027-01-31")
+    january = await resourcing_capacity("2027-01-01", "2027-01-31")
     assert len(january["lists"][0]["nothing_booked"].split(", ")) >= 7
 
-    unknown = await runn_capacity(*week, office="Paris")
+    unknown = await resourcing_capacity(*week, office="Paris")
     assert unknown["error"] is True and "Los Angeles" in unknown["message"]
-    too_long = await runn_capacity("2026-01-01", "2027-06-30")
-    assert too_long["error"] is True
+    too_long = await resourcing_capacity("2027-01-01", "2027-06-30")
+    assert too_long["error"] is True and "100 days" in too_long["message"]
 
 
 def test_the_float_subset(truth):

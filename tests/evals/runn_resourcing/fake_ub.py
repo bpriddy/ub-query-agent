@@ -18,6 +18,15 @@ in Float's shapes (float_world.py), with `/reports/people` computed from the
 ground truth. Only the planners in `sources` are configured; the other relay
 answers 503 *_NOT_CONFIGURED, as UB does without a key.
 
+The resourcing half is the relay of gcp-universal-backend#301
+(`/relay/resourcing/*`) over a Runn leg built from the same Runn records the
+way the leg's `aggregate_v1` views are (runn-resourcing-dashboard
+`lib/db/migrations/aggregate_v1.sql`): people, projects, assignments,
+working_patterns, time_off and source, blended (each row with `source`),
+with resourcing's query syntax (tests/helpers.py `resourcing_read`). Capacity
+is computed from the ground truth (truth.py), since resourcing computes it;
+`capacity=False` answers 503 RESOURCING_CAPACITY_OFF, as UB does today.
+
 The UB half is what the agent's UB tools call: /org/staff (+ :id, :id/metadata),
 /org/resourcing (`type` required; `officeId` and `q` ignored, as UB's
 controller does), /org/offices, /org/search (staff only) and /org/query for
@@ -37,6 +46,9 @@ import re
 from collections import defaultdict
 from typing import Any
 from urllib.parse import parse_qsl, urlsplit
+
+from tests.evals.runn_resourcing.truth import DAYS, Truth, d, workdays
+from tests.helpers import resourcing_read
 
 TIME_OFF = ["id", "personId", "startDate", "endDate", "minutesPerDay"]
 # The relay's FIELDS (runn.client.ts), resource by resource.
@@ -297,8 +309,12 @@ NOT_CONFIGURED = {
 
 
 class FakeUb:
-    def __init__(self, world: dict, sources: tuple[str, ...] = ("runn",)) -> None:
+    def __init__(
+        self, world: dict, sources: tuple[str, ...] = ("runn",), capacity: bool = True
+    ) -> None:
         self.world = world
+        #: Whether UB serves /relay/resourcing/capacity (RESOURCING_CAPACITY).
+        self.capacity = capacity
         self.runn = world["runn"]
         self.float = world.get("float")
         self.ub = world["ub"]
@@ -376,6 +392,13 @@ class FakeUb:
             if "float" not in self.sources or self.float is None:
                 return NOT_CONFIGURED["float"]
             return self.float_relay(segs[2:], params)
+        if segs[:2] == ["relay", "resourcing"] and method == "GET":
+            if "runn" not in self.sources:
+                return 503, {
+                    "code": "RESOURCING_NOT_CONFIGURED",
+                    "message": "The resourcing relay is not configured in this environment.",
+                }
+            return self.resourcing_relay(segs[2:], params)
         if segs[:1] == ["org"]:
             return self.org(method, segs[1:], params, body)
         return 404, {"code": "NOT_FOUND", "message": "not found"}
@@ -514,6 +537,159 @@ class FakeUb:
                     rows = [a for a in rows if a.get(key) == int(params[key])]
             rows = [a for a in rows if _overlaps(a, params.get("startDate"), params.get("endDate"))]
         return self._page(resource, rows, params, drops)
+
+    # ── resourcing relay (Runn as its one leg) ──
+    def _resourcing_views(self) -> dict[str, list[dict]]:
+        if hasattr(self, "_views"):
+            return self._views
+        r = self.runn
+        truth = Truth(self.world)
+        teams = {t["id"]: t["name"] for t in r["teams"]}
+        clients = {c["id"]: c["name"] for c in r["clients"]}
+        roles = {x["id"]: x["name"] for x in r["roles"]}
+        placeholders = {p["id"] for p in r["placeholders"]}
+        people = [
+            {
+                "id": str(p["id"]),
+                "name": f"{p['firstName']} {p['lastName']}",
+                "email": (p.get("email") or "").strip().lower() or None,
+                "team": teams.get(p.get("teamId")),
+                "is_archived": bool(p.get("isArchived")),
+                "role": truth.role(p["id"]),
+                "tags": [t["name"] for t in p.get("tags") or []],
+            }
+            for p in r["people"]
+        ]
+        self._views = {
+            "people": people,
+            "projects": [
+                {
+                    "id": str(p["id"]),
+                    "name": p["name"],
+                    "client": clients.get(p.get("clientId")),
+                    "is_archived": bool(p.get("isArchived")),
+                    "is_tentative": not p.get("isConfirmed", True),
+                }
+                for p in r["projects"]
+                if not p.get("isTemplate")
+            ],
+            "assignments": [
+                {
+                    "id": str(a["id"]),
+                    "person_id": str(a["personId"]),
+                    "project_id": str(a["projectId"]),
+                    "start_date": a["startDate"],
+                    "end_date": a["endDate"],
+                    "minutes_per_day": a["minutesPerDay"],
+                    "is_placeholder": a["personId"] in placeholders,
+                    "role": roles.get(a.get("roleId")),
+                    "is_billable": a.get("isBillable"),
+                }
+                for a in r["assignments"]
+                if a.get("isActive", True)
+                and not a.get("isTemplate")
+                and not a.get("isNonWorkingDay")
+            ],
+            "working_patterns": [
+                {
+                    "person_id": str(c["personId"]),
+                    "start_date": c["startDate"],
+                    "end_date": c["endDate"],
+                    "minutes_per_day": c["minutesPerDay"],
+                    "minutes_by_weekday": c["rosteredDays"],
+                }
+                for c in r["contracts"]
+            ],
+            "time_off": [
+                {
+                    "person_id": str(t["personId"]),
+                    "start_date": t["startDate"],
+                    "end_date": t["endDate"],
+                    "minutes_per_day": t["minutesPerDay"],
+                    "type": kind,
+                }
+                for kind, rows in (
+                    ("time_off", r["time_offs_leave"]),
+                    ("holiday", r["time_offs_holidays"]),
+                )
+                for t in rows
+            ],
+            "source": [
+                {
+                    "source": "runn",
+                    "as_of": f"{self.world['today']}T06:00:00Z",
+                    "contract_version": 1,
+                }
+            ],  # fmt: skip
+        }
+        self._truth = truth
+        return self._views
+
+    def _meta(self, page: dict) -> dict:
+        as_of = f"{self.world['today']}T06:00:00Z"
+        return {**page, "sources": [{"source": "runn", "asOf": as_of, "contractVersion": 1}]}
+
+    def resourcing_relay(self, segs: list[str], params: dict) -> tuple[int, Any]:
+        views = self._resourcing_views()
+        if segs == ["views"]:
+            data = {"runn": {v: sorted(rows[0]) for v, rows in views.items() if rows}}
+            return 200, {"data": data, "meta": self._meta({})}
+        if segs == ["capacity"]:
+            return self._resourcing_capacity(params)
+        if len(segs) == 3 and segs[0] == "legs":
+            if segs[1] != "runn" or segs[2] not in views:
+                return 404, {"code": "RESOURCING_NOT_FOUND", "message": "no such view"}
+            status, body = resourcing_read(views[segs[2]], params)
+            return status, ({**body, "meta": self._meta(body["meta"])} if status == 200 else body)
+        if len(segs) == 1 and segs[0] in views:
+            rows = [{"source": "runn", **row} for row in views[segs[0]]]
+            status, body = resourcing_read(rows, params)
+            return status, ({**body, "meta": self._meta(body["meta"])} if status == 200 else body)
+        return 404, {"code": "RESOURCING_NOT_FOUND", "message": "no such view"}
+
+    def _resourcing_capacity(self, params: dict) -> tuple[int, Any]:
+        if not self.capacity:
+            return 503, {
+                "code": "RESOURCING_CAPACITY_OFF",
+                "message": "Resourcing capacity is not served yet in this environment.",
+            }
+        start, end = params.get("from"), params.get("to")
+        if not (start and end and DATE.match(start) and DATE.match(end)) or end < start:
+            return 400, {"code": "RESOURCING_BAD_QUERY", "message": "from and to are dates"}
+        if (d(end) - d(start)).days + 1 > 100:
+            return 400, {"code": "RESOURCING_BAD_QUERY", "message": "longer than 100 days"}
+        people = self._resourcing_views()["people"]
+        if not any(k.startswith("is_archived") for k in params):
+            params = {**params, "is_archived": "false"}
+        status, body = resourcing_read(people, {**params, "limit": "1000"}, reserved=("from", "to"))
+        if status != 200:
+            return status, body
+        data = []
+        for p in sorted(body["data"], key=lambda p: p["name"]):
+            pid = int(p["id"])
+            load = self._truth.load(pid, d(start), d(end))
+            contracted = sum(
+                int((self._truth.contract(pid, day) or {}).get("rosteredDays", {}).get(
+                    DAYS[day.weekday()], 0))
+                for day in workdays(d(start), d(end))
+            )  # fmt: skip
+            data.append(
+                {
+                    "source": "runn",
+                    "name": p["name"],
+                    "email": p["email"],
+                    "team": p["team"],
+                    "personId": p["id"],
+                    "capacityHours": round(load.capacity / 60, 1),
+                    "allocatedHours": round(load.booked / 60, 1),
+                    "availableHours": round(load.free / 60, 1),
+                    "utilizationPercent": round(100 * load.booked / load.capacity)
+                    if load.capacity
+                    else None,
+                    "timeOffHours": round((contracted - load.capacity) / 60, 1),
+                }
+            )
+        return 200, {"data": data, "meta": self._meta({})}
 
     # ── Float relay ──
     def float_relay(self, segs: list[str], params: dict) -> tuple[int, Any]:

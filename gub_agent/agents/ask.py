@@ -20,7 +20,7 @@ format gate's payload, as today, so a follow-up turn reads what it always read.
 
 **What is assembled here, in code.** A fact's source comes from the tool that
 produced its evidence row (the evidence id's prefix), and a record's type from
-the same tool. Runn's tool is in `TOOL_SOURCE` (gub-agent#89).
+the same tool. The resourcing tools are in `TOOL_SOURCE` (gub-agent#89, #117).
 
 **Workspace** (gub-agent#90) is not a tool: one Gemini Enterprise call runs
 beside the root from the start of the turn (`agents/workspace.py`), as the
@@ -31,8 +31,9 @@ WORKSPACE_NOT_CONNECTED, with the connect page's link. Not answered by the
 soft deadline: `timeout`, and the call is cancelled.
 
 **A source's status** comes from its tools' responses: `ok` when any call
-succeeded, `error` when every call failed, with the code UB gave (a Runn
-`RUNN_NO_GRANT` is a failed source, not a failed turn).
+succeeded, `error` when every call failed, with the code UB gave (a
+`RESOURCING_NO_GRANT` or `RESOURCING_CAPACITY_OFF` is a failed source, not a
+failed turn).
 """
 
 from __future__ import annotations
@@ -73,7 +74,12 @@ PROGRESS_KEY = "progress"
 ASK_ANSWER_KEY = "ask_answer"
 
 #: The source behind each tool that does not read UB. Every other tool reads UB.
-TOOL_SOURCE: dict[str, Source] = {"runn_allocations": "runn", "runn_capacity": "runn"}
+#: The resourcing tools report as "runn" on the wire: UB's /ask accepts only
+#: ub|runn|workspace until UB #302 renames the source, in a separate change.
+TOOL_SOURCE: dict[str, Source] = {
+    "resourcing_allocations": "runn",
+    "resourcing_capacity": "runn",
+}
 
 #: The UB record type each tool's rows are. `find` and `org_query` span types,
 #: so their rows carry none.
@@ -108,13 +114,14 @@ TOOL_PHRASES: dict[str, str] = {
     "similar_ideas": "Searching similar ideas",
     "similar_to_idea": "Searching ideas like this one",
     "find_files": "Searching file names",
-    "runn_allocations": "Checking staffing in Runn",
-    "runn_capacity": "Working out capacity in Runn",
+    "resourcing_allocations": "Checking staffing in resourcing",
+    "resourcing_capacity": "Working out capacity in resourcing",
     "float_allocations": "Checking the schedule in Float",
     "float_availability": "Checking capacity in Float",
     "float_capacity": "Working out capacity in Float",
 }
 
+# "runn" stays the wire name of the resourcing source until UB #302 (see TOOL_SOURCE).
 SOURCE_NAMES: dict[Source, str] = {"ub": "UB", "runn": "Runn", "workspace": "Workspace"}
 
 

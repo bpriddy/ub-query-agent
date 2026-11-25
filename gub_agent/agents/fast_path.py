@@ -613,7 +613,7 @@ async def _account(decision: RouterDecision, shim: _ToolShim, question: str) -> 
 
 
 # A question about a person's TIME — bookings, availability, leave — rather
-# than who they are. On the /ask engine, where Runn is a source, the answer
+# than who they are. On the /ask engine, where resourcing is a source, the answer
 # lives in the planner, which the fast path's one UB lookup never reads: a
 # profile would answer "is Marcus free?" with his job title, or worse, as
 # "nothing booked". Those turns go to the deep path, which has the planner

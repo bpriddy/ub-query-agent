@@ -27,7 +27,7 @@ The answer is a Server-Sent Events stream:
 
 ```
 event: conversation  {"conversation_id": "…", "new": true}
-event: progress      {"step": "lookup", "text": "Checking staffing in Runn"}
+event: progress      {"step": "lookup", "text": "Checking staffing in resourcing"}
 event: answer        {AskResponse, conversation_id = ours}
 ```
 

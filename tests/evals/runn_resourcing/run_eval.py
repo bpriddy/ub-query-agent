@@ -9,7 +9,7 @@ same agency in Float, with FLOAT_SOURCE on and the Runn relay not configured.
 
 What it does, per question (questions.py):
   * builds the real root agent with ASK_CONTRACT=1 (the `/ask` engine's tree:
-    router, dispatcher, executor with `runn_allocations`, format gate, critic)
+    router, dispatcher, executor with the resourcing tools, format gate, critic)
     and runs it on an ADK InMemoryRunner, one session per chain, so a
     follow-up reads the turn before it;
   * points every UB tool at a localhost fake UB (fake_ub.py) serving the
@@ -169,7 +169,8 @@ The assistant's tool calls (name, arguments, start of the result):
 {json.dumps(record["tool_calls"], indent=0)[:6000]}
 
 The HTTP calls those tools made to UB (UB's own records under /org, the planner under
-/relay/runn or /relay/float; the fast path calls UB in code, so this list can be longer):
+/relay/resourcing (Runn) or /relay/float; the fast path calls UB in code, so this list can
+be longer):
 {json.dumps(record["relay_calls"], indent=0)[:3000]}
 
 The assistant's answer:
